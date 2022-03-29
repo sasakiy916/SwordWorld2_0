@@ -4,16 +4,25 @@ public abstract class Player{
 	int hp;
 	int mp;
 	String[] statusName = {
-		"dex",
-		"agi",
-		"str",
-		"vit",
-		"wis",
-		"pow",
+		"器用度",
+		"敏捷度",
+		"筋力",
+		"生命力",
+		"知力",
+		"精神力",
 	};
 	int[] status = new int[statusName.length];
-	int[] baseAbility = new int[3];
-	int[] ability = new int[6];
+	String[] baseAbilityName = {"技","体","心"};
+	int[] baseAbility = new int[baseAbilityName.length];
+	String[] abilitySuffix = {
+		"A",
+		"B",
+		"C",
+		"D",
+		"E",
+		"F",
+	};
+	int[] ability = new int[abilitySuffix.length];
 	Dice d = new Dice();
 	//public int attack(){
 	//	System.out.printf("%sダメージを与えた",str);
@@ -35,5 +44,15 @@ public abstract class Player{
 		}
 		System.out.println(diceSum);
 		return diceSum;
+	}
+	public void setStatus(){
+	}
+	public void setAbility(){
+	}
+	public void setBaseAbility(int tec,int body, int spi){
+		int[] setBaseAbilities = {tec,body,spi};
+		for(int i=0;i<setBaseAbilities.length;i++){
+			this.baseAbility[i] = setBaseAbilities[i];
+		}
 	}
 }

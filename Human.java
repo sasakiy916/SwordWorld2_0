@@ -1,16 +1,7 @@
 import java.util.*;
 public class Human extends Player{
-	String[] baseAbilityName = {"技","体","心"};
-	int[] baseAbility = {8,4,9};
-	String[] abilitySuffix = {
-		"A",
-		"B",
-		"C",
-		"D",
-		"E",
-		"F",
-	};
-	int[] ability = {
+	int[] baseAbility = {8,4,9};//削除予定
+	int[] ability = {//削除予定、数値を設定するメソッドをPlayerクラスに書く予定
 		super.roll(2),
 		super.roll(2),
 		super.roll(2),
@@ -21,9 +12,10 @@ public class Human extends Player{
 	int initExp = 0;
 
 	public Human(){
+		//status設定処理、Playerクラスに移動したい
 		int num = 0;
 		for(int ability:this.ability){
-			System.out.printf("%s:%d ",abilitySuffix[num],ability);
+			System.out.printf("%s:%2d ",abilitySuffix[num],ability);
 			num++;
 		}
 		System.out.printf("%n%n");
@@ -35,7 +27,7 @@ public class Human extends Player{
 				num++;
 		}
 		for(int j=0;j<statusName.length;j++){
-			System.out.printf("%s:%d%n",this.statusName[j],this.status[j]);
+			System.out.printf("%3s:%2d%n",this.statusName[j],this.status[j]);
 		}
 	}
 }
