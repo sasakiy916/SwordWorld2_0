@@ -32,7 +32,7 @@ public abstract class Player{
 	//	setStatus();
 	//}
 
-	public int roll(int num){
+	protected int roll(int num){
 		int dice =0;
 		int diceSum = 0;
 		
@@ -50,9 +50,6 @@ public abstract class Player{
 	public void setAbility(){
 	}
 	public void setBaseAbility(int tec,int body, int spi){
-		int[] setBaseAbilities = {tec,body,spi};
-		for(int i=0;i<setBaseAbilities.length;i++){
-			this.baseAbility[i] = setBaseAbilities[i];
-		}
+		this.baseAbility = new int[]{tec,body,spi};
 	}
 }
