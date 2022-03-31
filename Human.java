@@ -10,17 +10,19 @@ public class Human extends Player{
 	//};
 
 	public Human(){
+		Dice d = new Dice();
+		setName("アルクレイド");
 		//基礎能力値設定
 		setTec(8);
 		setBody(4);
 		setMind(9);
 		//A~F能力値ダイスロール
-		setStatusA(roll(2));
-		setStatusB(roll(2));
-		setStatusC(roll(2));
-		setStatusD(roll(2));
-		setStatusE(roll(2));
-		setStatusF(roll(2));
+		setStatusA(d.roll(2));
+		setStatusB(d.roll(2));
+		setStatusC(d.roll(2));
+		setStatusD(d.roll(2));
+		setStatusE(d.roll(2));
+		setStatusF(d.roll(2));
 		//全能力値決定
 		decideAllStatus();
 		//A~Fのダイスロール結果表示

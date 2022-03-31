@@ -1,5 +1,5 @@
 import java.util.*;
-public abstract class Player{
+public abstract class Player implements Character{
 	private String name;//名前
 	private int level;//レベル
 	private int exp;//経験点
@@ -78,26 +78,6 @@ public abstract class Player{
 			"F",
 		};
 		this.ability = new int[abilitySuffix.length];
-	}
-
-	//ダイスを振って出目の和を求めるメソッド
-	//引数：振る個数
-	protected int roll(int num){
-		Dice d = new Dice();
-		//ダイスの出目と振ったダイスの出目の和
-		int dice =0;
-		int diceSum = 0;
-		
-		System.out.println("ダイスの出目");
-		//出目を決める
-		for(int i=1;i<=num;i++){
-			dice = d.dice[new Random().nextInt(6)];  
-			System.out.printf("%d個目:%d%n",i,dice);
-			//出目の和
-			diceSum += dice;
-		}
-		System.out.println(diceSum);
-		return diceSum;
 	}
 
 	//全能力値を決定
