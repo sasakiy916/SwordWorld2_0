@@ -53,7 +53,7 @@ public class BattleManager{
 	}
 
 	private boolean isAliveMonster(Monster m){
-		if(m.getHp() < 0){
+		if(m.getHp() <= 0){
 			m.setHp(0);
 			System.out.printf("%sのHP:%d%n",m.getName(),m.getHp());
 			System.out.printf("%sを倒した",m.getName());
@@ -63,7 +63,7 @@ public class BattleManager{
 		return true;
 	}
 	private boolean isAlivePlayer(Player p){
-		if(p.getHp() < 0){
+		if(p.getHp() <= 0){
 			p.setHp(0);
 			System.out.printf("%sのHP:%d%n",p.getName(),p.getHp());
 			System.out.printf("%sはやられてしまった",p.getName());

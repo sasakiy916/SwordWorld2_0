@@ -10,7 +10,7 @@ public class Dice{
 		int dice =0;
 		int diceSum = 0;
 		
-		System.out.println("ダイスの出目");
+		System.out.printf("%nダイスの出目%n");
 		//出目を決める
 		for(int i=1;i<=num;i++){
 			dice = d.dice[new Random().nextInt(6)];  
@@ -18,7 +18,7 @@ public class Dice{
 			//出目の和
 			diceSum += dice;
 		}
-		System.out.println(diceSum);
+		System.out.printf("出目合計:%d%n%n",diceSum);
 		return diceSum;
 	}
 }
