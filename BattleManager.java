@@ -1,6 +1,6 @@
 import java.util.*;
 public class BattleManager{
-	public BattleManager(Player p, Monster m){
+	public BattleManager(Character p, Character m){
 		//陣営の確認
 
 		//魔物知識判定
@@ -21,8 +21,9 @@ public class BattleManager{
 			System.out.println("先攻側の行動");
 			System.out.printf("%sのHP:%d%n",m.getName(),m.getHp());
 			System.out.printf("%sの攻撃%n",p.getName());
-			m.setHp(m.getHp() - p.getStrBonus());
-			System.out.printf("%sに%dのダメージを与えた%n",m.getName(),p.getStrBonus());
+			int damage = p.damageRoll();
+			m.setHp(m.getHp() - damage);
+			System.out.printf("%sに%dのダメージを与えた%n",m.getName(),damage);
 			//System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
 			if(!isAliveMonster(m))break;
 
@@ -30,9 +31,9 @@ public class BattleManager{
 			System.out.println("後攻側の攻撃");
 			System.out.printf("%sのHP:%d%n",p.getName(),p.getHp());
 			System.out.printf("%sの攻撃%n",m.getName());
-			int mAtk =  m.getAtk() + m.d.roll(2);
-			p.setHp(p.getHp() - mAtk);
-			System.out.printf("%sに%dのダメージを与えた%n",p.getName(),mAtk);
+			int secondDamage = m.damageRoll();
+			p.setHp(p.getHp() - secondDamage);
+			System.out.printf("%sに%dのダメージを与えた%n",p.getName(),secondDamage);
 			//System.out.printf("%sのHP:%d%n%n",p.getName(),p.getHp());
 			if(!isAlivePlayer(p))break;
 			
@@ -52,7 +53,8 @@ public class BattleManager{
 		}
 	}
 
-	private boolean isAliveMonster(Monster m){
+	//生存判定
+	private boolean isAliveMonster(Character m){
 		if(m.getHp() <= 0){
 			m.setHp(0);
 			System.out.printf("%sのHP:%d%n",m.getName(),m.getHp());
@@ -62,7 +64,7 @@ public class BattleManager{
 		System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
 		return true;
 	}
-	private boolean isAlivePlayer(Player p){
+	private boolean isAlivePlayer(Character p){
 		if(p.getHp() <= 0){
 			p.setHp(0);
 			System.out.printf("%sのHP:%d%n",p.getName(),p.getHp());

@@ -1,13 +1,9 @@
 import java.util.*;
-public abstract class Player implements Character{
-	private String name;//名前
-	private int level;//レベル
+public abstract class Player extends Character{
 	private int exp;//経験点
 	private int age;//年齢
 	private String birth;//生まれ
 	//能力値
-	private int hp;//HP
-	private int mp;//MP
 	private int resVit;//生命抵抗力
 	private int resPow;//精神抵抗力
 	private int dex;//器用度
@@ -137,14 +133,10 @@ public abstract class Player implements Character{
 			getPow(),
 		};
 	}
-	//名前のアクセサ
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
 	
+	public int damageRoll(){
+		return this.d.roll(1)+this.strBonus;
+	}
 	//経験点のアクセサ
 	public int getExp(){
 		return this.exp;
@@ -153,13 +145,6 @@ public abstract class Player implements Character{
 		this.exp = exp;
 	}
 
-	//冒険者レベルのアクセサ
-	public int getLevel(){
-		return this.level;
-	}
-	public void setLevel(int level){
-		this.level = level;
-	}
 
 	//年齢のアクセサ
 	public int getAge(){
@@ -175,22 +160,6 @@ public abstract class Player implements Character{
 	}
 	public void setBirth(String birth){
 		this.birth = birth;
-	}
-
-	//HPのアクセサ
-	public int getHp(){
-		return this.hp;
-	}
-	public void setHp(int hp){
-		this.hp = hp;
-	}
-
-	//MPのアクセサ
-	public int getMp(){
-		return this.mp;
-	}
-	public void setMp(int mp){
-		this.mp = mp;
 	}
 
 	//生命抵抗力
