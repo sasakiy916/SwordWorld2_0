@@ -1,6 +1,7 @@
 import java.util.*;
 public class Dice{
 	int[] dice = {1,2,3,4,5,6};
+	//int[] dice = {1,1,1,1,1,1};//デバッグ用ダイス
 
 	//ダイスを振って出目の和を求めるメソッド
 	//引数：振る個数

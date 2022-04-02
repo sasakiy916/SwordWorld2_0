@@ -36,6 +36,8 @@ public abstract class Player extends Character{
 	private int statusF;//F
 	private String[] abilitySuffix;
 	private int[] ability;
+	//武器
+	Wepon w;
 
 	public Player(){
 		setLevel(1);
@@ -51,18 +53,6 @@ public abstract class Player extends Character{
 			"知力",
 			"精神力",
 		};
-		//setStatus(
-		//		setHp(this.hp),
-		//		setMp(this.mp),
-		//		setResVit(this.resVit),
-		//		setResPow(this.resPow),
-		//		setDex(this.dex),
-		//		setAgi(this.agi),
-		//		setStr(this.str),
-		//		setVit(this.vit),
-		//		setWis(this.wis),
-		//		setPow(this.pow),
-		//);
 		this.baseAbilityName = new String[]{"技","体","心"};
 		this.baseAbility = new int[baseAbilityName.length];
 		this.abilitySuffix = new String[]{
@@ -74,6 +64,14 @@ public abstract class Player extends Character{
 			"F",
 		};
 		this.ability = new int[abilitySuffix.length];
+		//武器選択
+		System.out.print("装備を選択してください。ショートソード:0,ナイフ:1>>");
+		int weponSelect = new Scanner(System.in).nextInt();
+		if(weponSelect == 0){
+			w = new ShortSword();
+		}else{
+			w = new Knife();
+		}
 	}
 
 	//全能力値を決定
@@ -135,7 +133,14 @@ public abstract class Player extends Character{
 	}
 	
 	public int damageRoll(){
-		return this.d.roll(1)+this.strBonus;
+		int dice = this.d.roll(2)-2;
+		if(dice > 0){
+			System.out.printf("%sの威力は%d%n",w.getName(),w.getPower(dice));
+			return w.getPower(dice)+this.strBonus;
+		}else{
+			System.out.println("自動失敗!ダメージを与えられなかった");
+			return 0;
+		}
 	}
 	//経験点のアクセサ
 	public int getExp(){

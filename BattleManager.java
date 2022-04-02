@@ -23,7 +23,9 @@ public class BattleManager{
 			System.out.printf("%sの攻撃%n",p.getName());
 			int damage = p.damageRoll();
 			m.setHp(m.getHp() - damage);
-			System.out.printf("%sに%dのダメージを与えた%n",m.getName(),damage);
+			if(damage!=0){
+				System.out.printf("%sに%dのダメージを与えた%n",m.getName(),damage);
+			}
 			//System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
 			//生存判定
 			isAliveCharacter(m);
@@ -38,6 +40,8 @@ public class BattleManager{
 			}
 			System.out.print("先攻側の行動終了,後攻側の行動に移ります。");
 			new Scanner(System.in).nextLine();
+			System.out.println("**********************************************");
+			System.out.println("**********************************************");
 
 			//後攻側の行動
 			System.out.println("後攻側の攻撃");
@@ -64,6 +68,8 @@ public class BattleManager{
 			//戦闘の継続、終了確認
 			System.out.println("戦闘を継続しますか?(終了する場合は「q + Enter」)");
 			String sc = new Scanner(System.in).nextLine();
+			System.out.println("**********************************************");
+			System.out.println("**********************************************");
 			if(sc.equals("q")){
 				System.out.println("戦闘終了");
 				break;
