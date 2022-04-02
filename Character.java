@@ -21,7 +21,6 @@ public abstract class Character{
 	public void setName(String name){
 		this.name = name;
 	}
-	
 	//レベルのアクセサ
 	public int getLevel(){
 		return this.level;
@@ -29,7 +28,6 @@ public abstract class Character{
 	public void setLevel(int level){
 		this.level = level;
 	}
-
 	//HPのアクセサ
 	public int getHp(){
 		return this.hp;
@@ -37,7 +35,6 @@ public abstract class Character{
 	public void setHp(int hp){
 		this.hp = hp;
 	}
-
 	//MPのアクセサ
 	public int getMp(){
 		return this.mp;
@@ -45,7 +42,6 @@ public abstract class Character{
 	public void setMp(int mp){
 		this.mp = mp;
 	}
-
 	//防護点のアクセサ
 	public int getDef(){
 		return this.def;
