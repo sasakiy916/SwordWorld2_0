@@ -11,15 +11,16 @@ public class Dice{
 		int dice =0;
 		int diceSum = 0;
 		
-		System.out.printf("%nダイスの出目%n");
+		System.out.printf("%dd6の出目%n",num);
 		//出目を決める
 		for(int i=1;i<=num;i++){
 			dice = d.dice[new Random().nextInt(6)];  
-			System.out.printf("%d個目:%d%n",i,dice);
+			System.out.printf("|%d個目:%d ",i,dice);
 			//出目の和
 			diceSum += dice;
 		}
-		System.out.printf("出目合計:%d%n%n",diceSum);
+		System.out.print("|");
+		System.out.printf("%n|合計:%d|%n%n",diceSum);
 		return diceSum;
 	}
 }
