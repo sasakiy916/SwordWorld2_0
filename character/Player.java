@@ -1,3 +1,4 @@
+package character;
 import java.util.*;
 public abstract class Player extends Character{
 	private int exp;//経験点

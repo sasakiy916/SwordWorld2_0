@@ -1,3 +1,5 @@
+package character;
+import wepon.*;
 public abstract class Character{
 	//ステータス
 	private String name;//名前

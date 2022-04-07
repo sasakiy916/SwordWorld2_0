@@ -1,3 +1,4 @@
+package character;
 import java.util.*;
 public class Human extends Player{
 	//String[] birthName = {

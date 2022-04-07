@@ -1,3 +1,4 @@
+package character;
 import java.util.*;
 public class Dice{
 	int[] dice = {1,2,3,4,5,6};

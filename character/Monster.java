@@ -1,3 +1,4 @@
+package character;
 import java.util.*;
 public abstract class Monster extends Character{
 	private int hit;//命中力
