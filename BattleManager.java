@@ -1,4 +1,3 @@
-import sw.character.*;
 import java.util.*;
 public class BattleManager{
 	public BattleManager(Character p, Character m){
