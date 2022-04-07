@@ -1,5 +1,5 @@
-package character;
-import wepon.*;
+package sw.character;
+import sw.character.wepon.*;
 public abstract class Character{
 	//ステータス
 	private String name;//名前

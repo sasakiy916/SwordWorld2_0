@@ -1,5 +1,6 @@
-package character;
+package sw.character;
 import java.util.*;
+import sw.wepon.*;
 public abstract class Player extends Character{
 	private int exp;//経験点
 	private int age;//年齢

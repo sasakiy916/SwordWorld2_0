@@ -1,4 +1,4 @@
-package character;
+package sw.character;
 import java.util.*;
 public class Kobold extends Monster{
 	public Kobold(){

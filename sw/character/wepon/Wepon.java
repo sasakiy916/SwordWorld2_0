@@ -1,4 +1,4 @@
-package wepon;
+package sw.character.wepon;
 public abstract class Wepon{
 	private String name;//武器名
 	private int price;//価格
