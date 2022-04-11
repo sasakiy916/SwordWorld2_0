@@ -1,8 +1,9 @@
-import java.util.*;
-public abstract class Player extends Character{
+import java.util.Scanner;
+public  class Player extends Character{
 	private int exp;//経験点
 	private int age;//年齢
 	private String birth;//生まれ
+	private int money = 1200;//所持金
 	//能力値
 	private int resVit;//生命抵抗力
 	private int resPow;//精神抵抗力
@@ -68,9 +69,9 @@ public abstract class Player extends Character{
 		System.out.print("装備を選択してください。ショートソード:0,ナイフ:1>>");
 		int weponSelect = new Scanner(System.in).nextInt();
 		if(weponSelect == 0){
-			w = new ShortSword();
+			w = new Wepon(WeponList.SHORTSWORD);
 		}else{
-			w = new Knife();
+			w = new Wepon(WeponList.KNIFE);
 		}
 	}
 
@@ -155,7 +156,7 @@ public abstract class Player extends Character{
 	public int getAge(){
 		return this.age;
 	}
-	public void setAge(){
+	public void setAge(int age){
 		this.age = age;
 	}
 	
@@ -165,6 +166,14 @@ public abstract class Player extends Character{
 	}
 	public void setBirth(String birth){
 		this.birth = birth;
+	}
+
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
 	}
 
 	//生命抵抗力
@@ -266,7 +275,7 @@ public abstract class Player extends Character{
 	public int getWisBonus(){
 		return this.wisBonus;
 	}
-	public void setWisBonus(int dexBonus){
+	public void setWisBonus(int wisBonus){
 		this.wisBonus = wisBonus;
 	}
 	//精神力ボーナスのアクセサ

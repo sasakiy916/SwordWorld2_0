@@ -1,9 +1,34 @@
-public abstract class Wepon{
+public class Wepon{
 	private String name;//武器名
 	private int price;//価格
 	private int needStr;//必要な筋力
 	private int[] powers = new int[10];//威力表
+	WeponList wepon;
 
+	public Wepon(WeponList wepon) {
+		this.name = wepon.getName();
+		this.price = wepon.getPrice();
+		this.needStr = wepon.getNeedStr();
+		this.powers = wepon.getPowers();
+	}
+	
+	//武器選択
+	public int[] selectWepon(WeponList wepon) {
+		int[] powers = new int[10];
+		switch(wepon) {
+		case SHORTSWORD:
+			this.setName("ショートソード");
+			this.setPrice(80);
+			powers = new int[]{0,1,2,2,3,4,4,5,6,6};
+			break;
+		case KNIFE:
+			setName("ナイフ");
+			setPrice(30);
+			powers = new int[]{0,0,0,1,2,3,3,3,4,4};
+			break;
+		}
+		return powers;
+	}
 	//武器名のアクセサ
 	public String getName(){
 		return this.name;
