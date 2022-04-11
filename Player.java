@@ -66,13 +66,9 @@ public  class Player extends Character{
 		};
 		this.ability = new int[abilitySuffix.length];
 		//武器選択
-		System.out.print("装備を選択してください。ショートソード:0,ナイフ:1>>");
+		System.out.print("装備を選択してください。ナイフ:0,ショートソード:1>>");
 		int weponSelect = new Scanner(System.in).nextInt();
-		if(weponSelect == 0){
-			w = new Wepon(WeponList.SHORTSWORD);
-		}else{
-			w = new Wepon(WeponList.KNIFE);
-		}
+		w = new Wepon(WeponList.values()[weponSelect]);
 	}
 
 	//全能力値を決定
