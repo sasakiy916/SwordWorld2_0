@@ -23,13 +23,13 @@ public class CharacterCreater {
 		int selectRace = scan.nextInt();
 		Player p = Race.values()[selectRace].getPlayer();
 		//生まれ一覧表示
-		switch(Race.values()[selectRace].ordinal()) {
-		case 0:
+		switch(Race.values()[selectRace]) {
+		case HUMAN:
 			for(Race.HumanBirth birth:Race.HumanBirth.values()) {
 				System.out.printf("%s:%d%n",birth.getBirth(),birth.ordinal());
 			}
 			break;
-		case 1:
+		case ELF:
 			for(Race.ElfBirth birth:Race.ElfBirth.values()) {
 				System.out.printf("%s:%d%n",birth.getBirth(),birth.ordinal());
 			}

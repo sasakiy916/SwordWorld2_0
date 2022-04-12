@@ -21,11 +21,11 @@ public enum Race {
 	public enum HumanBirth{
 		MAGITEC("魔動機師",8,4,9),
 		MAGICIAN("魔法使い",7,4,9),;
-
 		private final String birth;
 		private final int tec;
 		private final int body;
 		private final int mind;
+
 		HumanBirth(String birth, int tec, int body, int mind) {
 			this.birth = birth;
 			this.tec = tec;
