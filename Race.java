@@ -1,7 +1,7 @@
 
 public enum Race {
 	HUMAN(new Human(),"人間"),
-	ELF(null,"エルフ");
+	ELF(new Elf(),"エルフ");
 	
 	private final Player player;
 	private final String name;

@@ -1,12 +1,12 @@
-public class Human extends Player{
+public class Elf extends Player {
 //	public static enum Birth{
-//		MAGITEC("魔動機師",8,4,9),
-//		MAGICIAN("魔法使い",7,4,10),;
+//		MAGITEC("剣士",12,5,9),
+//		MAGICIAN("射手",13,5,8),;
+//
 //		private final String birth;
 //		private final int tec;
 //		private final int body;
 //		private final int mind;
-//
 //		Birth(String birth, int tec, int body, int mind) {
 //			this.birth = birth;
 //			this.tec = tec;
@@ -26,15 +26,4 @@ public class Human extends Player{
 //			return mind;
 //		}
 //	}
-	//String[] birthName = {
-	//	"魔動技師",
-	//	"魔法使い",
-	//};
-	//int[][] baseAbilites = {
-	//	{8,4,9},
-	//	{7,4,10},
-	//};
-
-	public Human(){
-	}
 }
