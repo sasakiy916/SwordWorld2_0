@@ -53,19 +53,28 @@ public class CharacterCreater {
 	public void buyEquipment() {
 		Scanner scan = new Scanner(System.in);
 		int money = player.getMoney();
+		//購入するかしないか
 		System.out.print("装備品を購入しますか？(購入する:0,購入しない:1)>>");
 		int buy = scan.nextInt();
 		while(buy == 0) {
+			//武器一覧表示
 			int select = 0;
 			for(WeponList wepon:WeponList.values()) {
 				System.out.printf("%s %3dG :%d%n",format(wepon.getName(),15),wepon.getPrice(),select);
 				select++;
 			}
-			System.out.println(WeponList.values()[0]);
+			//購入する武器を選ぶ
+			System.out.print("どれを購入しますか?>>");
+			select = scan.nextInt();
+			//購入後にプレイヤーに武器を渡す
+
+			//購入の継続確認
 			System.out.print("他の装備も購入しますか？>>");
 			buy = scan.nextInt();
 		}
+		scan.close();
 	}
+
 	//全角半角の文字位置合わせ
 	private static String format(String target, int length){
 		int byteDiff = (getByteLength(target, Charset.forName("UTF-8"))-target.length())/2;
