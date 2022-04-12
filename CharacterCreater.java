@@ -7,13 +7,13 @@ public class CharacterCreater {
 //	Wepon wepon = new Wepon();
 	//コンストラクタ
 	public CharacterCreater() {
-		setPlayer(decideRaceAndBirth());
+		decideRaceAndBirth();
 		decideStatus();
 //		buyEquipment();
 	}
 
 	//種族と生まれの決定
-	public Player decideRaceAndBirth() {
+	public void decideRaceAndBirth() {
 		//種族一覧表示
 		for(Race race:Race.values()) {
 			System.out.printf("%s:%d%n",race.getName(),race.ordinal());
@@ -21,7 +21,7 @@ public class CharacterCreater {
 		//種族を選択
 		System.out.print("種族を選んでください>>");
 		int selectRace = scan.nextInt();
-		Player p = Race.values()[selectRace].getPlayer();
+		this.player = Race.values()[selectRace].getPlayer();
 		//生まれ一覧表示
 		switch(Race.values()[selectRace]) {
 		case HUMAN:
@@ -38,13 +38,14 @@ public class CharacterCreater {
 		//生まれを選択
 		System.out.print("生まれを選んでください>>");
 		int selectBirth = scan.nextInt();
-		return p;
+		Race.HumanBirth rb = Race.HumanBirth.values()[selectBirth];
+		this.player.setBaseAbilities(rb.getTec(), rb.getBody(), rb.getMind());
 	}
 	//能力値の決定
 	public void decideStatus() {
 		this.player.setName("アルクレイド");
 		//基礎能力値設定
-		this.player.setBaseAbilities(8, 4, 9);;
+//		this.player.setBaseAbilities(8, 4, 9);;
 		//A~F能力値ダイスロール
 		this.player.setStatusA(d.roll(2));
 		this.player.setStatusB(d.roll(2));
