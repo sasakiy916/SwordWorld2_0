@@ -70,6 +70,12 @@ public  class Player extends Character{
 		int weponSelect = new Scanner(System.in).nextInt();
 		w = new Wepon(WeponList.values()[weponSelect]);
 	}
+	//基礎能力値設定
+	public void setBaseAbilities(int tec,int body,int mind) {
+		setTec(tec);
+		setBody(body);
+		setMind(mind);
+	}
 
 	//全能力値を決定
 	public void decideAllStatus(){

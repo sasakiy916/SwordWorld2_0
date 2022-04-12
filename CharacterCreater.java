@@ -1,44 +1,55 @@
 import java.nio.charset.Charset;
 import java.util.Scanner;
 public class CharacterCreater {
-	Player player;
+	private Player player;
+	Dice d = new Dice();
+	Scanner scan = new Scanner(System.in);
 //	Wepon wepon = new Wepon();
+	//コンストラクタ
 	public CharacterCreater() {
-		player = new Player();
-		buyEquipment();
-		Dice d = new Dice();
-		player.setName("アルクレイド");
+		setPlayer(decideRaceAndBirth());
+		decideStatus();
+//		buyEquipment();
+	}
+
+	//種族と生まれの決定
+	public Player decideRaceAndBirth() {
+		//種族一覧表示
+		for(Race race:Race.values()) {
+			System.out.printf("%s:%d%n",race.getName(),race.ordinal());
+		}
+		//種族を選択
+		System.out.print("種族を選んでください>>");
+		int selectRace = scan.nextInt();
+		Player p = Race.values()[selectRace].getPlayer();
+		return p;
+	}
+	//能力値の決定
+	public void decideStatus() {
+		this.player.setName("アルクレイド");
 		//基礎能力値設定
-		player.setTec(8);
-		player.setBody(4);
-		player.setMind(9);
+		this.player.setBaseAbilities(8, 4, 9);;
 		//A~F能力値ダイスロール
-		player.setStatusA(d.roll(2));
-		player.setStatusB(d.roll(2));
-		player.setStatusC(d.roll(2));
-		player.setStatusD(d.roll(2));
-		player.setStatusE(d.roll(2));
-		player.setStatusF(d.roll(2));
+		this.player.setStatusA(d.roll(2));
+		this.player.setStatusB(d.roll(2));
+		this.player.setStatusC(d.roll(2));
+		this.player.setStatusD(d.roll(2));
+		this.player.setStatusE(d.roll(2));
+		this.player.setStatusF(d.roll(2));
 		//全能力値決定
-		player.decideAllStatus();
+		this.player.decideAllStatus();
 		//A~Fのダイスロール結果表示
 		System.out.println("A~Fまでのダイス値");
-		System.out.printf("%d,%d,%d,%d,%d,%d%n%n",player.getStatusA(),player.getStatusB(),player.getStatusC(),player.getStatusD(),player.getStatusE(),player.getStatusF());
-		player.setStatus();
+		System.out.printf("%d,%d,%d,%d,%d,%d%n%n",this.player.getStatusA(),this.player.getStatusB(),this.player.getStatusC(),this.player.getStatusD(),this.player.getStatusE(),this.player.getStatusF());
+		this.player.setStatus();
 		//能力値表示
 		System.out.println("能力値が決定しました！");
 		System.out.println("------------------------");
-		for(int i=0;i<player.statusName.length;i++){
-			System.out.printf("%s:%d%n",player.statusName[i],player.status[i]);
+		for(int i=0;i<this.player.statusName.length;i++){
+			System.out.printf("%s:%d%n",this.player.statusName[i],this.player.status[i]);
 		}
 		System.out.println("------------------------");
 	}
-	//種族と生まれの決定
-	public void decideRaceAndBirth() {
-		
-	}
-	//能力値の決定
-	
 	//技能の習得
 	
 	//言語の習得
@@ -51,8 +62,7 @@ public class CharacterCreater {
 	
 	//装備品の購入
 	public void buyEquipment() {
-		Scanner scan = new Scanner(System.in);
-		int money = player.getMoney();
+		int money = this.player.getMoney();
 		//購入するかしないか
 		System.out.print("装備品を購入しますか？(購入する:0,購入しない:1)>>");
 		int buy = scan.nextInt();
@@ -72,7 +82,15 @@ public class CharacterCreater {
 			System.out.print("他の装備も購入しますか？>>");
 			buy = scan.nextInt();
 		}
-		scan.close();
+	}
+
+	//playerのアクセサ
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 	//全角半角の文字位置合わせ
