@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public  class Player extends Character{
+public  abstract class Player extends Character{
 	private int exp;//経験点
 	private int age;//年齢
 	private String birth;//生まれ

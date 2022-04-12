@@ -1,4 +1,6 @@
 public class Human extends Player{
+	public static enum Birth{
+	}
 	//String[] birthName = {
 	//	"魔動技師",
 	//	"魔法使い",

@@ -22,6 +22,22 @@ public class CharacterCreater {
 		System.out.print("種族を選んでください>>");
 		int selectRace = scan.nextInt();
 		Player p = Race.values()[selectRace].getPlayer();
+		//生まれ一覧表示
+		switch(Race.values()[selectRace].ordinal()) {
+		case 0:
+			for(Race.HumanBirth birth:Race.HumanBirth.values()) {
+				System.out.printf("%s:%d%n",birth.getBirth(),birth.ordinal());
+			}
+			break;
+		case 1:
+			for(Race.ElfBirth birth:Race.ElfBirth.values()) {
+				System.out.printf("%s:%d%n",birth.getBirth(),birth.ordinal());
+			}
+			break;
+		}
+		//生まれを選択
+		System.out.print("生まれを選んでください>>");
+		int selectBirth = scan.nextInt();
 		return p;
 	}
 	//能力値の決定
