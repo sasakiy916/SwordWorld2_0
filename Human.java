@@ -1,40 +1,42 @@
-public class Human extends Player{
-//	public static enum Birth{
-//		MAGITEC("魔動機師",8,4,9),
-//		MAGICIAN("魔法使い",7,4,10),;
-//		private final String birth;
-//		private final int tec;
-//		private final int body;
-//		private final int mind;
-//
-//		Birth(String birth, int tec, int body, int mind) {
-//			this.birth = birth;
-//			this.tec = tec;
-//			this.body = body;
-//			this.mind = mind;
-//		}
-//		public String getBirth() {
-//			return birth;
-//		}
-//		public int getTec() {
-//			return tec;
-//		}
-//		public int getBody() {
-//			return body;
-//		}
-//		public int getMind() {
-//			return mind;
-//		}
-//	}
-	//String[] birthName = {
-	//	"魔動技師",
-	//	"魔法使い",
-	//};
-	//int[][] baseAbilites = {
-	//	{8,4,9},
-	//	{7,4,10},
-	//};
+import java.util.Scanner;
 
+public class Human extends Player{
 	public Human(){
+		this.setRace("人間");
+		this.getBirths().put("魔動機師", new int[]{8,4,9});
+		this.getBirths().put("魔法使い", new int[]{7,4,10});
+		this.getBirths().put("軽戦士", new int[]{10,7,8});
 	}
+	public void learnJob() {
+		Scanner scan = new Scanner(System.in);
+		int select = 0;
+		switch(this.getBirth()) {
+		case "魔動機師":
+			jobLevelUp("マギテック");
+			break;
+		case "魔法使い":
+			do {
+				System.out.println("取得可能技能");
+				System.out.println("ソーサラー:0");
+				System.out.println("コンジャラー:1");
+				System.out.print("取得する技能を選んで下さい>>");
+				select = scan.nextInt();
+				switch(select) {
+				case 0:	
+					jobLevelUp("ソーサラー");
+					break;
+				case 1:
+					jobLevelUp("コンジャラー");
+					break;
+				}
+			}while(select != 0 && select != 1);
+			break;
+		case "軽戦士":
+			jobLevelUp("スカウト");
+			jobLevelUp("フェンサー");
+			break;
+		}
+		System.out.println();
+	}
+	
 }

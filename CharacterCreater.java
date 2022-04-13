@@ -1,14 +1,17 @@
 import java.nio.charset.Charset;
 import java.util.Scanner;
 public class CharacterCreater {
-	private Player player;
-	Dice d = new Dice();
+	private Player player;//種族のインスタンス
+	private String[] birth;//生まれ
+	private int[][] birthBaseAbilities;
+	Dice d = new Dice();//ダイス
 	Scanner scan = new Scanner(System.in);
 //	Wepon wepon = new Wepon();
 	//コンストラクタ
 	public CharacterCreater() {
-		decideRaceAndBirth();
-		decideStatus();
+		decideRaceAndBirth();//種族と生まれの決定
+		decideStatus();//能力値の決定
+		decideJobLevel();//技能の習得
 		System.out.print("装備を選択してください。ナイフ:0,ショートソード:1>>");
 		int weponSelect = new Scanner(System.in).nextInt();
 		this.player.w = new Wepon(WeponList.values()[weponSelect]);
@@ -18,32 +21,44 @@ public class CharacterCreater {
 	//種族と生まれの決定
 	public void decideRaceAndBirth() {
 		//種族一覧表示
+		System.out.println("種族一覧");
 		for(Race race:Race.values()) {
 			System.out.printf("%s:%d%n",race.getName(),race.ordinal());
 		}
 		//種族を選択
 		System.out.print("種族を選んでください>>");
 		int selectRace = scan.nextInt();
-		//生まれ一覧表示
+		System.out.println();
+		//生まれの一覧表示
+		System.out.println("生まれ一覧");
 		switch(Race.values()[selectRace]) {
 		case HUMAN:
 			setPlayer(new Human());
-			for(Race.HumanBirth birth:Race.HumanBirth.values()) {
-				System.out.printf("%s:%d%n",birth.getBirth(),birth.ordinal());
-			}
 			break;
 		case ELF:
 			setPlayer(new Elf());
-			for(Race.ElfBirth birth:Race.ElfBirth.values()) {
-				System.out.printf("%s:%d%n",birth.getBirth(),birth.ordinal());
-			}
 			break;
+		}
+		this.birth = new String[this.player.getBirths().size()];//生まれの配列用意
+		this.birthBaseAbilities = new int[this.player.getBirths().size()][3];//生まれごとの基礎能力値の配列用意
+		int selectBirth = 0;//生まれ選択肢
+		for(String key:getPlayer().getBirths().keySet()) {
+			System.out.println(key + ":" + selectBirth);
+			this.birth[selectBirth] = key;
+			this.birthBaseAbilities[selectBirth] = getPlayer().getBirths().get(key);
+			selectBirth++;
 		}
 		//生まれを選択
 		System.out.print("生まれを選んでください>>");
-		int selectBirth = scan.nextInt();
-		Race.HumanBirth rb = Race.HumanBirth.values()[selectBirth];
-		this.player.setBaseAbilities(rb.getTec(), rb.getBody(), rb.getMind());
+		selectBirth = scan.nextInt();
+		this.player.setBirth(this.birth[selectBirth]);
+		//基礎能力値の決定
+		this.player.setBaseAbilities(
+				this.birthBaseAbilities[selectBirth][0],
+				this.birthBaseAbilities[selectBirth][1],
+				this.birthBaseAbilities[selectBirth][2]
+				);
+		System.out.println();
 	}
 	//能力値の決定
 	public void decideStatus() {
@@ -69,9 +84,22 @@ public class CharacterCreater {
 		for(int i=0;i<this.player.statusName.length;i++){
 			System.out.printf("%s:%d%n",this.player.statusName[i],this.player.status[i]);
 		}
+		System.out.printf("種族:%s 生まれ:%s%n",this.player.getRace(),this.player.getBirth()); 
 		System.out.println("------------------------");
 	}
 	//技能の習得
+	public void decideJobLevel() {
+		this.player.learnJob();
+		System.out.println("取得技能一覧");
+		System.out.printf("%s|%s%n",format("技能",18),"レベル");
+		for(String key:this.player.getJobs().keySet()) {
+			int value = this.player.getJobs().get(key);
+			if(value != 0) {
+				System.out.printf("%s|%d%n",format(key,18),value);
+			}
+		}
+		System.out.println("------------------------");
+	}
 	
 	//言語の習得
 	

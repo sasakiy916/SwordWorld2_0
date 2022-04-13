@@ -1,8 +1,14 @@
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public  abstract class Player extends Character{
 	private int exp;//経験点
 	private int age;//年齢
+	private String race;//種族
 	private String birth;//生まれ
+	private Map<String,Integer>jobs = new HashMap<String,Integer>();//技能と技能レベル
+	private Map<String,int[]>births = new LinkedHashMap<String,int[]>();//生まれ表
 	private int money = 1200;//所持金
 	//能力値
 	private int resVit;//生命抵抗力
@@ -66,6 +72,22 @@ public  abstract class Player extends Character{
 			"F",
 		};
 		this.ability = new int[abilitySuffix.length];
+		//技能の準備
+		//戦士系
+		getJobs().put("ファイター",0);
+		getJobs().put("グラップラー",0);
+		getJobs().put("フェンサー",0);
+		getJobs().put("シューター",0);
+		//魔法使い系
+		getJobs().put("ソーサラー",0);
+		getJobs().put("コンジャラー",0);
+		getJobs().put("プリースト",0);
+		getJobs().put("フェアリーテイマー",0);
+		getJobs().put("マギテック",0);
+		//その他技能
+		getJobs().put("スカウト",0);
+		getJobs().put("レンジャー",0);
+		getJobs().put("セージ",0);
 	}
 	//基礎能力値設定
 	public void setBaseAbilities(int tec,int body,int mind) {
@@ -132,6 +154,7 @@ public  abstract class Player extends Character{
 		};
 	}
 	
+	//ダメージロール
 	public int damageRoll(){
 		int dice = this.d.roll(2)-2;
 		if(dice > 0){
@@ -141,6 +164,13 @@ public  abstract class Player extends Character{
 			System.out.println("自動失敗!ダメージを与えられなかった");
 			return 0;
 		}
+	}
+
+	//技能習得
+	public abstract void learnJob();
+	//技能レベルアップ
+	public void jobLevelUp(String job) {
+		this.getJobs().put(job, this.getJobs().get(job)+1);
 	}
 	//経験点のアクセサ
 	public int getExp(){
@@ -355,5 +385,25 @@ public  abstract class Player extends Character{
 	}
 	public void setStatusF(int statusF){
 		this.statusF = statusF;
+	}
+	
+	//生まれ表のアクセサ
+	public Map<String,int[]> getBirths() {
+		return births;
+	}
+	public void setBirths(Map<String,int[]> births) {
+		this.births = births;
+	}
+	public String getRace() {
+		return race;
+	}
+	public void setRace(String race) {
+		this.race = race;
+	}
+	public Map<String,Integer> getJobs() {
+		return jobs;
+	}
+	public void setJobs(Map<String,Integer> jobs) {
+		this.jobs = jobs;
 	}
 }
