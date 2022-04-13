@@ -12,6 +12,11 @@ public class CharacterCreater {
 		decideRaceAndBirth();//種族と生まれの決定
 		decideStatus();//能力値の決定
 		decideJobLevel();//技能の習得
+		decideLevel();//冒険者レベルの決定
+		decideHpAndMp();//HP,MPの決定
+		//戦闘特技の習得
+		//装備品の購入
+		completeCharacter();//キャラの完成
 		System.out.print("装備を選択してください。ナイフ:0,ショートソード:1>>");
 		int weponSelect = new Scanner(System.in).nextInt();
 		this.player.w = new Wepon(WeponList.values()[weponSelect]);
@@ -77,36 +82,41 @@ public class CharacterCreater {
 		//A~Fのダイスロール結果表示
 		System.out.println("A~Fまでのダイス値");
 		System.out.printf("%d,%d,%d,%d,%d,%d%n%n",this.player.getStatusA(),this.player.getStatusB(),this.player.getStatusC(),this.player.getStatusD(),this.player.getStatusE(),this.player.getStatusF());
-		this.player.setStatus();
-		//能力値表示
-		System.out.println("能力値が決定しました！");
-		System.out.println("------------------------");
-		for(int i=0;i<this.player.statusName.length;i++){
-			System.out.printf("%s:%d%n",this.player.statusName[i],this.player.status[i]);
-		}
-		System.out.printf("種族:%s 生まれ:%s%n",this.player.getRace(),this.player.getBirth()); 
-		System.out.println("------------------------");
+//		this.player.setStatus();
+//		//能力値表示
+//		System.out.println("能力値が決定しました！");
+//		System.out.println("------------------------");
+//		for(int i=0;i<this.player.statusName.length;i++){
+//			System.out.printf("%s:%d%n",this.player.statusName[i],this.player.status[i]);
+//		}
+//		System.out.printf("種族:%s 生まれ:%s%n",this.player.getRace(),this.player.getBirth()); 
+//		System.out.println("------------------------");
 	}
 	//技能の習得
 	public void decideJobLevel() {
 		this.player.learnJob();
-		System.out.println("取得技能一覧");
-		System.out.printf("%s|%s%n",format("技能",18),"レベル");
-		for(String key:this.player.getJobs().keySet()) {
-			int value = this.player.getJobs().get(key);
-			if(value != 0) {
-				System.out.printf("%s|%d%n",format(key,18),value);
-			}
-		}
-		System.out.println("------------------------");
+		System.out.printf("経験点を消費して技能を取得できます%n%n");
+		this.player.addJob();
 	}
-	
 	//言語の習得
 	
 	//冒険者レベルの決定
-	
+	public void decideLevel() {
+		int maxJobLevel = this.player.getLevel();
+		for(String key:this.player.getJobs().keySet()) {
+			int jobLevel = this.player.getJobs().get(key);
+			if(maxJobLevel < jobLevel) {
+				this.player.setLevel(jobLevel);
+			}
+		}
+	}
 	//HPとMPの決定
-	
+	public void decideHpAndMp() {
+		this.player.setHp(this.player.getLevel()*3 + this.player.getVit());
+		this.player.setResVit(this.player.getLevel() + this.player.getVitBonus());
+		this.player.setMp(this.player.getLevel()*3 + this.player.getPow());//修正予定、魔法使い系技能レベル未実装のため冒険者レベルで代用中
+		this.player.setResPow(this.player.getLevel() + this.player.getPowBonus());
+	}
 	//戦闘特技の習得
 	
 	//装備品の購入
@@ -133,6 +143,32 @@ public class CharacterCreater {
 		}
 	}
 
+	//キャラ完成
+	public void completeCharacter() {
+		//ステータス一覧
+		this.player.setStatus();
+		System.out.println("キャラが完成しました！");
+		System.out.println("------------------------");
+		for(int i=0;i<this.player.statusName.length;i++){
+			System.out.printf("%s",format(this.player.statusName[i] + ":" + this.player.status[i],15));
+			if(i%2==0) {
+				System.out.println();
+			}
+		}
+		System.out.println();
+		System.out.printf("種族:%s 生まれ:%s%n",this.player.getRace(),this.player.getBirth()); 
+		System.out.println("------------------------");
+		//技能一覧
+		System.out.println("取得技能一覧");
+		System.out.printf("%s|%s%n",format("技能",18),"レベル");
+		for(String key:this.player.getJobs().keySet()) {
+			int value = this.player.getJobs().get(key);
+			if(value != 0) {
+				System.out.printf("%s|%d%n",format(key,18),value);
+			}
+		}
+		System.out.println("------------------------");
+	}
 	//playerのアクセサ
 	public Player getPlayer() {
 		return player;

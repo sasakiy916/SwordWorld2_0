@@ -1,13 +1,14 @@
-import java.util.HashMap;
+import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public  abstract class Player extends Character{
 	private int exp;//経験点
 	private int age;//年齢
 	private String race;//種族
 	private String birth;//生まれ
-	private Map<String,Integer>jobs = new HashMap<String,Integer>();//技能と技能レベル
+	private Map<String,Integer>jobs = new LinkedHashMap<String,Integer>();//技能と技能レベル
 	private Map<String,int[]>births = new LinkedHashMap<String,int[]>();//生まれ表
 	private int money = 1200;//所持金
 	//能力値
@@ -50,26 +51,27 @@ public  abstract class Player extends Character{
 	public Player(){
 		setLevel(1);
 		this.statusName = new String[]{
-			"HP",
-			"MP",
-			"生命抵抗力",
-			"精神抵抗力",
-			"器用度",
-			"敏捷度",
-			"筋力",
-			"生命力",
-			"知力",
-			"精神力",
+				"冒険者レベル",
+				"HP",
+				"生命抵抗力",
+				"MP",
+				"精神抵抗力",
+				"器用度",
+				"敏捷度",
+				"筋力",
+				"生命力",
+				"知力",
+				"精神力",
 		};
 		this.baseAbilityName = new String[]{"技","体","心"};
 		this.baseAbility = new int[baseAbilityName.length];
 		this.abilitySuffix = new String[]{
-			"A",
-			"B",
-			"C",
-			"D",
-			"E",
-			"F",
+				"A",
+				"B",
+				"C",
+				"D",
+				"E",
+				"F",
 		};
 		this.ability = new int[abilitySuffix.length];
 		//技能の準備
@@ -141,19 +143,20 @@ public  abstract class Player extends Character{
 	//ステータスに各値を格納
 	public void setStatus(){
 		this.status = new int[]{
-			getHp(),
-			getMp(),
-			getResVit(),
-			getResPow(),
-			getDex(),
-			getAgi(),
-			getStr(),
-			getVit(),
-			getWis(),
-			getPow(),
+				getLevel(),
+				getHp(),
+				getResVit(),
+				getMp(),
+				getResPow(),
+				getDex(),
+				getAgi(),
+				getStr(),
+				getVit(),
+				getWis(),
+				getPow(),
 		};
 	}
-	
+
 	//ダメージロール
 	public int damageRoll(){
 		int dice = this.d.roll(2)-2;
@@ -166,8 +169,95 @@ public  abstract class Player extends Character{
 		}
 	}
 
-	//技能習得
+	//生まれによる技能習得
 	public abstract void learnJob();
+	//技能の追加習得
+	public void addJob() {
+		Scanner scan = new Scanner(System.in);
+		do {
+			int select = 1;
+			//所持技能表示
+			System.out.println("取得技能一覧");
+			System.out.printf("%s|%s%n",format("技能",18),"レベル");
+			for(String key:getJobs().keySet()) {
+				int value = getJobs().get(key);
+				if(value != 0) {
+					System.out.printf("%s|%d%n",format(key,18),value);
+				}
+			}
+			System.out.println("------------------------");
+			System.out.printf("所持経験点:%d%n",getExp());
+			System.out.println("取得可能な技能");
+			System.out.printf("%s|%s%n",format("技能",18),"必要経験点");
+			//取得可能な技能一覧表示
+			for(String key:getJobs().keySet()) {
+				int jobLevel = getJobs().get(key);
+				System.out.printf("%s|%4d:%2d%n",format(key,18),expTable(key)[jobLevel],select);
+				select++;
+			}
+			//取得技能の選択
+			System.out.print("取得したい技能を選択(取得終了:0)>>");
+			select = scan.nextInt();
+			if(select == 0)break;
+			int selectJob = 1;
+			for(String key:getJobs().keySet()) {
+				int jobLevel = getJobs().get(key);
+				if(selectJob == select) {
+					//経験点が足りるか
+					if(getExp() >= expTable(key)[jobLevel]) {
+						jobLevelUp(key);
+						System.out.printf("%sレベル%d 取得%n",key,getJobs().get(key));
+						setExp(getExp() - expTable(key)[jobLevel]);
+						break;
+					}else {
+						System.out.println("経験点が足りません");
+						break;
+					}
+				}
+				selectJob++;
+			}
+			System.out.println();
+			System.out.printf("残り経験点 %d%n",getExp());
+			System.out.print("更に技能を取得しますか？(する:0,しない:1)>>");
+			select = scan.nextInt();
+			System.out.println();
+			if(select == 1)break;
+		}while(true);
+	}
+	//経験点テーブル
+	public int[] expTable(String job) {
+		int[] expTable = null;
+		//経験テーブルA
+		int[] expTableA = {
+				1000,
+				1000,
+				1500,
+				1500,
+				2000,
+				2500,
+		};
+		//経験テーブルB
+		int[] expTableB = {
+				500,
+				1000,
+				1000,
+				1500,
+				1500,
+				2000,
+		};
+		if( job == "ファイター" 
+				||job == "グラップラー"
+				||job == "ソーサラー"
+				||job == "コンジャラー"
+				||job == "プリースト"
+				||job == "フェアリーテイマー"
+				||job == "マギテック") {
+			expTable = expTableA;
+		}else {
+			expTable = expTableB;
+		}
+		return expTable;
+	}
 	//技能レベルアップ
 	public void jobLevelUp(String job) {
 		this.getJobs().put(job, this.getJobs().get(job)+1);
@@ -188,7 +278,7 @@ public  abstract class Player extends Character{
 	public void setAge(int age){
 		this.age = age;
 	}
-	
+
 	//生まれのアクセサ
 	public String getBirth(){
 		return this.birth;
@@ -228,7 +318,7 @@ public  abstract class Player extends Character{
 	public void setDex(int dex){
 		this.dex = dex;
 	}
-	
+
 	//敏捷度のアクセサ
 	public int getAgi(){
 		return this.agi;
@@ -299,7 +389,7 @@ public  abstract class Player extends Character{
 	public void setVitBonus(int vitBonus){
 		this.vitBonus = vitBonus;
 	}
-	
+
 	//知力ボーナスのアクセサ
 	public int getWisBonus(){
 		return this.wisBonus;
@@ -386,7 +476,7 @@ public  abstract class Player extends Character{
 	public void setStatusF(int statusF){
 		this.statusF = statusF;
 	}
-	
+
 	//生まれ表のアクセサ
 	public Map<String,int[]> getBirths() {
 		return births;
@@ -405,5 +495,15 @@ public  abstract class Player extends Character{
 	}
 	public void setJobs(Map<String,Integer> jobs) {
 		this.jobs = jobs;
+	}
+	//全角半角の文字位置合わせ
+	private static String format(String target, int length){
+		int byteDiff = (getByteLength(target, Charset.forName("UTF-8"))-target.length())/2;
+		return String.format("%-"+(length-byteDiff)+"s", target);
+	}
+
+	//文字のバイト数取得
+	private static int getByteLength(String string, Charset charset) {
+		return string.getBytes(charset).length;
 	}
 }

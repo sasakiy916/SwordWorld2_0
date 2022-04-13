@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Random;
 public class Dice{
 	int[] dice = {1,2,3,4,5,6};
 	//int[] dice = {1,1,1,1,1,1};//デバッグ用ダイス

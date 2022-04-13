@@ -8,9 +8,11 @@ public class Elf extends Player {
 		switch(this.getBirth()) {
 		case "剣士":
 			jobLevelUp("フェンサー");
+			setExp(2500);
 			break;
 		case "射手":
 			jobLevelUp("シューター");
+			setExp(2500);
 			break;
 		}
 	}
