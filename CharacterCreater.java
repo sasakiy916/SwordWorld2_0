@@ -9,6 +9,9 @@ public class CharacterCreater {
 	public CharacterCreater() {
 		decideRaceAndBirth();
 		decideStatus();
+		System.out.print("装備を選択してください。ナイフ:0,ショートソード:1>>");
+		int weponSelect = new Scanner(System.in).nextInt();
+		this.player.w = new Wepon(WeponList.values()[weponSelect]);
 //		buyEquipment();
 	}
 
@@ -21,15 +24,16 @@ public class CharacterCreater {
 		//種族を選択
 		System.out.print("種族を選んでください>>");
 		int selectRace = scan.nextInt();
-		this.player = Race.values()[selectRace].getPlayer();
 		//生まれ一覧表示
 		switch(Race.values()[selectRace]) {
 		case HUMAN:
+			setPlayer(new Human());
 			for(Race.HumanBirth birth:Race.HumanBirth.values()) {
 				System.out.printf("%s:%d%n",birth.getBirth(),birth.ordinal());
 			}
 			break;
 		case ELF:
+			setPlayer(new Elf());
 			for(Race.ElfBirth birth:Race.ElfBirth.values()) {
 				System.out.printf("%s:%d%n",birth.getBirth(),birth.ordinal());
 			}

@@ -66,9 +66,9 @@ public  abstract class Player extends Character{
 		};
 		this.ability = new int[abilitySuffix.length];
 		//武器選択
-		System.out.print("装備を選択してください。ナイフ:0,ショートソード:1>>");
-		int weponSelect = new Scanner(System.in).nextInt();
-		w = new Wepon(WeponList.values()[weponSelect]);
+		//System.out.print("装備を選択してください。ナイフ:0,ショートソード:1>>");
+		//int weponSelect = new Scanner(System.in).nextInt();
+		//w = new Wepon(WeponList.values()[weponSelect]);
 	}
 	//基礎能力値設定
 	public void setBaseAbilities(int tec,int body,int mind) {
