@@ -17,9 +17,11 @@ public class CharacterCreater {
 		//戦闘特技の習得
 		//装備品の購入
 		completeCharacter();//キャラの完成
-		System.out.print("装備を選択してください。ナイフ:0,ショートソード:1>>");
-		int weponSelect = new Scanner(System.in).nextInt();
-		this.player.w = new Wepon(WeponList.values()[weponSelect]);
+		//武器選択
+		for(int i=0;i<SwordList.values().length;i++) {
+			System.out.printf("%s:%d%n",Sword.getNames()[i]);
+		}
+		this.player.w = new Sword(SwordList.values()[2]);
 //		buyEquipment();
 	}
 

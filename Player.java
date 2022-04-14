@@ -162,7 +162,7 @@ public  abstract class Player extends Character{
 		int dice = this.d.roll(2)-2;
 		if(dice > 0){
 			System.out.printf("%sの威力は%d%n",w.getName(),w.getPower(dice));
-			return w.getPower(dice)+this.strBonus;
+			return w.getPower(dice) + this.getStrBonus();
 		}else{
 			System.out.println("自動失敗!ダメージを与えられなかった");
 			return 0;
