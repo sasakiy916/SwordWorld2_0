@@ -34,8 +34,7 @@ public class CharacterCreater {
 		System.out.print("種族を選んでください>>");
 		int selectRace = scan.nextInt();
 		System.out.println();
-		//生まれの一覧表示
-		System.out.println("生まれ一覧");
+		//種族決定
 		switch(Race.values()[selectRace]) {
 		case HUMAN:
 			setPlayer(new Human());
@@ -44,9 +43,12 @@ public class CharacterCreater {
 			setPlayer(new Elf());
 			break;
 		}
+		//生まれの一覧表示
+		System.out.println("生まれ一覧");
 		this.birth = new String[this.player.getBirths().size()];//生まれの配列用意
 		this.birthBaseAbilities = new int[this.player.getBirths().size()][3];//生まれごとの基礎能力値の配列用意
 		int selectBirth = 0;//生まれ選択肢
+		//種族ごとの生まれ一覧
 		for(String key:getPlayer().getBirths().keySet()) {
 			System.out.println(key + ":" + selectBirth);
 			this.birth[selectBirth] = key;
