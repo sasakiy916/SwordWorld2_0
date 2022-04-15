@@ -18,6 +18,7 @@ public class Shop {
 		//購入するかしないか
 		System.out.print("装備品を購入しますか？(購入する:0,購入しない:1)>>");
 		int buy = scan.nextInt();
+		System.out.println();
 		//装備の種類名取得
 		String[] equips = new String[Equipment.getNames().length];
 		for(int i=0;i<equips.length;i++) {
@@ -38,22 +39,34 @@ public class Shop {
 			int select = 0;;//選択肢用の変数
 			List<Equipment> shop = new ArrayList<>();//商品リスト
 
-//			do {
-//				ShopMenu menu = ShopMenu.values()[select];
-//				switch(menu) {
-//				
-//				}
-//			}while(select == 9);
-			//武器,防具の選択
-			select = selectWeponOrProtector(equips,select);
-			//武器もしくは防具の種類を選ぶ
-			prepareEquipment(shop,wepons,protectors,select);
-			//装備を選んで購入
 			do {
-				select = 0;
-				//武器一覧表示
-				buy = selectAndBuyEquip(shop,select,buy,player);
+				ShopMenu menu = ShopMenu.values()[select];
+				switch(menu) {
+				case EQUIPMENT:
+					select = selectWeponOrProtector(equips,select);
+				case EQUIPTYPE:
+					prepareEquipment(shop,wepons,protectors,select);
+				case BUYEQUIP:
+					do {
+						select = 0;
+						//武器一覧表示
+						select = selectAndBuyEquip(shop,select,buy,player);
+						//System.out.println(shop.get(select) instanceof Wepon?"防具を見る":"武器を見る" + 1);
+						System.out.print("購入する:0,しない:1>>");
+						buy = scan.nextInt();
+					}while(buy == 1);
+				}
 			}while(buy == 1);
+			//武器,防具の選択
+//			select = selectWeponOrProtector(equips,select);
+//			//武器もしくは防具の種類を選ぶ
+//			prepareEquipment(shop,wepons,protectors,select);
+//			//装備を選んで購入
+//			do {
+//				select = 0;
+//				//武器一覧表示
+//				buy = selectAndBuyEquip(shop,select,buy,player);
+//			}while(buy == 1);
 
 			//購入した装備を受け取る
 			money = receiveEquip(shop,select,money,player);
@@ -152,8 +165,7 @@ public class Shop {
 		if(shop.get(select) instanceof Protector) {
 			System.out.println((Protector)shop.get(select));
 		}
-		System.out.print("購入する:0,しない:1>>");
-		return scan.nextInt();
+		return select;
 
 	}
 	//購入した装備を受け取る

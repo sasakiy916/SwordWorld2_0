@@ -16,7 +16,7 @@ public class CharacterCreater {
 		decideJobLevel();//技能の習得
 		decideLevel();//冒険者レベルの決定
 		decideHpAndMp();//HP,MPの決定
-		decideSkill();//戦闘特技の習得
+//		decideSkill();//戦闘特技の習得
 		Shop.buy(this.player);
 		//buyEquipment();//装備品の購入
 		completeCharacter();//キャラの完成
