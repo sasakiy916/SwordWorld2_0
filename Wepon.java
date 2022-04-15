@@ -1,6 +1,15 @@
-public class Wepon{
+public class Wepon extends Equipment{
+	//武器種類の一覧列挙型
+	public enum WeponList {
+		SWORD,
+		AXE,
+	}
 	private String name;//武器名
-	private String[] names;//武器一覧
+	private static String[] names = new String[] {
+			"ソード",
+			"アックス",
+	};
+	//武器一覧
 	private int price;//価格
 	private int needStr;//必要な筋力
 	private int[] powers = new int[10];//威力表
@@ -14,7 +23,7 @@ public class Wepon{
 		this.name = name;
 	}
 	//武器一覧のアクセサ
-	public String[] getNames() {
+	public static String[] getNames() {
 		return names;
 	}
 	public void setNames(String[] names) {
@@ -42,5 +51,36 @@ public class Wepon{
 		for(int i=0;i<10;i++){
 			this.powers[i] = power[i];
 		}
+	}
+	public WeponList getWepon() {
+		return wepon;
+	}
+	public void setWepon(WeponList wepon) {
+		this.wepon = wepon;
+	}
+	//武器情報の表示
+	public String toString() {
+		super.toString();
+		int[] diceNums = {3,4,5,6,7,8,9,10,11,12};
+//		System.out.println("---------------------------------------");
+//		System.out.println("・武器名:"+getName());
+//		System.out.println("・価格:"+getPrice());
+//		System.out.println("・必要筋力:"+getNeedStr());
+		System.out.println("・威力表");
+		System.out.print("　　出目:");
+		for(int i=0;i<diceNums.length;i++) {
+			System.out.printf("%2d",diceNums[i]);
+			System.out.print(i!=powers.length-1?"|":"");
+		}
+		System.out.println();
+		System.out.println("　　　　 -----------------------------");
+		System.out.print("　　威力:");
+		for(int i=0;i<powers.length;i++) {
+			System.out.printf("%2d",this.powers[i]);
+			System.out.print(i!=powers.length-1?"|":"");
+		}
+		System.out.println();
+		System.out.println("---------------------------------------");
+		return "";
 	}
 }

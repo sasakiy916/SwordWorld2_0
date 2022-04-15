@@ -1,10 +1,18 @@
 public class Sword extends Wepon {
+	//武器一覧用の列挙型
+	public enum SwordList {
+		KNIFE,
+		DAGGER,
+		SHORTSWORD,
+	}
+	//コンストラクタ
 	public Sword(SwordList sword){
 		setNames(new String[] {
 				"ナイフ",
 				"ダガー",
 				"ショートソード",
 		});
+		setWepon(WeponList.SWORD);
 		switch(sword) {
 		case KNIFE:
 			setName(getNames()[sword.ordinal()]);

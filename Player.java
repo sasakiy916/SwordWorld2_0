@@ -1,7 +1,9 @@
 import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public  abstract class Player extends Character{
 	private int exp;//経験点
@@ -45,7 +47,11 @@ public  abstract class Player extends Character{
 	private String[] abilitySuffix;
 	private int[] ability;
 	//武器
-	Wepon w;
+	Wepon w = new Panch();
+	//防具
+	Protector p = new Nude();
+	//戦闘特技
+	Set<Skill> skills = new LinkedHashSet<Skill>();
 
 	//コンストラクタ
 	public Player(){
@@ -495,6 +501,13 @@ public  abstract class Player extends Character{
 	}
 	public void setJobs(Map<String,Integer> jobs) {
 		this.jobs = jobs;
+	}
+	//戦闘特技のアクセサ
+	public Set<Skill> getSkills() {
+		return skills;
+	}
+	public void setSkills(Set<Skill> skills) {
+		this.skills = skills;
 	}
 	//全角半角の文字位置合わせ
 	private static String format(String target, int length){

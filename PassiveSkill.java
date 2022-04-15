@@ -1,19 +1,23 @@
 public class PassiveSkill extends Skill {
 
+	public PassiveSkill() {
+		effect();
+	}
 	@Override
 	public void effect() {
 		PassiveSkills skill = PassiveSkills.WEPONMASTERY;
 		switch(skill) {
 		case WEPONMASTERY:
-			WeponList wl = WeponList.KNIFE;
+			setName("武器習熟");
+			Wepon.WeponList wl = Wepon.WeponList.SWORD;
 			switch(wl) {
-			case KNIFE:
+			case AXE:
 				break;
-			case SHORTSWORD:
+			case SWORD:
+				setName(getName() + ":ソード");
 				break;
 			default:
 				break;
-			
 			}
 			break;
 		case ARMORMASTERY:
@@ -23,7 +27,6 @@ public class PassiveSkill extends Skill {
 		default:
 			break;
 		}
-
 	}
 
 }
