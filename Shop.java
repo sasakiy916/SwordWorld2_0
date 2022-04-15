@@ -144,7 +144,7 @@ public class Shop {
 		select = scan.nextInt();
 		System.out.println();
 		//装備の詳細表示
-		System.out.println(player.getStr());//デバッグ用
+		System.out.println("キャラの筋力："+player.getStr());//デバッグ用
 		System.out.println("装備詳細");
 		if(shop.get(select) instanceof Wepon) {
 			System.out.println((Wepon)shop.get(select));
