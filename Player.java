@@ -25,12 +25,12 @@ public  abstract class Player extends Character{
 	public String[] statusName;//public → privateに修正予定 ゲッター作る 	
 	public int[] status;//public → privateに修正予定 ゲッター作る
 	//能力値ボーナス
-	private int dexBonus;
-	private int agiBonus;
-	private int strBonus;
-	private int vitBonus;
-	private int wisBonus;
-	private int powBonus;
+	private int dexBonus;//器用度ボーナス
+	private int agiBonus;//敏捷ボーナス
+	private int strBonus;//筋力ボーナス
+	private int vitBonus;//生命力ボーナス
+	private int wisBonus;//知力ボーナス
+	private int powBonus;//精神力ボーナス
 	//基礎能力値
 	private int tec;//技
 	private int body;//体
@@ -62,6 +62,8 @@ public  abstract class Player extends Character{
 				"生命抵抗力",
 				"MP",
 				"精神抵抗力",
+				"防護点",
+				"回避",
 				"器用度",
 				"敏捷度",
 				"筋力",
@@ -117,23 +119,17 @@ public  abstract class Player extends Character{
 	//HP,MP,抵抗力以外の能力値を決定
 	public void decideStatus(){
 		//器用度
-		int dex = getTec() + getStatusA();
-		setDex(dex);
+		setDex(getTec() + getStatusA());
 		//敏捷度
-		int agi = getTec() + getStatusB();
-		setAgi(agi);
+		setAgi(getTec() + getStatusB());
 		//筋力
-		int str = getBody() + getStatusC();
-		setStr(str);
+		setStr(getBody() + getStatusC());
 		//生命力
-		int vit = getBody() + getStatusD();
-		setVit(vit);
+		setVit(getBody() + getStatusD());
 		//知力
-		int wis = getMind() + getStatusE();
-		setWis(wis);
+		setWis(getMind() + getStatusE());
 		//精神力
-		int pow = getMind() + getStatusF();
-		setPow(pow);
+		setPow(getMind() + getStatusF());
 	}
 
 	//能力値ボーナスを決定
@@ -154,6 +150,8 @@ public  abstract class Player extends Character{
 				getResVit(),
 				getMp(),
 				getResPow(),
+				getDef(),
+				getAvoi(),
 				getDex(),
 				getAgi(),
 				getStr(),
@@ -534,6 +532,7 @@ public  abstract class Player extends Character{
 		}
 		System.out.println();
 		System.out.printf("種族:%s 生まれ:%s%n",getRace(),getBirth()); 
+		System.out.printf("経験点:%d%n",getExp());
 		System.out.printf("所持金 %dG%n", getMoney());
 		System.out.println("------------------------");
 		//技能一覧

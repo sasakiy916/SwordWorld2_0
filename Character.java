@@ -5,7 +5,9 @@ public abstract class Character{
 	private int hp;//HP
 	private int mp;//MP
 	private int def;//防護点
-	private int avo;//回避力
+	private int avoi;//回避力
+	private int pre;//先制力
+	private int hit;//命中力
 	Dice d;
 
 	public Character(){
@@ -48,5 +50,24 @@ public abstract class Character{
 	}
 	public void setDef(int def){
 		this.def = def;
+	}
+	//回避のアクセサ
+	public int getAvoi() {
+		return avoi;
+	}
+	public void setAvoi(int avoi) {
+		this.avoi = avoi;
+	}
+	public int getPre() {
+		return pre;
+	}
+	public void setPre(int pre) {
+		this.pre = pre;
+	}
+	public int getHit() {
+		return hit;
+	}
+	public void setHit(int hit) {
+		this.hit = hit;
 	}
 }
