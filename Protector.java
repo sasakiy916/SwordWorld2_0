@@ -55,4 +55,14 @@ public abstract class Protector extends Equipment{
 	public void setAvoi(int avoi) {
 		this.avoi = avoi;
 	}
+	//防具の情報表示
+	public String toString() {
+		super.toString();
+		System.out.printf("・防護点:%d%n",getDef());
+		if(getAvoi() != 0) {
+			System.out.printf("・回避:%s%d%n",getAvoi()>0?"+":"", getAvoi());
+		}
+		System.out.println("---------------------------------------");
+		return "";
+	}
 }

@@ -60,12 +60,8 @@ public class Wepon extends Equipment{
 	}
 	//武器情報の表示
 	public String toString() {
-		super.toString();
 		int[] diceNums = {3,4,5,6,7,8,9,10,11,12};
-//		System.out.println("---------------------------------------");
-//		System.out.println("・武器名:"+getName());
-//		System.out.println("・価格:"+getPrice());
-//		System.out.println("・必要筋力:"+getNeedStr());
+		super.toString();
 		System.out.println("・威力表");
 		System.out.print("　　出目:");
 		for(int i=0;i<diceNums.length;i++) {

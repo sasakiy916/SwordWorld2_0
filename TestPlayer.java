@@ -1,6 +1,7 @@
 
 public class TestPlayer extends Player {
 	public TestPlayer() {
+		//ショップ機能デバッグ用
 		setName("テスター君");
 		setStr(20);
 	}

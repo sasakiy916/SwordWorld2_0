@@ -519,4 +519,38 @@ public  abstract class Player extends Character{
 	private static int getByteLength(String string, Charset charset) {
 		return string.getBytes(charset).length;
 	}
+	
+	//Player情報の表示
+	public String toString() {
+		setStatus();
+		System.out.println("------------------------");
+		//キャラのステータス表示
+		System.out.printf("名前:%s%n",getName());
+		for(int i=0;i<statusName.length;i++){
+			System.out.printf("%s",format(statusName[i] + ":" + status[i],15));
+			if(i%2==0) {
+				System.out.println();
+			}
+		}
+		System.out.println();
+		System.out.printf("種族:%s 生まれ:%s%n",getRace(),getBirth()); 
+		System.out.printf("所持金 %dG%n", getMoney());
+		System.out.println("------------------------");
+		//技能一覧
+		System.out.println("取得技能一覧");
+		System.out.printf("%s|%s%n",format("技能",18),"レベル");
+		for(String key:getJobs().keySet()) {
+			int value = getJobs().get(key);
+			if(value != 0) {
+				System.out.printf("%s|%d%n",format(key,18),value);
+			}
+		}
+		//装備品
+		System.out.println("------------------------");
+		System.out.println("現在の装備");
+		System.out.println("武器:"+w.getName());
+		System.out.println("防具:"+p.getName());
+		System.out.println("------------------------");
+		return "";
+	}
 }

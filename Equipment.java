@@ -31,14 +31,11 @@ public abstract class Equipment{
 	public static String[] getNames() {
 		return names;
 	}
-	public void setNames(String[] names) {
-		this.names = names;
-	}
 	//武器情報の表示
 	public String toString() {
 		System.out.println("---------------------------------------");
-		System.out.println("・武器名:"+getName());
-		System.out.println("・価格:"+getPrice());
+		System.out.println(this instanceof Wepon?"・武器名:":"・防具名:"+getName());
+		System.out.println("・価格:"+getPrice()+"G");
 		System.out.println("・必要筋力:"+getNeedStr());
 		return "";
 	}
