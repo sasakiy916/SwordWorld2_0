@@ -65,10 +65,9 @@ public class CharacterCreater {
 	}
 	//能力値の決定
 	public void decideStatus() {
-		this.player.setName("アルクレイド");
+		this.player.setName("アルク");
 		this.player.decideStatus();//デバッグ用
 		//基礎能力値設定
-//		this.player.setBaseAbilities(8, 4, 9);;
 		//A~F能力値ダイスロール
 		this.player.setStatusA(d.roll(2));
 		this.player.setStatusB(d.roll(2));
@@ -81,15 +80,6 @@ public class CharacterCreater {
 		//A~Fのダイスロール結果表示
 		System.out.println("A~Fまでのダイス値");
 		System.out.printf("%d,%d,%d,%d,%d,%d%n%n",this.player.getStatusA(),this.player.getStatusB(),this.player.getStatusC(),this.player.getStatusD(),this.player.getStatusE(),this.player.getStatusF());
-//		this.player.setStatus();
-//		//能力値表示
-//		System.out.println("能力値が決定しました！");
-//		System.out.println("------------------------");
-//		for(int i=0;i<this.player.statusName.length;i++){
-//			System.out.printf("%s:%d%n",this.player.statusName[i],this.player.status[i]);
-//		}
-//		System.out.printf("種族:%s 生まれ:%s%n",this.player.getRace(),this.player.getBirth()); 
-//		System.out.println("------------------------");
 	}
 	//技能の習得
 	public void decideJobLevel() {

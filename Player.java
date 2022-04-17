@@ -63,6 +63,7 @@ public  abstract class Player extends Character{
 				"MP",
 				"精神抵抗力",
 				"防護点",
+				"命中",
 				"回避",
 				"器用度",
 				"敏捷度",
@@ -108,12 +109,13 @@ public  abstract class Player extends Character{
 
 	//全能力値を決定
 	public void decideAllStatus(){
-		decideStatus();
-		decideBonus();
-		setHp(getLevel()*3 + getVit());
-		setResVit(getLevel() + getVitBonus());
+		
+		decideStatus();//能力値
+		decideBonus();//能力値ボーナス
+		setHp(getLevel()*3 + getVit());//HP
+		setResVit(getLevel() + getVitBonus());//生命抵抗力
 		setMp(getLevel()*3 + getPow());//修正予定、魔法使い系技能レベル未実装のため冒険者レベルで代用中
-		setResPow(getLevel() + getPowBonus());
+		setResPow(getLevel() + getPowBonus());//精神抵抗力
 	}
 
 	//HP,MP,抵抗力以外の能力値を決定
@@ -151,6 +153,7 @@ public  abstract class Player extends Character{
 				getMp(),
 				getResPow(),
 				getDef(),
+				getHit(),
 				getAvoi(),
 				getDex(),
 				getAgi(),
@@ -161,6 +164,34 @@ public  abstract class Player extends Character{
 		};
 	}
 
+	@Override
+	public int judgeHit() {
+		System.out.println("命中力判定");
+		//使用する戦士系技能レベル
+		int level = 0;
+		//ダイス値
+		int dice = d.roll(2);
+		//戦士系技能のレベルが一番高いものを判定に使用
+		//出目による判定
+		switch(dice) {
+		//1ゾロ 自動失敗
+		case 2:
+			System.out.println("自動失敗!");
+			return 2;
+		//6ゾロ 自動成功
+		case 12:
+			System.out.println("自動成功!");
+			return 0;
+		default:
+			return getDexBonus() + dice + level;
+		}
+	}
+	@Override
+	public int judgeAvoi() {
+		//戦士系技能レベル
+		int level = 0;
+		return 0;
+	}
 	//ダメージロール
 	public int damageRoll(){
 		int dice = this.d.roll(2)-2;
@@ -227,6 +258,16 @@ public  abstract class Player extends Character{
 			System.out.println();
 			if(select == 1)break;
 		}while(true);
+		//命中、回避決定
+		int maxFighterLevel = 0;//戦士系技能の一番高いレベル
+		//戦士系技能の一番高いレベル確認
+		for(String job:this.getJobs().keySet()) {
+			if(job.matches("ファイター|グラップラー|フェンサー|シューター") && maxFighterLevel < this.getJobs().get(job)) {
+				maxFighterLevel = this.getJobs().get(job);
+			}
+		}
+		this.setHit(maxFighterLevel + this.getDexBonus());//命中
+		this.setAvoi(maxFighterLevel + this.getAgiBonus());//回避
 	}
 	//経験点テーブル
 	public int[] expTable(String job) {

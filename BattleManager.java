@@ -88,19 +88,21 @@ public class BattleManager{
 			System.out.print("-");
 			System.out.println();
 			System.out.print("|");
+			//キャラの名前
 			for(int i=0;i<party.size();i++) {
-//				System.out.printf("%s:%s",format("名前",3),format(party.get(i).getName(),10));
 				System.out.printf("%s",format(party.get(i).getName(),10));
 				System.out.print("|");
 			}
 			System.out.println();
 			System.out.print("|");
+			//HP
 			for(int i=0;i<party.size();i++) {
 				System.out.printf("%s:%s",format("ＨＰ",3),format(""+party.get(i).getHp(),5));
 				System.out.print("|");
 			}
 			System.out.println();
 			System.out.print("|");
+			//MP
 			for(int i=0;i<party.size();i++) {
 				System.out.printf("%s:%s",format("ＭＰ",3),format(""+party.get(i).getMp(),5));
 				System.out.print("|");
@@ -111,6 +113,16 @@ public class BattleManager{
 			}
 			System.out.print("-");
 			System.out.println();
+	}
+	
+	//味方陣営の攻撃
+	private void playerAttack() {
+		
+	}
+
+	//敵陣営の攻撃
+	private void enemyAttack() {
+		
 	}
 	//生存判定
 	private boolean isAliveCharacter(Character c){

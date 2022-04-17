@@ -10,9 +10,14 @@ public abstract class Character{
 	private int hit;//命中力
 	Dice d;
 
+	//コンストラクタ
 	public Character(){
 		d = new Dice();
 	}
+	//命中判定
+	public abstract int judgeHit();
+	//回避判定
+	public abstract int judgeAvoi();
 	//ダメージ算出
 	public abstract int damageRoll();
 	
