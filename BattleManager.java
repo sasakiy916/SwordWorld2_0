@@ -122,6 +122,7 @@ public class BattleManager{
 		}
 		System.out.println("戦闘終了");
 	}
+	//パーティの簡易ステータス表示
 
 	//ステータス表示
 	private static void displayStatus(List<Character> party) {
