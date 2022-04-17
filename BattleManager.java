@@ -74,6 +74,7 @@ public class BattleManager{
 						//生存判定
 						if(!isAlive(enemy.get(target))) {
 							System.out.println(enemy.get(target).getHp());
+							enemy.remove(target);
 							break;
 						}
 					}else {
@@ -83,6 +84,7 @@ public class BattleManager{
 						//生存判定
 						if(!isAlive(player.get(target))) {
 							System.out.println(player.get(target).getHp());
+							player.remove(target);
 							break;
 						}
 					}
