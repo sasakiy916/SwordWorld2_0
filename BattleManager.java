@@ -63,17 +63,21 @@ public class BattleManager{
 		//戦闘開始
 		while(true) {
 			for(List<Character> party:orderParty) {
+				if(party.isEmpty()) {
+					break;
+				}
 				for(Character character:party) {
 					int target;
 					System.out.printf("%sの手番%n",character.getName());
 					Thread.sleep(1000);
 					if(character instanceof Player) {
 						//プレイヤーのターン時
-						target = r.nextInt(orderParty.size());
+						target = r.nextInt(enemy.size());
 						roundAttack(character,enemy.get(target));
 						//生存判定
 						if(!isAlive(enemy.get(target))) {
-							System.out.println(enemy.get(target).getHp());
+							System.out.printf("%sのHP:%d%n",enemy.get(target).getName(),enemy.get(target).getHp());
+							System.out.printf("%sを倒した！%n",enemy.get(target).getName());
 							enemy.remove(target);
 							break;
 						}
@@ -83,12 +87,25 @@ public class BattleManager{
 						roundAttack(character,player.get(target));
 						//生存判定
 						if(!isAlive(player.get(target))) {
-							System.out.println(player.get(target).getHp());
+							System.out.printf("%sのHP:%d%n",player.get(target).getName(),player.get(target).getHp());
+							System.out.printf("%sがやられてしまった！%n",player.get(target).getName());
 							player.remove(target);
 							break;
 						}
 					}
 				}
+			}
+			//全滅処理
+			if(player.isEmpty()) {
+				System.out.println("プレイヤーの全滅");
+				displayStatus(player);
+				displayStatus(enemy);
+				break;
+			}else if(enemy.isEmpty()) {
+				System.out.println("モンスターの全滅");
+				displayStatus(player);
+				displayStatus(enemy);
+				break;
 			}
 			//戦闘継続か終了かの確認
 			//ステータス表示
@@ -100,12 +117,9 @@ public class BattleManager{
 			String sc =scan.nextLine();
 			System.out.println("**********************************************");
 			if(sc.matches("q|quit")){
-				System.out.println("戦闘終了");
 				break;
 			}
 		}
-		displayStatus(player);
-		displayStatus(enemy);
 		System.out.println("戦闘終了");
 	}
 
