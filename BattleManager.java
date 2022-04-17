@@ -1,13 +1,60 @@
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 public class BattleManager{
-	public static void battle(List<Character> player,List<Character> enemy) {
-		Scanner scan = new Scanner(System.in);
+	//戦闘システム
+	public static void battle(List<Character> player,List<Character> enemy) throws InterruptedException {
+		Random r = new Random();//ランダム準備
+		Scanner scan = new Scanner(System.in);//スキャナー準備
+		//プレイヤーとモンスターをMapに格納
+		Map<List<Character>,Integer> parties = new LinkedHashMap<List<Character>,Integer>();
+		parties.put(player, 0);
+		parties.put(enemy, 0);
 		System.out.println("戦闘開始！");
 		//陣営の確認
 		//魔物知識判定
 		//先制判定
+		System.out.println("先制判定を行います");
+		//各パーティの一番高い先制値を確認
+		//先制値の一番高いキャラの名前
+		String playerPreName = "";
+		String enemyPreName = "";
+		for(List<Character> party:parties.keySet()) {
+			int pre = parties.get(party);
+			for(Character character:party) {
+				if(pre < character.getPre()) {
+					parties.put(party,character.getPre());
+					if(character instanceof Player) {
+						playerPreName = character.getName();
+					}else {
+						enemyPreName = character.getName();
+					}
+				}
+			}
+		}
+		//先攻後攻を決める
+		System.out.printf("");
+		System.out.printf("モンスターの一番高い先制値>>%s:%d%n",enemyPreName,parties.get(enemy));
+		//プレイヤーの先制値決定(モンスター側先制値以上なら先攻)
+		int dice = Dice.roll(2);
+		System.out.printf("プレイヤー側達成値>>%s:%d%n",playerPreName,parties.get(player)+dice);
+		List<List<Character>> orderParty = new ArrayList<>();
+		System.out.print("先攻:");
+		if(parties.get(player) + dice >= parties.get(enemy)) {
+			//プレイヤー先攻
+			System.out.println("プレイヤー陣営");
+			orderParty.add(player);
+			orderParty.add(enemy);
+		}else {
+			//モンスター先攻
+			System.out.println("モンスター陣営");
+			orderParty.add(enemy);
+			orderParty.add(player);
+		}
 		//戦力の初期配置
 		System.out.println("味方陣営");
 		displayStatus(player);
@@ -15,10 +62,31 @@ public class BattleManager{
 		displayStatus(enemy);
 		//戦闘開始
 		while(true) {
-			roundAttack(player.get(0),enemy.get(0));
-			if(!isAlive(enemy.get(0))) {
-				System.out.println(enemy.get(0).getHp());
-				break;
+			for(List<Character> party:orderParty) {
+				for(Character character:party) {
+					int target;
+					System.out.printf("%sの手番%n",character.getName());
+					Thread.sleep(1000);
+					if(character instanceof Player) {
+						//プレイヤーのターン時
+						target = r.nextInt(orderParty.size());
+						roundAttack(character,enemy.get(target));
+						//生存判定
+						if(!isAlive(enemy.get(target))) {
+							System.out.println(enemy.get(target).getHp());
+							break;
+						}
+					}else {
+						//モンスターのターン時
+						target = r.nextInt(player.size());
+						roundAttack(character,player.get(target));
+						//生存判定
+						if(!isAlive(player.get(target))) {
+							System.out.println(player.get(target).getHp());
+							break;
+						}
+					}
+				}
 			}
 			//戦闘継続か終了かの確認
 			//ステータス表示
@@ -37,73 +105,6 @@ public class BattleManager{
 		displayStatus(player);
 		displayStatus(enemy);
 		System.out.println("戦闘終了");
-	}
-	public BattleManager(List<Character> p, Character m){
-		//陣営の確認
-
-		//魔物知識判定
-
-		//先制判定
-
-		//戦力の初期配置
-
-		//		System.out.println("------------------");
-		//		System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
-		//		System.out.printf("%sのHP:%d%n",p.getName(),p.getHp());
-		//		System.out.println("------------------");
-		//		System.out.print("戦闘を開始します。(Enterで戦闘を進めていきます)");
-		//		new Scanner(System.in).nextLine();
-		//		//戦闘開始
-		while(true){
-			//			//先攻側の行動
-			//			System.out.println("先攻側の行動");
-			//			System.out.printf("%sのHP:%d%n",m.getName(),m.getHp());
-			//			System.out.printf("%sの攻撃%n",p.getName());
-			//			int damage = p.damageRoll();
-			//			m.setHp(m.getHp() - damage);
-			//			if(damage!=0){
-			//				System.out.printf("%sに%dのダメージを与えた%n",m.getName(),damage);
-			//			}
-			//			//System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
-			//			//生存判定
-			//			isAliveCharacter(m);
-			//			//現在の各状態
-			//			System.out.println("------------------");
-			//			System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
-			//			System.out.printf("%sのHP:%d%n",p.getName(),p.getHp());
-			//			System.out.println("------------------");
-			//			if(!isAliveCharacter(m)){
-			//				System.out.printf("%sを倒した%n",m.getName());
-			//				break;
-			//			}
-			//			System.out.print("先攻側の行動終了,後攻側の行動に移ります。");
-			//			new Scanner(System.in).nextLine();
-			//			System.out.println("**********************************************");
-			//			System.out.println("**********************************************");
-			//
-			//			//後攻側の行動
-			//			System.out.println("後攻側の攻撃");
-			//			System.out.printf("%sのHP:%d%n",p.getName(),p.getHp());
-			//			System.out.printf("%sの攻撃%n",m.getName());
-			//			int secondDamage = m.damageRoll();
-			//			p.setHp(p.getHp() - secondDamage);
-			//			System.out.printf("%sに%dのダメージを与えた%n",p.getName(),secondDamage);
-			//			//System.out.printf("%sのHP:%d%n%n",p.getName(),p.getHp());
-			//			
-			//			//生存判定
-			//			isAliveCharacter(p);
-			//			//現在の各状態
-			//			System.out.println("------------------");
-			//			System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
-			//			System.out.printf("%sのHP:%d%n",p.getName(),p.getHp());
-			//			System.out.println("------------------");
-			//			if(!isAliveCharacter(p)){
-			//				System.out.printf("%sはやられてしまった%n",p.getName());
-			//				break;
-			//			}
-			//			System.out.print("後攻側の行動終了,");
-
-		}
 	}
 
 	//ステータス表示
@@ -157,7 +158,6 @@ public class BattleManager{
 		default:
 			System.out.printf("達成値:%d%n",hit);
 			//回避判定
-			System.out.println("回避判定");
 			int avoi = second.judgeAvoi();
 			System.out.printf("達成値:%d%n",avoi);
 			System.out.println(avoi);
@@ -182,9 +182,9 @@ public class BattleManager{
 			}
 		}
 		//ダメージ決定
-		//算出ダメージ
 		Player player;
 		Monster monster;
+		//算出ダメージ
 		int calcDamage;
 		if(first instanceof Player) {
 			player = (Player)first;

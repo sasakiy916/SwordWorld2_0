@@ -166,6 +166,7 @@ public  abstract class Player extends Character{
 
 	//自動失敗、自動成功判定
 	public int autoJudge(int dice, int addValue) {
+
 		switch(dice) {
 		//1ゾロ 自動失敗
 		case 2:
@@ -178,6 +179,13 @@ public  abstract class Player extends Character{
 		default:
 			return dice + addValue;
 		}
+	}
+	//先制判定
+	@Override
+	public int judgePre() {
+		System.out.println("先制力判定");
+		int dice = Dice.roll(2);
+		return autoJudge(dice,getJobs().get("スカウト") + getAgiBonus());
 	}
 	//命中判定
 	@Override

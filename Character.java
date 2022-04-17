@@ -10,6 +10,8 @@ public abstract class Character{
 	private int hit;//命中力
 	private int addDamage;//追加ダメージ
 
+	//先制判定
+	public abstract int judgePre();
 	//命中判定
 	public abstract int judgeHit();
 	//回避判定
