@@ -5,12 +5,14 @@ public class BattleManager{
 	public static void battle(List<Character> player,List<Character> enemy) {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("戦闘開始！");
-		displayStatus(player);
-		displayStatus(enemy);
 		//陣営の確認
 		//魔物知識判定
 		//先制判定
 		//戦力の初期配置
+		System.out.println("味方陣営");
+		displayStatus(player);
+		System.out.println("敵陣営");
+		displayStatus(enemy);
 		//戦闘開始
 		while(true) {
 			roundAttack(player.get(0),enemy.get(0));
@@ -23,7 +25,14 @@ public class BattleManager{
 			displayStatus(player);
 			displayStatus(enemy);
 			System.out.println("次のラウンド");
-			scan.nextLine();
+			//戦闘の継続、終了確認
+			System.out.print("戦闘継続:Enter(終了:q もしくは quit)>>");
+			String sc =scan.nextLine();
+			System.out.println("**********************************************");
+			if(sc.matches("q|quit")){
+				System.out.println("戦闘終了");
+				break;
+			}
 		}
 		displayStatus(player);
 		displayStatus(enemy);
@@ -94,15 +103,6 @@ public class BattleManager{
 			//			}
 			//			System.out.print("後攻側の行動終了,");
 
-			//戦闘の継続、終了確認
-			System.out.println("戦闘を継続しますか?(終了する場合は「q + Enter」)");
-			String sc = new Scanner(System.in).nextLine();
-			System.out.println("**********************************************");
-			System.out.println("**********************************************");
-			if(sc.equals("q")){
-				System.out.println("戦闘終了");
-				break;
-			}
 		}
 	}
 
