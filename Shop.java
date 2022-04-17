@@ -233,6 +233,7 @@ public class Shop {
 			if(shop.get(select) instanceof Protector) {
 				player.p = (Protector)shop.get(select);//防具をキャラに渡す
 			}
+			System.out.printf("%sを購入しました。%n",shop.get(select).getName());
 		}else {
 			System.out.printf("筋力が足りないため装備できません。%n他の装備の購入をおすすめします。%n");
 		}

@@ -1,8 +1,10 @@
 
 public class TestPlayer extends Player {
-	public TestPlayer() {
+	public TestPlayer(String name) {
 		//ショップ機能デバッグ用
-		setName("テスター君");
+		setName(name);
+		setHp(20);
+		setMp(20);
 		setStr(20);
 	}
 	@Override
