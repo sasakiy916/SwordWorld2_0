@@ -6,6 +6,7 @@ public class TestPlayer extends Player {
 		setHp(20);
 		setMp(20);
 		setStr(20);
+		setHit(5);
 	}
 	@Override
 	public void learnJob() {

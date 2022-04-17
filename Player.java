@@ -164,37 +164,40 @@ public  abstract class Player extends Character{
 		};
 	}
 
-	@Override
-	public int judgeHit() {
-		System.out.println("命中力判定");
-		//使用する戦士系技能レベル
-		int level = 0;
-		//ダイス値
-		int dice = d.roll(2);
-		//戦士系技能のレベルが一番高いものを判定に使用
-		//出目による判定
+	//自動失敗、自動成功判定
+	public int autoJudge(int dice, int addValue) {
 		switch(dice) {
 		//1ゾロ 自動失敗
 		case 2:
 			System.out.println("自動失敗!");
-			return 2;
+			return 1;
 		//6ゾロ 自動成功
 		case 12:
 			System.out.println("自動成功!");
 			return 0;
 		default:
-			return getDexBonus() + dice + level;
+			return dice + addValue;
 		}
 	}
+	//命中判定
+	@Override
+	public int judgeHit() {
+		System.out.println("命中力判定");
+		//ダイス値
+		int dice = Dice.roll(2);
+		//出目による判定
+		return autoJudge(dice,getHit());
+	}
+	//回避判定
 	@Override
 	public int judgeAvoi() {
-		//戦士系技能レベル
-		int level = 0;
-		return 0;
+		System.out.println("回避判定");
+		int dice = Dice.roll(2);
+		return autoJudge(dice,getAvoi());
 	}
 	//ダメージロール
 	public int damageRoll(){
-		int dice = this.d.roll(2)-2;
+		int dice = Dice.roll(2)-2;
 		if(dice > 0){
 			System.out.printf("%sの威力は%d%n",w.getName(),w.getPower(dice));
 			return w.getPower(dice) + this.getStrBonus();
@@ -243,22 +246,29 @@ public  abstract class Player extends Character{
 						jobLevelUp(key);
 						System.out.printf("%sレベル%d 取得%n",key,getJobs().get(key));
 						setExp(getExp() - expTable(key)[jobLevel]);
-						break;
 					}else {
 						System.out.println("経験点が足りません");
-						break;
 					}
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+					}
+					break;
 				}
 				selectJob++;
 			}
 			System.out.println();
 			System.out.printf("残り経験点 %d%n",getExp());
-			System.out.print("更に技能を取得しますか？(する:0,しない:1)>>");
-			select = scan.nextInt();
-			System.out.println();
-			if(select == 1)break;
+//			System.out.print("更に技能を取得しますか？(する:0,しない:1)>>");
+//			select = scan.nextInt();
+//			System.out.println();
+//			if(select == 1)break;
 		}while(true);
-		//命中、回避決定
+		//命中、回避決定、追加ダメージ
+		decideHitAvoiAddDamage();
+	}
+	//命中、回避決定、追加ダメージ
+	public void decideHitAvoiAddDamage() {
 		int maxFighterLevel = 0;//戦士系技能の一番高いレベル
 		//戦士系技能の一番高いレベル確認
 		for(String job:this.getJobs().keySet()) {
@@ -266,8 +276,10 @@ public  abstract class Player extends Character{
 				maxFighterLevel = this.getJobs().get(job);
 			}
 		}
+		this.setAddDamage(maxFighterLevel + this.getStrBonus());//追加ダメージ
 		this.setHit(maxFighterLevel + this.getDexBonus());//命中
 		this.setAvoi(maxFighterLevel + this.getAgiBonus());//回避
+		
 	}
 	//経験点テーブル
 	public int[] expTable(String job) {
@@ -331,15 +343,13 @@ public  abstract class Player extends Character{
 	public void setBirth(String birth){
 		this.birth = birth;
 	}
-
+	//所持金のアクセサ
 	public int getMoney() {
 		return money;
 	}
-
 	public void setMoney(int money) {
 		this.money = money;
 	}
-
 	//生命抵抗力
 	public int getResVit(){
 		return this.resVit;
@@ -347,7 +357,6 @@ public  abstract class Player extends Character{
 	public void setResVit(int resVit){
 		this.resVit = resVit;
 	}
-
 	//精神抵抗力
 	public int getResPow(){
 		return this.resPow;
@@ -355,7 +364,6 @@ public  abstract class Player extends Character{
 	public void setResPow(int resPow){
 		this.resPow = resPow;
 	}
-
 	//器用度のアクセサ
 	public int getDex(){
 		return this.dex;
@@ -363,7 +371,6 @@ public  abstract class Player extends Character{
 	public void setDex(int dex){
 		this.dex = dex;
 	}
-
 	//敏捷度のアクセサ
 	public int getAgi(){
 		return this.agi;
@@ -371,7 +378,6 @@ public  abstract class Player extends Character{
 	public void setAgi(int agi){
 		this.agi = agi;
 	}
-
 	//筋力のアクセサ
 	public int getStr(){
 		return this.str;
@@ -379,7 +385,6 @@ public  abstract class Player extends Character{
 	public void setStr(int str){
 		this.str = str;
 	}
-
 	//生命力のアクセサ
 	public int getVit(){
 		return this.vit;
@@ -387,7 +392,6 @@ public  abstract class Player extends Character{
 	public void setVit(int vit){
 		this.vit = vit;
 	}
-
 	//知力のアクセサ
 	public int getWis(){
 		return this.wis;
@@ -395,7 +399,6 @@ public  abstract class Player extends Character{
 	public void setWis(int wis){
 		this.wis = wis;
 	}
-
 	//精神力のアクセサ
 	public int getPow(){
 		return this.pow;
@@ -403,7 +406,6 @@ public  abstract class Player extends Character{
 	public void setPow(int pow){
 		this.pow = pow;
 	}
-
 	//器用度ボーナスのアクセサ
 	public int getDexBonus(){
 		return this.dexBonus;
@@ -418,7 +420,6 @@ public  abstract class Player extends Character{
 	public void setAgiBonus(int agiBonus){
 		this.agiBonus = agiBonus;
 	}
-
 	//筋力ボーナスのアクセサ
 	public int getStrBonus(){
 		return this.strBonus;
@@ -426,7 +427,6 @@ public  abstract class Player extends Character{
 	public void setStrBonus(int strBonus){
 		this.strBonus = strBonus;
 	}
-
 	//生命力ボーナスのアクセサ
 	public int getVitBonus(){
 		return this.vitBonus;
@@ -434,7 +434,6 @@ public  abstract class Player extends Character{
 	public void setVitBonus(int vitBonus){
 		this.vitBonus = vitBonus;
 	}
-
 	//知力ボーナスのアクセサ
 	public int getWisBonus(){
 		return this.wisBonus;
@@ -449,7 +448,6 @@ public  abstract class Player extends Character{
 	public void setPowBonus(int powBonus){
 		this.powBonus = powBonus;
 	}
-
 	//技のアクセサ
 	public int getTec(){
 		return this.tec;
@@ -457,7 +455,6 @@ public  abstract class Player extends Character{
 	public void setTec(int tec){
 		this.tec = tec;
 	}
-
 	//体のアクセサ
 	public int getBody(){
 		return this.body;
@@ -465,7 +462,6 @@ public  abstract class Player extends Character{
 	public void setBody(int body){
 		this.body = body;
 	}
-
 	//心のアクセサ
 	public int getMind(){
 		return this.mind;
@@ -473,7 +469,6 @@ public  abstract class Player extends Character{
 	public void setMind(int mind){
 		this.mind = mind;
 	}
-
 	//Aのアクセサ
 	public int getStatusA(){
 		return this.statusA;
@@ -481,7 +476,6 @@ public  abstract class Player extends Character{
 	public void setStatusA(int statusA){
 		this.statusA = statusA;
 	}
-
 	//Bのアクセサ
 	public int getStatusB(){
 		return this.statusB;
@@ -489,7 +483,6 @@ public  abstract class Player extends Character{
 	public void setStatusB(int statusB){
 		this.statusB = statusB;
 	}
-
 	//Cのアクセサ
 	public int getStatusC(){
 		return this.statusC;
@@ -497,7 +490,6 @@ public  abstract class Player extends Character{
 	public void setStatusC(int statusC){
 		this.statusC = statusC;
 	}
-
 	//Dのアクセサ
 	public int getStatusD(){
 		return this.statusD;
@@ -505,7 +497,6 @@ public  abstract class Player extends Character{
 	public void setStatusD(int statusD){
 		this.statusD = statusD;
 	}
-
 	//Eのアクセサ
 	public int getStatusE(){
 		return this.statusE;
@@ -513,7 +504,6 @@ public  abstract class Player extends Character{
 	public void setStatusE(int statusE){
 		this.statusE = statusE;
 	}
-
 	//Fのアクセサ
 	public int getStatusF(){
 		return this.statusF;
@@ -521,7 +511,6 @@ public  abstract class Player extends Character{
 	public void setStatusF(int statusF){
 		this.statusF = statusF;
 	}
-
 	//生まれ表のアクセサ
 	public Map<String,int[]> getBirths() {
 		return births;

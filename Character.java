@@ -8,19 +8,15 @@ public abstract class Character{
 	private int avoi;//回避力
 	private int pre;//先制力
 	private int hit;//命中力
-	Dice d;
+	private int addDamage;//追加ダメージ
 
-	//コンストラクタ
-	public Character(){
-		d = new Dice();
-	}
 	//命中判定
 	public abstract int judgeHit();
 	//回避判定
 	public abstract int judgeAvoi();
 	//ダメージ算出
 	public abstract int damageRoll();
-	
+
 	//名前のアクセサ
 	public String getName(){
 		return this.name;
@@ -63,16 +59,25 @@ public abstract class Character{
 	public void setAvoi(int avoi) {
 		this.avoi = avoi;
 	}
+	//先制力のアクセサ
 	public int getPre() {
 		return pre;
 	}
 	public void setPre(int pre) {
 		this.pre = pre;
 	}
+	//命中のアクセサ
 	public int getHit() {
 		return hit;
 	}
 	public void setHit(int hit) {
 		this.hit = hit;
+	}
+	//追加ダメージ
+	public int getAddDamage() {
+		return addDamage;
+	}
+	public void setAddDamage(int addDamage) {
+		this.addDamage = addDamage;
 	}
 }

@@ -1,19 +1,15 @@
 public class Kobold extends Monster{
 	public Kobold(){
-		setName("コボルト");
+		setName("コボルド");
 		setHp(13);
+		setMp(10);
 		setAtk(1);
+		setDef(1);
+		setHit(2);
+		setFixedHit(9);
+		setAvoi(1);
+		setFixedAvoi(8);
 	}
 
-	@Override
-	public int judgeHit() {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
-	}
-
-	@Override
-	public int judgeAvoi() {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
-	}
+	
 }

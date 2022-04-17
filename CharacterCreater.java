@@ -69,12 +69,12 @@ public class CharacterCreater {
 		this.player.decideStatus();//デバッグ用
 		//基礎能力値設定
 		//A~F能力値ダイスロール
-		this.player.setStatusA(d.roll(2));
-		this.player.setStatusB(d.roll(2));
-		this.player.setStatusC(d.roll(2));
-		this.player.setStatusD(d.roll(2));
-		this.player.setStatusE(d.roll(2));
-		this.player.setStatusF(d.roll(2));
+		this.player.setStatusA(Dice.roll(2));
+		this.player.setStatusB(Dice.roll(2));
+		this.player.setStatusC(Dice.roll(2));
+		this.player.setStatusD(Dice.roll(2));
+		this.player.setStatusE(Dice.roll(2));
+		this.player.setStatusF(Dice.roll(2));
 		//全能力値決定
 		this.player.decideAllStatus();
 		//A~Fのダイスロール結果表示
@@ -84,6 +84,7 @@ public class CharacterCreater {
 	//技能の習得
 	public void decideJobLevel() {
 		this.player.learnJob();
+		this.player.decideHitAvoiAddDamage();
 		System.out.printf("経験点を消費して技能を取得できます%n%n");
 		this.player.addJob();
 	}

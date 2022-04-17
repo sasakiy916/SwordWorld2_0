@@ -2,6 +2,33 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Scanner;
 public class BattleManager{
+	public static void battle(List<Character> player,List<Character> enemy) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("戦闘開始！");
+		displayStatus(player);
+		displayStatus(enemy);
+		//陣営の確認
+		//魔物知識判定
+		//先制判定
+		//戦力の初期配置
+		//戦闘開始
+		while(true) {
+			roundAttack(player.get(0),enemy.get(0));
+			if(!isAlive(enemy.get(0))) {
+				System.out.println(enemy.get(0).getHp());
+				break;
+			}
+			//戦闘継続か終了かの確認
+			//ステータス表示
+			displayStatus(player);
+			displayStatus(enemy);
+			System.out.println("次のラウンド");
+			scan.nextLine();
+		}
+		displayStatus(player);
+		displayStatus(enemy);
+		System.out.println("戦闘終了");
+	}
 	public BattleManager(List<Character> p, Character m){
 		//陣営の確認
 
@@ -10,7 +37,6 @@ public class BattleManager{
 		//先制判定
 
 		//戦力の初期配置
-		displayStatus(p);
 
 		//		System.out.println("------------------");
 		//		System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
@@ -81,7 +107,7 @@ public class BattleManager{
 	}
 
 	//ステータス表示
-	private void displayStatus(List<Character> party) {
+	private static void displayStatus(List<Character> party) {
 			for(int i=0;i<party.size();i++) {
 				System.out.print("-----------");
 			}
@@ -115,17 +141,82 @@ public class BattleManager{
 			System.out.println();
 	}
 	
-	//味方陣営の攻撃
-	private void playerAttack() {
-		
+	//ラウンド毎の攻撃
+	private static void roundAttack(Character first,Character second) {
+		//命中判定
+		int hit = first.judgeHit();
+		switch(hit) {
+		//自動失敗
+		case 1:
+			System.out.println("命中判定に自動失敗しました。");
+			return;
+		//自動成功
+		case 0:
+			System.out.println("命中判定に自動成功");
+		//出目3～11
+		default:
+			System.out.printf("達成値:%d%n",hit);
+			//回避判定
+			System.out.println("回避判定");
+			int avoi = second.judgeAvoi();
+			System.out.printf("達成値:%d%n",avoi);
+			System.out.println(avoi);
+			switch(avoi) {
+			//自動成功
+			case 0:
+				System.out.println("回避に自動成功");
+				return;
+			//自動失敗
+			case 1:
+				System.out.println("回避に自動失敗");
+				break;
+			//出目3～11
+			default:
+				if(hit <= avoi) {
+					System.out.println("回避に成功");
+					return;
+				}else {
+					System.out.println("回避に失敗");
+					break;
+				}
+			}
+		}
+		//ダメージ決定
+		//算出ダメージ
+		Player player;
+		Monster monster;
+		int calcDamage;
+		if(first instanceof Player) {
+			player = (Player)first;
+			monster = (Monster)second;
+			//武器の威力表から結果を出す
+			int power = Dice.roll(2)-2;
+			if(power != 0) {
+				calcDamage = player.w.getPower(power);
+			}else {
+				System.out.println("攻撃、自動失敗");
+				return;
+			}
+		}else {
+			monster = (Monster)first;
+			player = (Player)second;
+			calcDamage = Dice.roll(2);
+		}
+		//合算ダメージ
+		int totalDamage = calcDamage + first.getAddDamage();
+		//適用ダメージ
+		int appliedDamage = totalDamage - second.getDef(); 
+		if(appliedDamage <= 0) {
+			System.out.printf("%sにダメージを与えられなかった%n",second.getName());
+			return;
+		}
+		//HPを減少させる
+		second.setHp(second.getHp() - appliedDamage);
+		System.out.printf("%sが%sに%dダメージを与えた%n",first.getName(),second.getName(),appliedDamage);
 	}
 
-	//敵陣営の攻撃
-	private void enemyAttack() {
-		
-	}
 	//生存判定
-	private boolean isAliveCharacter(Character c){
+	private static boolean isAlive(Character c){
 		if(c.getHp() <=0){
 			c.setHp(0);
 			return false;

@@ -1,10 +1,18 @@
-import java.util.*;
 public abstract class Monster extends Character{
-	private int hit;//命中力
 	private int atk;//打撃力
+	private int fixedHit;//固定命中
+	private int fixedAvoi;//固定回避
 	
 	public int damageRoll(){
-		return this.d.roll(2)+this.atk;
+		return Dice.roll(2)+this.atk;
+	}@Override
+	public int judgeHit() {
+		return getFixedHit();
+	}
+
+	@Override
+	public int judgeAvoi() {
+		return getFixedAvoi();
 	}
 	//打撃力のアクセサ
 	public int getAtk(){
@@ -12,5 +20,17 @@ public abstract class Monster extends Character{
 	}
 	public void setAtk(int atk){
 		this.atk = atk;
+	}
+	public int getFixedHit() {
+		return fixedHit;
+	}
+	public void setFixedHit(int fixedHit) {
+		this.fixedHit = fixedHit;
+	}
+	public int getFixedAvoi() {
+		return fixedAvoi;
+	}
+	public void setFixedAvoi(int fixedAvoi) {
+		this.fixedAvoi = fixedAvoi;
 	}
 }
