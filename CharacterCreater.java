@@ -128,6 +128,7 @@ public class CharacterCreater {
 		System.out.println("キャラが完成しました！");
 		System.out.println("------------------------");
 		//キャラのステータス表示
+		System.out.println(this.player);//デバッグ用
 		for(int i=0;i<this.player.statusName.length;i++){
 			System.out.printf("%s",format(this.player.statusName[i] + ":" + this.player.status[i],15));
 			if(i%2==0) {

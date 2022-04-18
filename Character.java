@@ -1,7 +1,8 @@
-public abstract class Character{
+
+ abstract class Character{
 	//ステータス
-	private String name;//名前
-	private int level;//レベル
+	private String name = "名無し";//名前
+	private int level = 1;//レベル
 	private int hp;//HP
 	private int mp;//MP
 	private int def;//防護点
@@ -10,6 +11,9 @@ public abstract class Character{
 	private int hit;//命中力
 	private int addDamage;//追加ダメージ
 
+	public Character() {
+		
+	}
 	//先制判定
 	public abstract int judgePre();
 	//命中判定

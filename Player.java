@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS)
 public  abstract class Player extends Character{
 	private int exp;//経験点
 	private int age;//年齢
@@ -22,7 +25,22 @@ public  abstract class Player extends Character{
 	private int vit;//生命力
 	private int wis;//知力
 	private int pow;//精神力
-	public String[] statusName;//public → privateに修正予定 ゲッター作る 	
+	public String[] statusName = {
+			"冒険者レベル",
+			"HP",
+			"生命抵抗力",
+			"MP",
+			"精神抵抗力",
+			"防護点",
+			"命中",
+			"回避",
+			"器用度",
+			"敏捷度",
+			"筋力",
+			"生命力",
+			"知力",
+			"精神力",
+	};//public → privateに修正予定 ゲッター作る 	
 	public int[] status;//public → privateに修正予定 ゲッター作る
 	//能力値ボーナス
 	private int dexBonus;//器用度ボーナス
@@ -35,8 +53,8 @@ public  abstract class Player extends Character{
 	private int tec;//技
 	private int body;//体
 	private int mind;//心
-	private String[] baseAbilityName;
-	private int[] baseAbility;
+	private String[] baseAbilityName = {"技","体","心"};
+	private int[] baseAbility =  new int[baseAbilityName.length];
 	//ダイスで決める能力値
 	private int statusA;//A
 	private int statusB;//B
@@ -55,34 +73,33 @@ public  abstract class Player extends Character{
 
 	//コンストラクタ
 	public Player(){
-		setLevel(1);
-		this.statusName = new String[]{
-				"冒険者レベル",
-				"HP",
-				"生命抵抗力",
-				"MP",
-				"精神抵抗力",
-				"防護点",
-				"命中",
-				"回避",
-				"器用度",
-				"敏捷度",
-				"筋力",
-				"生命力",
-				"知力",
-				"精神力",
-		};
-		this.baseAbilityName = new String[]{"技","体","心"};
-		this.baseAbility = new int[baseAbilityName.length];
-		this.abilitySuffix = new String[]{
-				"A",
-				"B",
-				"C",
-				"D",
-				"E",
-				"F",
-		};
-		this.ability = new int[abilitySuffix.length];
+//		this.statusName = new String[]{
+//				"冒険者レベル",
+//				"HP",
+//				"生命抵抗力",
+//				"MP",
+//				"精神抵抗力",
+//				"防護点",
+//				"命中",
+//				"回避",
+//				"器用度",
+//				"敏捷度",
+//				"筋力",
+//				"生命力",
+//				"知力",
+//				"精神力",
+//		};
+//		this.baseAbilityName = new String[]{"技","体","心"};
+//		this.baseAbility = new int[baseAbilityName.length];
+//		this.abilitySuffix = new String[]{
+//				"A",
+//				"B",
+//				"C",
+//				"D",
+//				"E",
+//				"F",
+//		};
+//		this.ability = new int[abilitySuffix.length];
 		//技能の準備
 		//戦士系
 		getJobs().put("ファイター",0);
@@ -563,7 +580,12 @@ public  abstract class Player extends Character{
 		//キャラのステータス表示
 		System.out.printf("名前:%s%n",getName());
 		for(int i=0;i<statusName.length;i++){
-			System.out.printf("%s",format(statusName[i] + ":" + status[i],15));
+			//面倒くさいから防護点のところをifで表示変更
+			if(i == 5) {
+				System.out.printf("%s",format(statusName[i] + ":" + (status[i] + this.p.getDef()),15));
+			}else {
+				System.out.printf("%s",format(statusName[i] + ":" + status[i],15));
+			}
 			if(i%2==0) {
 				System.out.println();
 			}

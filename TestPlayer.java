@@ -1,5 +1,7 @@
-
 public class TestPlayer extends Player {
+	public TestPlayer() {
+		
+	}
 	public TestPlayer(String name) {
 		//ショップ機能デバッグ用
 		setName(name);
