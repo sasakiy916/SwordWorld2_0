@@ -1,46 +1,34 @@
-import java.util.*;
-public class Monster implements Character{
-	private String name;//名前
-	private int hp;//HP
-	private int mp;//MP
-	private int def;//防護点
-	private int hit;//命中力
-	private int atk;//打撃力
-	public Dice d;//ダイス（未カプセル化）
+public abstract class Monster extends Character{
+	private int fixedHit;//固定命中
+	private int fixedAvoi;//固定回避
 	
-	public Monster(){
-		d = new Dice();
+	//先制判定
+	@Override
+	public int judgePre() {
+		return getPre();
+	}
+	//命中判定(固定値)
+	@Override
+	public int judgeHit() {
+		return getFixedHit();
 	}
 
-	//名前のアクセサ
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
-	
-	//HPのアクセサ
-	public int getHp(){
-		return this.hp;
-	}
-	public void setHp(int hp){
-		this.hp = hp;
+	//回避判定(固定値)
+	@Override
+	public int judgeAvoi() {
+		return getFixedAvoi();
 	}
 
-	//MPのアクセサ
-	public int getMp(){
-		return this.mp;
+	public int getFixedHit() {
+		return fixedHit;
 	}
-	public void setMp(int mp){
-		this.mp = mp;
+	public void setFixedHit(int fixedHit) {
+		this.fixedHit = fixedHit;
 	}
-
-	//打撃力のアクセサ
-	public int getAtk(){
-		return this.atk;
+	public int getFixedAvoi() {
+		return fixedAvoi;
 	}
-	public void setAtk(int atk){
-		this.atk = atk;
+	public void setFixedAvoi(int fixedAvoi) {
+		this.fixedAvoi = fixedAvoi;
 	}
 }

@@ -1,40 +1,47 @@
-import java.util.*;
-public class Human extends Player{
-	//String[] birthName = {
-	//	"魔動技師",
-	//	"魔法使い",
-	//};
-	//int[][] baseAbilites = {
-	//	{8,4,9},
-	//	{7,4,10},
-	//};
+import java.util.Scanner;
 
+public class Human extends Player{
+	//コンストラクタ
 	public Human(){
-		Dice d = new Dice();
-		setName("アルクレイド");
-		//基礎能力値設定
-		setTec(8);
-		setBody(4);
-		setMind(9);
-		//A~F能力値ダイスロール
-		setStatusA(d.roll(2));
-		setStatusB(d.roll(2));
-		setStatusC(d.roll(2));
-		setStatusD(d.roll(2));
-		setStatusE(d.roll(2));
-		setStatusF(d.roll(2));
-		//全能力値決定
-		decideAllStatus();
-		//A~Fのダイスロール結果表示
-		System.out.println("A~Fまでのダイス値");
-		System.out.printf("%d,%d,%d,%d,%d,%d%n%n",getStatusA(),getStatusB(),getStatusC(),getStatusD(),getStatusE(),getStatusF());
-		setStatus();
-		//能力値表示
-		System.out.println("能力値が決定しました！");
-		System.out.println("------------------------");
-		for(int i=0;i<statusName.length;i++){
-			System.out.printf("%s:%d%n",statusName[i],status[i]);
-		}
-		System.out.println("------------------------");
+		this.setRace("人間");
+		this.getBirths().put("魔動機師", new int[]{8,4,9});
+		this.getBirths().put("魔法使い", new int[]{7,4,10});
+		this.getBirths().put("軽戦士", new int[]{10,7,8});
 	}
+	//生まれによる技能習得
+	public void learnJob() {
+		Scanner scan = new Scanner(System.in);
+		int select = 0;
+		switch(this.getBirth()) {
+		case "魔動機師":
+			jobLevelUp("マギテック");
+			setExp(2000);
+			break;
+		case "魔法使い":
+			do {
+				System.out.println("取得可能技能");
+				System.out.println("ソーサラー:0");
+				System.out.println("コンジャラー:1");
+				System.out.print("取得する技能を選んで下さい>>");
+				select = scan.nextInt();
+				switch(select) {
+				case 0:	
+					jobLevelUp("ソーサラー");
+					break;
+				case 1:
+					jobLevelUp("コンジャラー");
+					break;
+				}
+			}while(select != 0 && select != 1);
+			setExp(2000);
+			break;
+		case "軽戦士":
+			jobLevelUp("スカウト");
+			jobLevelUp("フェンサー");
+			setExp(2000);
+			break;
+		}
+		System.out.println();
+	}
+	
 }
