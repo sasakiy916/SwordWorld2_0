@@ -7,7 +7,7 @@ import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PlayerData {
 	//Playerクラスの情報をplayer.jsonに保存
