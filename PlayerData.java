@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-import java.com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class PlayerData {
 	//Playerクラスの情報をplayer.jsonに保存
@@ -24,7 +26,9 @@ public class PlayerData {
 	}
 
 	//保存された冒険者を読み込む
+	//未完成
 	public static Player load() throws IOException {
+		Scanner scan = new Scanner(System.in);
 		//jsonファイル読み込み
 		BufferedReader br = new BufferedReader(new FileReader("player/player.json"));
 		List<String> jsonList = new ArrayList<>();
@@ -35,14 +39,25 @@ public class PlayerData {
 		}
 		//ファイル閉じる
 		br.close();
-		//読み込んだ内容をplayerにセット
-		for(String s:jsonList) {
-			System.out.println(s);
-		}
+		//読み込んだ内容からPlayerクラス作成
+		//未完成
 		ObjectMapper mapper = new ObjectMapper();
+		List<Player> players = new ArrayList<>();
+		int target;
+		do {
+			int count = 0;
+			for(String s:jsonList) {
+				players.add(mapper.readValue(s,Player.class));
+				System.out.printf("%d:%s 冒険者レベル:%d HP:%d%n",++count,players.get(count-1).getName(),players.get(count-1).getLevel(),players.get(count-1).getHp());
+			}
+			//キャラを選ぶ
+			System.out.print("どのキャラを使いますか>>");
+			target = scan.nextInt()-1;
+			System.out.println(players.get(target));
+			System.out.print("このキャラを使います？>>");
+			if(scan.nextInt() == 0)break;
+		}while(true);
 		//デバッグ用
-		System.out.println("選ぶ>");
-		int target = new Scanner(System.in).nextInt();
 		Player player = mapper.readValue(jsonList.get(target), Player.class);
 		return player;
 	}

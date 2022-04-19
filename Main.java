@@ -2,63 +2,45 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Scanner;
 
 public class Main{
+	enum TitleMenu{
+		NEWCHARACTER,
+		SELECTCHARACTER,
+		BATTLE,
+		DIFFICULTY,
+		QUIT,
+	}
 	public static void main(String[] args) throws InterruptedException, IOException{
-		//Jsonのテスト
-//		Player h = new TestPlayer("テスト5君");
-//		h.setMoney(5000);
-//		h.jobLevelUp("ファイター");
-//		h.jobLevelUp("フェンサー");
-//		//キャラのセーブ、ロード
-//		String json = PlayerData.save(h);
-//		if(PlayerData.load() instanceof TestPlayer) {
-//			System.out.println("テスト君");
-//		}
-//		PlayerData.selectRemove(2);
-
-        //タイトル
+		//タイトル
 		System.out.println("ソードワールド2.0 ～再現の章～");
-		title();
-//		Shop.buy(new TestPlayer());//デバッグ用
-//		Character h = new TestPlayer();//デバッグ
+		Player p = title();
 		List<Character> playerParty = new ArrayList<>();
 		List<Character> monsterParty = new ArrayList<>();
-//		playerParty.add(new TestPlayer("テスター君"));
-//		playerParty.add(new TestPlayer("アルク"));
-//		playerParty.add(new TestPlayer("ク"));
-//		Character h = (Character)p;
 
-		//キャラ作成
-		CharacterCreater cc = new CharacterCreater();
-		Player p = cc.getPlayer();
-		//作成したキャラをセーブ
-		PlaterData.save(p);
-		System.out.println(PlayerData.load());
 		//パーティを組む
+		//装備情報が保存されないのでロードしたら裸になってる
 		playerParty.add(p);
+		playerParty.add(PlayerData.load());
 		playerParty.add(new TestPlayer("テスト"));
 		playerParty.add(new TestPlayer("テスト2"));
 		monsterParty.add(new Kobold());
 		monsterParty.add(new Goblin());
 		System.out.println();
+		//戦闘
 		BattleManager.battle(playerParty, monsterParty);
-//		BattleManager bm = new BattleManager(playerParty,m);//未完成
-//		//作成したプレイヤーを保存（予定）
-//		Player aruk = new TestPlayer("tesut");
-//		PlayerData.save();
-//		PlayerData.load(aruk);
-//		System.out.println(aruk.getName());
-//		System.out.println(aruk.getHp());
 	}
-	static void title() {
-		String[] titleMenu = new String[4];
-		int wordWidth = 20;
+	static Player title() throws IOException {
+		Scanner scan = new Scanner(System.in);
+		String[] titleMenu = new String[5];
+		int wordWidth = 20;//文字幅
 		titleMenu[0] = format("新規キャラ作成",wordWidth);
-		titleMenu[1] = format("既存キャラ選択",wordWidth);
-		titleMenu[2] = format("戦闘",wordWidth);
-		titleMenu[3] = format("難易度選択",wordWidth);
+		titleMenu[1] = format("既存キャラ選択 未実装",wordWidth);
+		titleMenu[2] = format("戦闘 未実装",wordWidth);
+		titleMenu[3] = format("難易度選択 未実装",wordWidth);
+		titleMenu[4] = format("キャラを一体ロードして戦闘開始",wordWidth);
+		Player p = new TestPlayer("テストくん");
 		//メニュー表示
 		while(true) {
 			System.out.println("---------------------------------");
@@ -67,13 +49,36 @@ public class Main{
 				System.out.printf("%s:%d%n",titleMenu[i],i);
 			}
 			System.out.println("---------------------------------");
-			break;
+			System.out.printf("※見た目だけの未完成タイトル%n");
+			System.out.print("メニュー選択>>");
+			int select = scan.nextInt();
+			TitleMenu title = TitleMenu.values()[select];
+			switch(title) {
+			//新規キャラ作成
+			case NEWCHARACTER:
+				//未完成
+				CharacterCreater cc = new CharacterCreater();
+				p = cc.getPlayer();
+				PlayerData.save(p);
+				System.out.println("未完成");
+				continue;
+				//既存キャラ選択
+			case SELECTCHARACTER:
+				System.out.println("未実装");
+				continue;
+				//戦闘
+			case BATTLE:
+				System.out.println("未実装");
+				continue;
+				//難易度選択
+			case DIFFICULTY:
+				System.out.println("未実装");
+				continue;
+			default:
+				return p;
+
+			}
 		}
-		System.out.printf("※見た目だけの未完成タイトル%n%n");
-		//新規キャラ作成
-		//既存キャラ選択
-		//戦闘
-		//難易度選択
 	}
 	//全角半角の文字位置合わせ
 	private static String format(String target, int length){
