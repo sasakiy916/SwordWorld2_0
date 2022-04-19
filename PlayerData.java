@@ -10,7 +10,8 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PlayerData {
-	public static String save(Player player) throws IOException {
+	//Playerクラスの情報をplayer.jsonに保存
+	public static void save(Player player) throws IOException {
 		//Json記述
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(player) + System.getProperty("line.separator");//改行コード付き
@@ -19,9 +20,9 @@ public class PlayerData {
 		fw.write(json);
 		fw.close();//ファイルを閉じる
 		//デバッグ用表示
-		System.out.println(json);
-		return json;
+		System.out.printf("%sのデータを保存しました。",player.getName());
 	}
+
 	//保存された冒険者を読み込む
 	public static Player load() throws IOException {
 		//jsonファイル読み込み
@@ -32,18 +33,17 @@ public class PlayerData {
 			jsonList.add(json);
 			json = br.readLine();
 		}
+		//ファイル閉じる
 		br.close();
 		//読み込んだ内容をplayerにセット
 		for(String s:jsonList) {
 			System.out.println(s);
 		}
 		ObjectMapper mapper = new ObjectMapper();
-		Player player = mapper.readValue(jsonList.get(0), Player.class);
-		Player player2 = mapper.readValue(jsonList.get(1), Player.class);
-		//デバッグ用表示
-		System.out.println(player.getName());
-		System.out.println(player2.getName() + "2");
-		System.out.println(jsonList.size());
+		//デバッグ用
+		System.out.println("選ぶ>");
+		int target = new Scanner(System.in).nextInt();
+		Player player = mapper.readValue(jsonList.get(target), Player.class);
 		return player;
 	}
 	//指定キャラ削除

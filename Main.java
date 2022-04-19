@@ -28,8 +28,14 @@ public class Main{
 //		playerParty.add(new TestPlayer("アルク"));
 //		playerParty.add(new TestPlayer("ク"));
 //		Character h = (Character)p;
+
+		//キャラ作成
 		CharacterCreater cc = new CharacterCreater();
 		Player p = cc.getPlayer();
+		//作成したキャラをセーブ
+		PlaterData.save(p);
+		System.out.println(PlayerData.load());
+		//パーティを組む
 		playerParty.add(p);
 		playerParty.add(new TestPlayer("テスト"));
 		playerParty.add(new TestPlayer("テスト2"));
