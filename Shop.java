@@ -44,17 +44,20 @@ public class Shop {
 				//ショップメニュー表示
 				try {
 					switch(menu) {
+					//武器か防具か
 					case EQUIPMENT:
 						select = selectWeponOrProtector(equips,select);
 						selectEquipType = select;
 						System.out.println();
 						String errorCheck = equips[select];//不正値チェック用
+					//武器もしくは防具の種類
 					case EQUIPTYPE:
 						menu = ShopMenu.EQUIPTYPE;
 						select = prepareEquipment(shop,wepons,protectors,select);
 						System.out.println();
 						errorCheck = selectEquipType==0?wepons[select]:protectors[select];//不正値チェック用
 						if(select == -1)break;//戻る
+					//どれを買うか
 					case BUYEQUIP:
 						menu = ShopMenu.BUYEQUIP;
 						do {

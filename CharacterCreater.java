@@ -21,6 +21,16 @@ public class CharacterCreater {
 
 	//種族と生まれの決定
 	public void decideRaceAndBirth() {
+		//名前入力
+		String name;
+		while(true) {
+			System.out.print("冒険者の名前を決めて下さい>>");
+			name = scan.next();
+			System.out.printf("%sでよろしいですか?(はい:0,いいえ:1)>>",name);
+			if(scan.nextInt() == 0) {
+				break;
+			}
+		}
 		//種族一覧表示
 		System.out.println("種族一覧");
 		for(Race race:Race.values()) {
@@ -39,6 +49,7 @@ public class CharacterCreater {
 			setPlayer(new Elf());
 			break;
 		}
+		this.player.setName(name);//名前をセット
 		//生まれの一覧表示
 		System.out.println("生まれ一覧");
 		this.birth = new String[this.player.getBirths().size()];//生まれの配列用意
@@ -65,7 +76,6 @@ public class CharacterCreater {
 	}
 	//能力値の決定
 	public void decideStatus() {
-		this.player.setName("アルク");
 		this.player.decideStatus();//デバッグ用
 		//基礎能力値設定
 		//A~F能力値ダイスロール
