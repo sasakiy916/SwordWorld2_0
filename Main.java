@@ -19,13 +19,6 @@ public class Main{
 		List<Character> playerParty = new ArrayList<>();
 		List<Character> monsterParty = new ArrayList<>();
 
-<<<<<<< HEAD
-		//キャラ作成
-		CharacterCreater cc = new CharacterCreater();
-		Player p = cc.getPlayer();
-		//作成したキャラをセーブ
-=======
->>>>>>> work
 		//パーティを組む
 		//装備情報が保存されないのでロードしたら裸になってる
 		playerParty.add(p);
