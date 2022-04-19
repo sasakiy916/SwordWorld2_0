@@ -5,9 +5,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS)
 public  abstract class Player extends Character{
 	private int exp;//経験点
 	private int age;//年齢

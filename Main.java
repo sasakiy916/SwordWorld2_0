@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-import java.awt.*;
-import javax.swing.*;
-public class Main{
-	public static void main(String[] args){
-		//ウィンドウ表示
-		MainMenu menu = new MainMenu("ソードワールド再現");
-		menu.setVisible(true);
-		//キャラクター用意、作成
-		Character h = new Human();
-		Character m = new Kobold();
-		System.out.println();
-		//戦闘システム開始
-		BattleManager bm = new BattleManager(h,m);//未完成
-=======
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -48,8 +33,6 @@ public class Main{
 		CharacterCreater cc = new CharacterCreater();
 		Player p = cc.getPlayer();
 		//作成したキャラをセーブ
-		PlaterData.save(p);
-		System.out.println(PlayerData.load());
 		//パーティを組む
 		playerParty.add(p);
 		playerParty.add(new TestPlayer("テスト"));
@@ -98,6 +81,5 @@ public class Main{
 	//文字のバイト数取得
 	private static int getByteLength(String string, Charset charset) {
 		return string.getBytes(charset).length;
->>>>>>> work
 	}
 }
