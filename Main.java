@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,18 @@ public class Main{
 		QUIT,
 	}
 	public static void main(String[] args) throws InterruptedException, IOException{
+		//ファイル読み込みテスト
+		List<String> list = new ArrayList<>();
+		FileInputStream fis = new FileInputStream("birth/birth - 人間.csv");
+		InputStreamReader isr = new InputStreamReader(fis,"utf-8");
+		BufferedReader br = new BufferedReader(isr);
+		String line = br.readLine();
+		while((line = br.readLine()) != null) {
+			list.add(line);
+			System.out.println(line);
+		}
+		br.close();
+
 		//タイトル
 		System.out.println("ソードワールド2.0 ～再現の章～");
 		Player p = title();

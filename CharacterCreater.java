@@ -9,18 +9,8 @@ public class CharacterCreater {
 //	Wepon wepon = new Wepon();
 	//コンストラクタ
 	public CharacterCreater() {
+		Scanner scan = new Scanner(System.in);
 		decideRaceAndBirth();//種族と生まれの決定
-		decideStatus();//能力値の決定
-		decideJobLevel();//技能の習得
-		decideLevel();//冒険者レベルの決定
-		decideHpAndMp();//HP,MPの決定
-//		decideSkill();//戦闘特技の習得
-		Shop.buy(this.player);
-		completeCharacter();//キャラの完成
-	}
-
-	//種族と生まれの決定
-	public void decideRaceAndBirth() {
 		//名前入力
 		String name;
 		while(true) {
@@ -31,6 +21,20 @@ public class CharacterCreater {
 				break;
 			}
 		}
+		this.player.setName(name);
+		decideStatus();//能力値の決定
+		decideJobLevel();//技能の習得
+		decideLevel();//冒険者レベルの決定
+		//decideHpAndMp();//HP,MPの決定
+		this.player.setHp(this.player.getMaxHp());
+		this.player.setMp(this.player.getMaxMp());
+//		decideSkill();//戦闘特技の習得
+		Shop.buy(this.player);
+		completeCharacter();//キャラの完成
+	}
+
+	//種族と生まれの決定
+	public void decideRaceAndBirth() {
 		//種族一覧表示
 		System.out.println("種族一覧");
 		for(Race race:Race.values()) {
@@ -49,7 +53,6 @@ public class CharacterCreater {
 			setPlayer(new Elf());
 			break;
 		}
-		this.player.setName(name);//名前をセット
 		//生まれの一覧表示
 		System.out.println("生まれ一覧");
 		this.birth = new String[this.player.getBirths().size()];//生まれの配列用意
@@ -66,17 +69,15 @@ public class CharacterCreater {
 		System.out.print("生まれを選んでください>>");
 		selectBirth = scan.nextInt();
 		this.player.setBirth(this.birth[selectBirth]);
-		//基礎能力値の決定
-		this.player.setBaseAbilities(
-				this.birthBaseAbilities[selectBirth][0],
-				this.birthBaseAbilities[selectBirth][1],
-				this.birthBaseAbilities[selectBirth][2]
-				);
+		//基礎能力値設定
+		getPlayer().setTec(this.birthBaseAbilities[selectBirth][0]);
+		getPlayer().setBody(this.birthBaseAbilities[selectBirth][1]);
+		getPlayer().setMind(this.birthBaseAbilities[selectBirth][2]);
 		System.out.println();
 	}
 	//能力値の決定
 	public void decideStatus() {
-		this.player.decideStatus();//デバッグ用
+		System.out.println(this.player);//デバッグ用
 		//基礎能力値設定
 		//A~F能力値ダイスロール
 		this.player.setStatusA(Dice.roll(2));
@@ -85,8 +86,6 @@ public class CharacterCreater {
 		this.player.setStatusD(Dice.roll(2));
 		this.player.setStatusE(Dice.roll(2));
 		this.player.setStatusF(Dice.roll(2));
-		//全能力値決定
-		this.player.decideAllStatus();
 		//A~Fのダイスロール結果表示
 		System.out.println("A~Fまでのダイス値");
 		System.out.printf("%d,%d,%d,%d,%d,%d%n%n",this.player.getStatusA(),this.player.getStatusB(),this.player.getStatusC(),this.player.getStatusD(),this.player.getStatusE(),this.player.getStatusF());
@@ -94,7 +93,6 @@ public class CharacterCreater {
 	//技能の習得
 	public void decideJobLevel() {
 		this.player.learnJob();
-		this.player.decideHitAvoiAddDamage();
 		System.out.printf("経験点を消費して技能を取得できます%n%n");
 		this.player.addJob();
 	}
@@ -109,13 +107,6 @@ public class CharacterCreater {
 				this.player.setLevel(jobLevel);
 			}
 		}
-	}
-	//HPとMPの決定
-	public void decideHpAndMp() {
-		this.player.setHp(this.player.getLevel()*3 + this.player.getVit());
-		this.player.setResVit(this.player.getLevel() + this.player.getVitBonus());
-		this.player.setMp(this.player.getLevel()*3 + this.player.getPow());//修正予定、魔法使い系技能レベル未実装のため冒険者レベルで代用中
-		this.player.setResPow(this.player.getLevel() + this.player.getPowBonus());
 	}
 	//戦闘特技の習得
 	public void decideSkill() {
@@ -134,17 +125,10 @@ public class CharacterCreater {
 	//キャラ完成
 	public void completeCharacter() {
 		//ステータス一覧
-		this.player.setStatus();
 		System.out.println("キャラが完成しました！");
 		System.out.println("------------------------");
 		//キャラのステータス表示
 		System.out.println(this.player);//デバッグ用
-		for(int i=0;i<this.player.statusName.length;i++){
-			System.out.printf("%s",format(this.player.statusName[i] + ":" + this.player.status[i],15));
-			if(i%2==0) {
-				System.out.println();
-			}
-		}
 		System.out.println();
 		System.out.printf("種族:%s 生まれ:%s%n",this.player.getRace(),this.player.getBirth()); 
 		System.out.printf("所持金 %dG%n", this.player.getMoney());

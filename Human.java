@@ -6,7 +6,7 @@ public class Human extends Player{
 		this.setRace("人間");
 		this.getBirths().put("魔動機師", new int[]{8,4,9});
 		this.getBirths().put("魔法使い", new int[]{7,4,10});
-		this.getBirths().put("軽戦士", new int[]{10,7,8});
+		this.getBirths().put("軽戦士", new int[]{10,7,4});
 	}
 	//生まれによる技能習得
 	public void learnJob() {
