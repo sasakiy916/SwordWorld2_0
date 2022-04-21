@@ -138,9 +138,20 @@ public class CharacterCreater {
 		selectBirth = scan.nextInt();
 		//生まれと基礎能力値を設定
 		this.player.setBirth(list.get(selectBirth)[birth]);
-		getPlayer().setTec(Integer.parseInt(list.get(selectBirth)[tec]));
-		getPlayer().setBody(Integer.parseInt(list.get(selectBirth)[body]));
-		getPlayer().setMind(Integer.parseInt(list.get(selectBirth)[mind]));
+		if(list.get(selectBirth)[tec].matches("2d")) {
+			System.out.printf("基礎能力値 技,体,心 を2d6で決めます%n");
+			System.out.println("技");
+			getPlayer().setTec(Dice.roll(2));
+			System.out.println("体");
+			getPlayer().setBody(Dice.roll(2));
+			System.out.println("心");
+			getPlayer().setMind(Dice.roll(2));
+			System.out.println("最終的なステータス決定に使用されます");
+		}else {
+			getPlayer().setTec(Integer.parseInt(list.get(selectBirth)[tec]));
+			getPlayer().setBody(Integer.parseInt(list.get(selectBirth)[body]));
+			getPlayer().setMind(Integer.parseInt(list.get(selectBirth)[mind]));
+		}
 		//初期所有技能決定
 		if(list.get(selectBirth)[initJobSelect].matches("and")) {
 			getPlayer().jobLevelUp(list.get(selectBirth)[initJob]);//１つ目取得
