@@ -1,18 +1,23 @@
-public class Wepon extends Equipment{
+public class Weapon extends Equipment{
 	//武器種類の一覧列挙型
 	public enum WeponList {
 		SWORD,
 		AXE,
 	}
-	private String name;//武器名
+	private String name;//名称
+	private String usage;//用法
+	private String kinds;//武器の種類
+	private int needStr;//必筋
+	private int hit;//命中
+	private int power;//威力
+	private int[] powers = new int[10];//威力表
+	private int critical;//クリティカル値
+	private int price;//価格
 	private static String[] names = new String[] {
 			"ソード",
 			"アックス",
 	};
 	//武器一覧
-	private int price;//価格
-	private int needStr;//必要な筋力
-	private int[] powers = new int[10];//威力表
 	WeponList wepon;
 
 	//武器名のアクセサ

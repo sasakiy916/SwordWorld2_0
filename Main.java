@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,19 @@ public class Main{
 		DIFFICULTY,
 		QUIT,
 	}
-	public static void main(String[] args) throws InterruptedException, IOException{
+	public static void main(String[] args) throws Exception{
+//		//ファイル読み込みテスト
+//		List<String> list = new ArrayList<>();
+//		FileInputStream fis = new FileInputStream("birth/birth - 人間.csv");
+//		InputStreamReader isr = new InputStreamReader(fis,"utf-8");
+//		BufferedReader br = new BufferedReader(isr);
+//		String line = br.readLine();
+//		while((line = br.readLine()) != null) {
+//			list.add(line);
+//			System.out.println(line);
+//		}
+//		br.close();
+
 		//タイトル
 		System.out.println("ソードワールド2.0 ～再現の章～");
 		Player p = title();
@@ -31,7 +42,7 @@ public class Main{
 		//戦闘
 		BattleManager.battle(playerParty, monsterParty);
 	}
-	static Player title() throws IOException {
+	static Player title() throws Exception {
 		Scanner scan = new Scanner(System.in);
 		String[] titleMenu = new String[5];
 		int wordWidth = 20;//文字幅

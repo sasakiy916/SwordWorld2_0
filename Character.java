@@ -6,11 +6,8 @@
 	private int hp;//HP
 	private int mp;//MP
 	private int def;//防護点
-	private int avoi;//回避力
-	private int pre;//先制力
-	private int hit;//命中力
-	private int addDamage;//追加ダメージ
 
+	//コンストラクタ
 	public Character() {
 		
 	}
@@ -37,14 +34,14 @@
 	public void setLevel(int level){
 		this.level = level;
 	}
-	//HPのアクセサ
+	//現在HPのアクセサ
 	public int getHp(){
 		return this.hp;
 	}
 	public void setHp(int hp){
 		this.hp = hp;
 	}
-	//MPのアクセサ
+	//現在MPのアクセサ
 	public int getMp(){
 		return this.mp;
 	}
@@ -59,31 +56,11 @@
 		this.def = def;
 	}
 	//回避のアクセサ
-	public int getAvoi() {
-		return avoi;
-	}
-	public void setAvoi(int avoi) {
-		this.avoi = avoi;
-	}
+	public abstract int getAvoi();
 	//先制力のアクセサ
-	public int getPre() {
-		return pre;
-	}
-	public void setPre(int pre) {
-		this.pre = pre;
-	}
+	public abstract int getPre();
 	//命中のアクセサ
-	public int getHit() {
-		return hit;
-	}
-	public void setHit(int hit) {
-		this.hit = hit;
-	}
+	public abstract int getHit();
 	//追加ダメージ
-	public int getAddDamage() {
-		return addDamage;
-	}
-	public void setAddDamage(int addDamage) {
-		this.addDamage = addDamage;
-	}
+	public abstract int getAddDamage();
 }

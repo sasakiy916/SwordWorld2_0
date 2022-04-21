@@ -25,9 +25,9 @@ public class Shop {
 			equips[i] = Equipment.getNames()[i];
 		}
 		//武器の種類名を取得
-		String[] wepons = new String[Wepon.getNames().length];
+		String[] wepons = new String[Weapon.getNames().length];
 		for(int i=0;i<wepons.length;i++) {
-			wepons[i] = Wepon.getNames()[i];
+			wepons[i] = Weapon.getNames()[i];
 		}
 		//防具の種類名取得
 		String[] protectors = new String[Protector.getNames().length];
@@ -76,9 +76,9 @@ public class Shop {
 							System.out.println("------------------");
 							System.out.println();
 							System.out.println("装備詳細");
-							if(shop.get(select) instanceof Wepon) {
+							if(shop.get(select) instanceof Weapon) {
 								//武器の場合
-								System.out.println((Wepon)shop.get(select));
+								System.out.println((Weapon)shop.get(select));
 							}
 							if(shop.get(select) instanceof Protector) {
 								//防具の場合
@@ -156,7 +156,7 @@ public class Shop {
 				System.out.print("どの武器を見ますか?(一つ戻る:0)>>");
 				select = scan.nextInt() - 1;//選択肢入力
 				//選択肢によってお店の武器種類を変更
-				Wepon.WeponList wepon = Wepon.WeponList.values()[select];
+				Weapon.WeponList wepon = Weapon.WeponList.values()[select];
 				switch(wepon) {
 				case AXE:
 					for(Axe.AxeList s:Axe.AxeList.values()) {
@@ -211,7 +211,7 @@ public class Shop {
 	private static int selectAndBuyEquip(List<Equipment> shop,int select,int buy, Player player) {
 		select = 0;
 		System.out.println("-----------------------------");
-		System.out.printf("%s:%s 選択肢%n",format(shop.get(0) instanceof Wepon?"武器名":"防具名",18),format("価格",3));
+		System.out.printf("%s:%s 選択肢%n",format(shop.get(0) instanceof Weapon?"武器名":"防具名",18),format("価格",3));
 		for(Equipment s:shop) {
 			System.out.printf("%s:%s%d%n",format(s.getName(),18),format(""+s.getPrice()+"G",8),++select);
 		}
@@ -230,8 +230,8 @@ public class Shop {
 			//所持金減らす
 			money = money - shop.get(select).getPrice();
 			//購入後にプレイヤーに武器を渡す
-			if(shop.get(select) instanceof Wepon) {
-				player.w = (Wepon)shop.get(select);//武器をキャラに渡す
+			if(shop.get(select) instanceof Weapon) {
+				player.w = (Weapon)shop.get(select);//武器をキャラに渡す
 			}
 			if(shop.get(select) instanceof Protector) {
 				player.p = (Protector)shop.get(select);//防具をキャラに渡す

@@ -1,4 +1,4 @@
-public class Axe extends Wepon {
+public class Axe extends Weapon {
 	//斧一覧列挙
 	public enum AxeList{
 		HANDAXE,

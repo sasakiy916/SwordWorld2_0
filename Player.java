@@ -5,54 +5,24 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+<<<<<<< HEAD
 
+=======
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS)
+@JsonIgnoreProperties(ignoreUnknown=true)
+>>>>>>> work
 public  abstract class Player extends Character{
-	private int exp;//経験点
-	private int age;//年齢
+	private String gender;//性別
 	private String race;//種族
 	private String birth;//生まれ
-	private Map<String,Integer>jobs = new LinkedHashMap<String,Integer>();//技能と技能レベル
-	private Map<String,int[]>births = new LinkedHashMap<String,int[]>();//生まれ表
-	private int money = 1200;//所持金
-	//能力値
-	private int resVit;//生命抵抗力
-	private int resPow;//精神抵抗力
-	private int dex;//器用度
-	private int agi;//敏捷度
-	private int str;//筋力
-	private int vit;//生命力
-	private int wis;//知力
-	private int pow;//精神力
-	public String[] statusName = {
-			"冒険者レベル",
-			"HP",
-			"生命抵抗力",
-			"MP",
-			"精神抵抗力",
-			"防護点",
-			"命中",
-			"回避",
-			"器用度",
-			"敏捷度",
-			"筋力",
-			"生命力",
-			"知力",
-			"精神力",
-	};//public → privateに修正予定 ゲッター作る 	
-	public int[] status;//public → privateに修正予定 ゲッター作る
-	//能力値ボーナス
-	private int dexBonus;//器用度ボーナス
-	private int agiBonus;//敏捷ボーナス
-	private int strBonus;//筋力ボーナス
-	private int vitBonus;//生命力ボーナス
-	private int wisBonus;//知力ボーナス
-	private int powBonus;//精神力ボーナス
+	private int age;//年齢
 	//基礎能力値
 	private int tec;//技
 	private int body;//体
 	private int mind;//心
-	private String[] baseAbilityName = {"技","体","心"};
-	private int[] baseAbility =  new int[baseAbilityName.length];
 	//ダイスで決める能力値
 	private int statusA;//A
 	private int statusB;//B
@@ -60,44 +30,31 @@ public  abstract class Player extends Character{
 	private int statusD;//D
 	private int statusE;//E
 	private int statusF;//F
-	private String[] abilitySuffix;
-	private int[] ability;
-	//武器
-	Wepon w = new Panch();
-	//防具
-	Protector p = new Nude();
+	private int exp;//経験点
+	//成長値
+	private int growDex;//器用度
+	private int growAgi;//敏捷度
+	private int growStr;//筋力
+	private int growVit;//生命力
+	private int growWis;//知力
+	private int growPow;//精神力
+	private Map<String,Integer>jobs = new LinkedHashMap<String,Integer>();//技能と技能レベル
 	//戦闘特技
 	Set<Skill> skills = new LinkedHashSet<Skill>();
-
+	//練技/呪歌(ルールブック２の内容のため実装予定無し)
+	//言語(実装予定なし)
+	//名誉系のフィールド(実装予定なし)
+	//武器
+	Weapon w = new Panch();
+	//鎧
+	Protector p = new Nude();
+	//盾
+	//魔法発動体
+	//アイテム
+	private int money = 1200;//所持金
+	private static int bank;//預金/借金
 	//コンストラクタ
 	public Player(){
-//		this.statusName = new String[]{
-//				"冒険者レベル",
-//				"HP",
-//				"生命抵抗力",
-//				"MP",
-//				"精神抵抗力",
-//				"防護点",
-//				"命中",
-//				"回避",
-//				"器用度",
-//				"敏捷度",
-//				"筋力",
-//				"生命力",
-//				"知力",
-//				"精神力",
-//		};
-//		this.baseAbilityName = new String[]{"技","体","心"};
-//		this.baseAbility = new int[baseAbilityName.length];
-//		this.abilitySuffix = new String[]{
-//				"A",
-//				"B",
-//				"C",
-//				"D",
-//				"E",
-//				"F",
-//		};
-//		this.ability = new int[abilitySuffix.length];
 		//技能の準備
 		//戦士系
 		getJobs().put("ファイター",0);
@@ -115,70 +72,6 @@ public  abstract class Player extends Character{
 		getJobs().put("レンジャー",0);
 		getJobs().put("セージ",0);
 	}
-	//基礎能力値設定
-	public void setBaseAbilities(int tec,int body,int mind) {
-		setTec(tec);
-		setBody(body);
-		setMind(mind);
-	}
-
-	//全能力値を決定
-	public void decideAllStatus(){
-		
-		decideStatus();//能力値
-		decideBonus();//能力値ボーナス
-		setHp(getLevel()*3 + getVit());//HP
-		setResVit(getLevel() + getVitBonus());//生命抵抗力
-		setMp(getLevel()*3 + getPow());//修正予定、魔法使い系技能レベル未実装のため冒険者レベルで代用中
-		setResPow(getLevel() + getPowBonus());//精神抵抗力
-	}
-
-	//HP,MP,抵抗力以外の能力値を決定
-	public void decideStatus(){
-		//器用度
-		setDex(getTec() + getStatusA());
-		//敏捷度
-		setAgi(getTec() + getStatusB());
-		//筋力
-		setStr(getBody() + getStatusC());
-		//生命力
-		setVit(getBody() + getStatusD());
-		//知力
-		setWis(getMind() + getStatusE());
-		//精神力
-		setPow(getMind() + getStatusF());
-	}
-
-	//能力値ボーナスを決定
-	public void decideBonus(){
-		setDexBonus(getDex()/6);
-		setAgiBonus(getAgi()/6);
-		setStrBonus(getStr()/6);
-		setVitBonus(getVit()/6);
-		setWisBonus(getWis()/6);
-		setPowBonus(getPow()/6);
-	}
-
-	//ステータスに各値を格納
-	public void setStatus(){
-		this.status = new int[]{
-				getLevel(),
-				getHp(),
-				getResVit(),
-				getMp(),
-				getResPow(),
-				getDef(),
-				getHit(),
-				getAvoi(),
-				getDex(),
-				getAgi(),
-				getStr(),
-				getVit(),
-				getWis(),
-				getPow(),
-		};
-	}
-
 	//自動失敗、自動成功判定
 	public int autoJudge(int dice, int addValue) {
 
@@ -211,7 +104,7 @@ public  abstract class Player extends Character{
 		//出目による判定
 		return autoJudge(dice,getHit());
 	}
-	//回避判定
+	//回避判定:修正予定
 	@Override
 	public int judgeAvoi() {
 		System.out.println("回避判定");
@@ -229,9 +122,6 @@ public  abstract class Player extends Character{
 			return 0;
 		}
 	}
-
-	//生まれによる技能習得
-	public abstract void learnJob();
 	//技能の追加習得
 	public void addJob() {
 		Scanner scan = new Scanner(System.in);
@@ -287,24 +177,8 @@ public  abstract class Player extends Character{
 //			System.out.println();
 //			if(select == 1)break;
 		}while(true);
-		//命中、回避決定、追加ダメージ
-		decideHitAvoiAddDamage();
 	}
-	//命中、回避決定、追加ダメージ
-	public void decideHitAvoiAddDamage() {
-		int maxFighterLevel = 0;//戦士系技能の一番高いレベル
-		//戦士系技能の一番高いレベル確認
-		for(String job:this.getJobs().keySet()) {
-			if(job.matches("ファイター|グラップラー|フェンサー|シューター") && maxFighterLevel < this.getJobs().get(job)) {
-				maxFighterLevel = this.getJobs().get(job);
-			}
-		}
-		this.setAddDamage(maxFighterLevel + this.getStrBonus());//追加ダメージ
-		this.setHit(maxFighterLevel + this.getDexBonus());//命中
-		this.setAvoi(maxFighterLevel + this.getAgiBonus());//回避
-		
-	}
-	//経験点テーブル
+	//経験点テーブル(削除予定)
 	public int[] expTable(String job) {
 		int[] expTable = null;
 		//経験テーブルA
@@ -349,8 +223,6 @@ public  abstract class Player extends Character{
 	public void setExp(int exp){
 		this.exp = exp;
 	}
-
-
 	//年齢のアクセサ
 	public int getAge(){
 		return this.age;
@@ -358,7 +230,6 @@ public  abstract class Player extends Character{
 	public void setAge(int age){
 		this.age = age;
 	}
-
 	//生まれのアクセサ
 	public String getBirth(){
 		return this.birth;
@@ -375,101 +246,67 @@ public  abstract class Player extends Character{
 	}
 	//生命抵抗力
 	public int getResVit(){
-		return this.resVit;
-	}
-	public void setResVit(int resVit){
-		this.resVit = resVit;
+		return getLevel() + getVitBonus();
 	}
 	//精神抵抗力
 	public int getResPow(){
-		return this.resPow;
+		return getLevel() + getPowBonus();
 	}
-	public void setResPow(int resPow){
-		this.resPow = resPow;
-	}
-	//器用度のアクセサ
+	//器用度の取得
 	public int getDex(){
-		return this.dex;
+		return this.tec + this.statusA + this.growDex;
 	}
-	public void setDex(int dex){
-		this.dex = dex;
-	}
-	//敏捷度のアクセサ
+	//敏捷度の取得
 	public int getAgi(){
-		return this.agi;
+		return this.tec + this.statusB + this.growAgi;
 	}
-	public void setAgi(int agi){
-		this.agi = agi;
-	}
-	//筋力のアクセサ
+	//筋力の取得
 	public int getStr(){
-		return this.str;
+		return this.body + this.statusC + this.growStr;
 	}
-	public void setStr(int str){
-		this.str = str;
-	}
-	//生命力のアクセサ
+	//生命力の取得
 	public int getVit(){
-		return this.vit;
+		return this.body + this.statusD + this.growVit;
 	}
-	public void setVit(int vit){
-		this.vit = vit;
-	}
-	//知力のアクセサ
+	//知力の取得
 	public int getWis(){
-		return this.wis;
+		return this.mind + this.statusE + this.growWis;
 	}
-	public void setWis(int wis){
-		this.wis = wis;
-	}
-	//精神力のアクセサ
+	//精神力の取得
 	public int getPow(){
-		return this.pow;
-	}
-	public void setPow(int pow){
-		this.pow = pow;
+		return this.mind + this.statusF + this.growPow;
 	}
 	//器用度ボーナスのアクセサ
 	public int getDexBonus(){
-		return this.dexBonus;
+		return getDex() / 6;
 	}
-	public void setDexBonus(int dexBonus){
-		this.dexBonus = dexBonus; 
-	}	
 	//敏捷度ボーナスのアクセサ
 	public int getAgiBonus(){
-		return this.agiBonus;
-	}
-	public void setAgiBonus(int agiBonus){
-		this.agiBonus = agiBonus;
+		return getAgi() / 6;
 	}
 	//筋力ボーナスのアクセサ
 	public int getStrBonus(){
-		return this.strBonus;
-	}
-	public void setStrBonus(int strBonus){
-		this.strBonus = strBonus;
+		return getStr() / 6;
 	}
 	//生命力ボーナスのアクセサ
 	public int getVitBonus(){
-		return this.vitBonus;
-	}
-	public void setVitBonus(int vitBonus){
-		this.vitBonus = vitBonus;
+		return getVit() / 6;
 	}
 	//知力ボーナスのアクセサ
 	public int getWisBonus(){
-		return this.wisBonus;
-	}
-	public void setWisBonus(int wisBonus){
-		this.wisBonus = wisBonus;
+		return getWis() / 6;
 	}
 	//精神力ボーナスのアクセサ
 	public int getPowBonus(){
-		return this.powBonus;
+		return getPow() / 6;
 	}
-	public void setPowBonus(int powBonus){
-		this.powBonus = powBonus;
+	//最大HPの取得
+	public int getMaxHp() {
+		return getLevel() * 3 + getVit();
+	}
+	//最大MPの取得(修正予定)
+	public int getMaxMp() {
+		return getLevel() * 3 + getPow();
 	}
 	//技のアクセサ
 	public int getTec(){
@@ -534,19 +371,87 @@ public  abstract class Player extends Character{
 	public void setStatusF(int statusF){
 		this.statusF = statusF;
 	}
-	//生まれ表のアクセサ
-	public Map<String,int[]> getBirths() {
-		return births;
+	//器用度成長値
+	public int getGrowDex() {
+		return growDex;
 	}
-	public void setBirths(Map<String,int[]> births) {
-		this.births = births;
+	public void setGrowDex(int growDex) {
+		this.growDex = growDex;
 	}
+	public int getGrowAgi() {
+		return growAgi;
+	}
+	public void setGrowAgi(int growAgi) {
+		this.growAgi = growAgi;
+	}
+	//筋力成長値
+	public int getGrowStr() {
+		return growStr;
+	}
+	public void setGrowStr(int growStr) {
+		this.growStr = growStr;
+	}
+	//生命力成長値
+	public int getGrowVit() {
+		return growVit;
+	}
+	public void setGrowVit(int growVit) {
+		this.growVit = growVit;
+	}
+	//知力成長値
+	public int getGrowWis() {
+		return growWis;
+	}
+	public void setGrowWis(int growWis) {
+		this.growWis = growWis;
+	}
+	//精神力成長値
+	public int getGrowPow() {
+		return growPow;
+	}
+	public void setGrowPow(int growPow) {
+		this.growPow = growPow;
+	}
+	//防護点:修正予定
+	@Override
+	public int getDef() {
+		return super.getDef();
+	}
+	//回避:修正予定 シューター以外の戦士系技能レベルによって変わる
+	@Override
+	public int getAvoi() {
+		int maxJobLevel = 0;
+		for(String job:getJobs().keySet()) {
+			if(job.matches("ファイター|グラップラー|フェンサー") && maxJobLevel < getJobs().get(job)) {
+				System.out.println("デバッグ表記:" + getJobs().get(job) + "getAvoi");//デバッグ表示
+				maxJobLevel = getJobs().get(job);
+			}
+		}
+		return maxJobLevel + getAgiBonus();
+	}
+	//先制力
+	@Override
+	public int getPre() {
+		return getJobs().get("スカウト") + getAgiBonus();
+	}
+	//命中:修正予定 戦士系技能レベルによって変わる
+	@Override
+	public int getHit() {
+		return getDexBonus();
+	}
+	//追加ダメージ:修正予定 戦士系技能レベルによって変わる
+	@Override
+	public int getAddDamage() {
+		return getStrBonus();
+	}
+	//種族アクセサ
 	public String getRace() {
 		return race;
 	}
 	public void setRace(String race) {
 		this.race = race;
 	}
+	//技能アクセサ
 	public Map<String,Integer> getJobs() {
 		return jobs;
 	}
@@ -559,6 +464,13 @@ public  abstract class Player extends Character{
 	}
 	public void setSkills(Set<Skill> skills) {
 		this.skills = skills;
+	}
+	//性別のアクセサ
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	//全角半角の文字位置合わせ
 	private static String format(String target, int length){
@@ -573,21 +485,21 @@ public  abstract class Player extends Character{
 	
 	//Player情報の表示
 	public String toString() {
-		setStatus();
 		System.out.println("------------------------");
 		//キャラのステータス表示
+		int width = 15;
 		System.out.printf("名前:%s%n",getName());
-		for(int i=0;i<statusName.length;i++){
-			//面倒くさいから防護点のところをifで表示変更
-			if(i == 5) {
-				System.out.printf("%s",format(statusName[i] + ":" + (status[i] + this.p.getDef()),15));
-			}else {
-				System.out.printf("%s",format(statusName[i] + ":" + status[i],15));
-			}
-			if(i%2==0) {
-				System.out.println();
-			}
-		}
+		System.out.printf("%s",format("HP:" + getHp() + "/" + getMaxHp(),width));
+		System.out.printf("%s%n",format("MP:" + getMp() + "/" + getMaxMp(),width));
+		System.out.printf("%s",format("生命抵抗力:" + getResVit(),width));
+		System.out.printf("%s%n",format("精神抵抗力:" + getResPow(),width));
+		System.out.printf("%s",format("器用度:" + getDex(),width));
+		System.out.printf("%s%n",format("敏捷度:" + getAgi(),width));
+		System.out.printf("%s",format("筋力:" + getStr(),width));
+		System.out.printf("%s%n",format("生命力:" + getVit(),width));
+		System.out.printf("%s",format("知力:" + getWis(),width));
+		System.out.printf("%s%n",format("精神力:" + getPow(),width));
+		System.out.printf("%s%n",format("防護点:" + getDef(),width));
 		System.out.println();
 		System.out.printf("種族:%s 生まれ:%s%n",getRace(),getBirth()); 
 		System.out.printf("経験点:%d%n",getExp());

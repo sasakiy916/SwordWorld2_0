@@ -1,4 +1,4 @@
-public class Sword extends Wepon {
+public class Sword extends Weapon {
 	//武器一覧用の列挙型
 	public enum SwordList {
 		KNIFE,

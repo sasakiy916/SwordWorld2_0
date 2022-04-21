@@ -45,17 +45,23 @@ public class PlayerData {
 		List<Player> players = new ArrayList<>();
 		int target;
 		do {
-			int count = 0;
-			for(String s:jsonList) {
-				players.add(mapper.readValue(s,Player.class));
-				System.out.printf("%d:%s 冒険者レベル:%d HP:%d%n",++count,players.get(count-1).getName(),players.get(count-1).getLevel(),players.get(count-1).getHp());
+			try {
+				int count = 0;
+				for(String s:jsonList) {
+					players.add(mapper.readValue(s,Player.class));
+					System.out.printf("%d:%s 冒険者レベル:%d HP:%d%n",++count,players.get(count-1).getName(),players.get(count-1).getLevel(),players.get(count-1).getHp());
+				}
+				//キャラを選ぶ
+				System.out.print("どのキャラを使いますか>>");
+				target = scan.nextInt()-1;
+				System.out.println(players.get(target));
+				System.out.print("このキャラを使います？(はい:0,いいえ:0以外)>>");
+				if(scan.nextInt() == 0)break;
+
+			}catch(Exception e) {
+				System.out.println("選択肢以外が選択されました");
+				System.out.println();
 			}
-			//キャラを選ぶ
-			System.out.print("どのキャラを使いますか>>");
-			target = scan.nextInt()-1;
-			System.out.println(players.get(target));
-			System.out.print("このキャラを使います？>>");
-			if(scan.nextInt() == 0)break;
 		}while(true);
 		//デバッグ用
 		Player player = mapper.readValue(jsonList.get(target), Player.class);

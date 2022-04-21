@@ -1,2 +1,6 @@
 *.class
+<<<<<<< HEAD
 player/player.json
+=======
+player.json
+>>>>>>> work

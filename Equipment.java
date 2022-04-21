@@ -34,7 +34,7 @@ public abstract class Equipment{
 	//武器情報の表示
 	public String toString() {
 		System.out.println("---------------------------------------");
-		System.out.println(this instanceof Wepon?"・武器名:":"・防具名:"+getName());
+		System.out.println(this instanceof Weapon?"・武器名:":"・防具名:"+getName());
 		System.out.println("・価格:"+getPrice()+"G");
 		System.out.println("・必要筋力:"+getNeedStr());
 		return "";
