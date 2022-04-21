@@ -35,14 +35,13 @@ public  abstract class Player extends Character{
 	private int growWis;//知力
 	private int growPow;//精神力
 	private Map<String,Integer>jobs = new LinkedHashMap<String,Integer>();//技能と技能レベル
-	private Map<String,int[]>births = new LinkedHashMap<String,int[]>();//生まれ表(消す予定)
 	//戦闘特技
 	Set<Skill> skills = new LinkedHashSet<Skill>();
 	//練技/呪歌(ルールブック２の内容のため実装予定無し)
 	//言語(実装予定なし)
 	//名誉系のフィールド(実装予定なし)
 	//武器
-	Wepon w = new Panch();
+	Weapon w = new Panch();
 	//鎧
 	Protector p = new Nude();
 	//盾
@@ -119,9 +118,6 @@ public  abstract class Player extends Character{
 			return 0;
 		}
 	}
-
-	//生まれによる技能習得
-	public abstract void learnJob();
 	//技能の追加習得
 	public void addJob() {
 		Scanner scan = new Scanner(System.in);
@@ -443,13 +439,6 @@ public  abstract class Player extends Character{
 	@Override
 	public int getAddDamage() {
 		return getStrBonus();
-	}
-	//生まれ表のアクセサ
-	public Map<String,int[]> getBirths() {
-		return births;
-	}
-	public void setBirths(Map<String,int[]> births) {
-		this.births = births;
 	}
 	//種族アクセサ
 	public String getRace() {

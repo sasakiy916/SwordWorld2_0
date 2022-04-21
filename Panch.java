@@ -1,4 +1,4 @@
-public class Panch extends Wepon {
+public class Panch extends Weapon {
 	public Panch() {
 		setName("パンチ");
 		setPower(new int[] {

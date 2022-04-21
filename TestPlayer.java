@@ -15,10 +15,4 @@ public class TestPlayer extends Player {
 		setStatusE(5);
 		setStatusF(5);
 	}
-	@Override
-	public void learnJob() {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
-
 }

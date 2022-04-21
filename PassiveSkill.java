@@ -9,7 +9,7 @@ public class PassiveSkill extends Skill {
 		switch(skill) {
 		case WEPONMASTERY:
 			setName("武器習熟");
-			Wepon.WeponList wl = Wepon.WeponList.SWORD;
+			Weapon.WeponList wl = Weapon.WeponList.SWORD;
 			switch(wl) {
 			case AXE:
 				break;
