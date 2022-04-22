@@ -1,13 +1,7 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 public class CharacterCreater {
-	private Player player;//種族のインスタンス
-	Dice d = new Dice();//ダイス
+	private Player player;//プレイヤーのインスタンス
 	Scanner scan = new Scanner(System.in);
 //	Wepon wepon = new Wepon();
 	//コンストラクタ
@@ -60,18 +54,8 @@ public class CharacterCreater {
 			break;
 		}
 		//生まれの一覧表示
-		//ファイル読み込みテスト
-		List<String[]> list = new ArrayList<>();
-		FileInputStream fis = new FileInputStream(birthData);
-		InputStreamReader isr = new InputStreamReader(fis,"utf-8");
-		BufferedReader br = new BufferedReader(isr);
-		String line;
-		while((line = br.readLine()) != null) {
-			//System.out.println(line);//デバッグ用
-			String[] params = line.split(",",-1);
-			list.add(params);
-		}
-		br.close();
+		//ファイル読み込み
+		List<String[]> births = Option.load(birthData);
 		//各項目の列番号取得
 		int birth = 0;
 		int tec = 0;
@@ -80,8 +64,8 @@ public class CharacterCreater {
 		int initJob = 0;
 		int initJobSelect = 0;
 		int initExp = 0;
-		for(int i=0;i<list.get(0).length;i++) {
-			switch(list.get(0)[i]) {
+		for(int i=0;i<births.get(0).length;i++) {
+			switch(births.get(0)[i]) {
 			case "生まれ":
 				birth = i;
 				break;
@@ -104,41 +88,21 @@ public class CharacterCreater {
 				initExp = i;
 				break;
 			}
-//			if(list.get(0)[i].matches("生まれ")) {
-//				birth = i;
-//			}
-//			if(list.get(0)[i].matches("技")) {
-//				tec = i;
-//			}
-//			if(list.get(0)[i].matches("体")) {
-//				body = i;
-//			}
-//			if(list.get(0)[i].matches("心")) {
-//				mind = i;
-//			}
-//			if(list.get(0)[i].matches("初期所有技能")) {
-//				System.out.println("デバッグ初期所有");
-//				initJob = i;
-//			}
-//			if(list.get(0)[i].matches("複数ある場合")) {
-//				System.out.println("デバッグ複数");
-//				initJobSelect = i;
-//			}
 		}
 
 		//生まれ一覧表示
 		System.out.println("生まれ一覧");
 		int selectBirth = 0;//生まれ選択肢
 		//種族ごとの生まれ一覧
-		for(int i=1;i<list.size();i++) {
-			System.out.printf("%s:%d%n",list.get(i)[birth],i);
+		for(int i=1;i<births.size();i++) {
+			System.out.printf("%s:%d%n",births.get(i)[birth],i);
 		}
 		//生まれを選択
 		System.out.print("生まれを選んでください>>");
 		selectBirth = scan.nextInt();
 		//生まれと基礎能力値を設定
-		this.player.setBirth(list.get(selectBirth)[birth]);
-		if(list.get(selectBirth)[tec].matches("2d")) {
+		this.player.setBirth(births.get(selectBirth)[birth]);
+		if(births.get(selectBirth)[tec].matches("2d")) {
 			System.out.printf("基礎能力値 技,体,心 を2d6で決めます%n");
 			System.out.println("技");
 			getPlayer().setTec(Dice.roll(2));
@@ -148,35 +112,35 @@ public class CharacterCreater {
 			getPlayer().setMind(Dice.roll(2));
 			System.out.println("最終的なステータス決定に使用されます");
 		}else {
-			getPlayer().setTec(Integer.parseInt(list.get(selectBirth)[tec]));
-			getPlayer().setBody(Integer.parseInt(list.get(selectBirth)[body]));
-			getPlayer().setMind(Integer.parseInt(list.get(selectBirth)[mind]));
+			getPlayer().setTec(Integer.parseInt(births.get(selectBirth)[tec]));
+			getPlayer().setBody(Integer.parseInt(births.get(selectBirth)[body]));
+			getPlayer().setMind(Integer.parseInt(births.get(selectBirth)[mind]));
 		}
 		//初期所有技能決定
-		if(list.get(selectBirth)[initJobSelect].matches("and")) {
-			getPlayer().jobLevelUp(list.get(selectBirth)[initJob]);//１つ目取得
-			getPlayer().jobLevelUp(list.get(selectBirth)[initJob+1]);//2つ目取得
-		}else if(list.get(selectBirth)[initJobSelect].matches("or")) {
+		if(births.get(selectBirth)[initJobSelect].matches("and")) {
+			getPlayer().jobLevelUp(births.get(selectBirth)[initJob]);//１つ目取得
+			getPlayer().jobLevelUp(births.get(selectBirth)[initJob+1]);//2つ目取得
+		}else if(births.get(selectBirth)[initJobSelect].matches("or")) {
 				System.out.println("取得可能技能");
-				System.out.println(list.get(selectBirth)[initJob]+":0");
-				System.out.println(list.get(selectBirth)[initJob+1]+":1");
+				System.out.println(births.get(selectBirth)[initJob]+":0");
+				System.out.println(births.get(selectBirth)[initJob+1]+":1");
 				System.out.print("取得する技能を選んで下さい>>");
 				int select = scan.nextInt();
 				switch(select) {
 				case 0:
-					getPlayer().jobLevelUp(list.get(selectBirth)[initJob]);//１つ目取得
+					getPlayer().jobLevelUp(births.get(selectBirth)[initJob]);//１つ目取得
 					break;
 				case 1:
-					getPlayer().jobLevelUp(list.get(selectBirth)[initJob+1]);//2つ目取得
+					getPlayer().jobLevelUp(births.get(selectBirth)[initJob+1]);//2つ目取得
 					break;
 				}
 		}else {
-			if(!list.get(selectBirth)[initJob].matches("なし")) {
-				getPlayer().jobLevelUp(list.get(selectBirth)[initJob]);//１つ目取得
+			if(!births.get(selectBirth)[initJob].matches("なし")) {
+				getPlayer().jobLevelUp(births.get(selectBirth)[initJob]);//１つ目取得
 			}
 		}
 		//初期経験点
-		getPlayer().setExp(Integer.parseInt(list.get(selectBirth)[initExp]));
+		getPlayer().setExp(Integer.parseInt(births.get(selectBirth)[initExp]));
 		System.out.println();
 	}
 	//能力値の決定
@@ -221,8 +185,6 @@ public class CharacterCreater {
 		for(Skill a : player.getSkills()) {
 			System.out.println(a.getName());
 		}
-//		System.out.println(new PassiveSkill().getName());
-		
 	}
 
 	//キャラ完成
@@ -238,18 +200,19 @@ public class CharacterCreater {
 		System.out.println("------------------------");
 		//技能一覧
 		System.out.println("取得技能一覧");
-		System.out.printf("%s|%s%n",format("技能",18),"レベル");
+		System.out.printf("%s|%s%n",Option.format("技能",18),"レベル");
 		for(String key:this.player.getJobs().keySet()) {
 			int value = this.player.getJobs().get(key);
 			if(value != 0) {
-				System.out.printf("%s|%d%n",format(key,18),value);
+				System.out.printf("%s|%d%n",Option.format(key,18),value);
 			}
 		}
 		//装備品
 		System.out.println("------------------------");
 		System.out.println("現在の装備");
-		System.out.println("武器:"+this.player.w.getName());
-		System.out.println("防具:"+this.player.p.getName());
+		System.out.println("武器:"+this.player.getWeapon().getName());
+		System.out.println("鎧"+this.player.getArmor().getName());
+		System.out.println("盾:"+this.player.getShield().getName());
 		System.out.println("------------------------");
 	}
 	//playerのアクセサ
@@ -259,16 +222,5 @@ public class CharacterCreater {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-	}
-
-	//全角半角の文字位置合わせ
-	private static String format(String target, int length){
-		int byteDiff = (getByteLength(target, Charset.forName("UTF-8"))-target.length())/2;
-		return String.format("%-"+(length-byteDiff)+"s", target);
-	}
-
-	//文字のバイト数取得
-	private static int getByteLength(String string, Charset charset) {
-		return string.getBytes(charset).length;
 	}
 }

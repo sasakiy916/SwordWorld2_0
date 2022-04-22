@@ -1,4 +1,3 @@
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -37,7 +36,7 @@ public class Shop {
 		//買い物開始
 		while(buy != 1) {
 			int select = 0;//選択肢用の変数
-			int selectEquipType = 0;
+			int selectEquipType = 0;//装備の種類番号
 			List<Equipment> shop = new ArrayList<>();//商品リスト
 			ShopMenu menu = ShopMenu.values()[0];//メニュー選択
 			do {
@@ -70,8 +69,9 @@ public class Shop {
 							System.out.println("------------------");
 							System.out.println("名前:" + player.getName());
 							System.out.println("現在の装備");
-							System.out.println("・武器:" + player.w.getName());
-							System.out.println("・武器:" + player.p.getName());
+							System.out.println("・武器:" + player.getWeapon().getName());
+							System.out.println("・鎧:" + player.getArmor().getName());
+							System.out.println("・盾:" + player.getShield().getName());
 							System.out.println("・キャラの筋力："+ player.getStr());//デバッグ用
 							System.out.println("------------------");
 							System.out.println();
@@ -131,9 +131,9 @@ public class Shop {
 	private static int selectWeponOrProtector(String[] equips,int select) {
 		select = 0;
 		System.out.println("-----------------------------");
-		System.out.printf("%s %s%n",format("装備の種類",10),"選択肢");
+		System.out.printf("%s %s%n",Option.format("装備の種類",10),"選択肢");
 		for(String equipName:equips) {
-			System.out.printf("%s    %d%n",format(equipName,10),++select);
+			System.out.printf("%s    %d%n",Option.format(equipName,10),++select);
 		}
 		System.out.println("-----------------------------");
 		System.out.print("武器と防具どちらを見ますか?>>");
@@ -148,9 +148,9 @@ public class Shop {
 			case 0:
 				select = 0;
 				System.out.println("-----------------------------");
-				System.out.printf("%s 選択肢%n",format("武器名",8));
+				System.out.printf("%s 選択肢%n",Option.format("武器名",8));
 				for(String weponName:wepons) {
-					System.out.printf("%s    %d%n",format(weponName,8),++select);
+					System.out.printf("%s    %d%n",Option.format(weponName,8),++select);
 				}
 				System.out.println("-----------------------------");
 				System.out.print("どの武器を見ますか?(一つ戻る:0)>>");
@@ -176,9 +176,9 @@ public class Shop {
 			case 1:
 				select = 0;
 				System.out.println("-----------------------------");
-				System.out.printf("%s 選択肢%n",format("防具名",8));
+				System.out.printf("%s 選択肢%n",Option.format("防具名",8));
 				for(String protectorName:protectors) {
-					System.out.printf("%s  %d%n",format(protectorName,8),++select);
+					System.out.printf("%s  %d%n",Option.format(protectorName,8),++select);
 				}
 				System.out.println("-----------------------------");
 				System.out.print("どの防具を見ますか?(一つ戻る:0)>>");
@@ -211,9 +211,9 @@ public class Shop {
 	private static int selectAndBuyEquip(List<Equipment> shop,int select,int buy, Player player) {
 		select = 0;
 		System.out.println("-----------------------------");
-		System.out.printf("%s:%s 選択肢%n",format(shop.get(0) instanceof Weapon?"武器名":"防具名",18),format("価格",3));
+		System.out.printf("%s:%s 選択肢%n",Option.format(shop.get(0) instanceof Weapon?"武器名":"防具名",18),Option.format("価格",3));
 		for(Equipment s:shop) {
-			System.out.printf("%s:%s%d%n",format(s.getName(),18),format(""+s.getPrice()+"G",8),++select);
+			System.out.printf("%s:%s%d%n",Option.format(s.getName(),18),Option.format(""+s.getPrice()+"G",8),++select);
 		}
 		System.out.println("-----------------------------");
 		//欲しい装備を選ぶ
@@ -231,10 +231,10 @@ public class Shop {
 			money = money - shop.get(select).getPrice();
 			//購入後にプレイヤーに武器を渡す
 			if(shop.get(select) instanceof Weapon) {
-				player.w = (Weapon)shop.get(select);//武器をキャラに渡す
+				player.setWeapon((Weapon)shop.get(select));//武器をキャラに渡す
 			}
-			if(shop.get(select) instanceof Protector) {
-				player.p = (Protector)shop.get(select);//防具をキャラに渡す
+			if(shop.get(select) instanceof Armor) {
+				player.setArmor((Armor)shop.get(select));//防具をキャラに渡す
 			}
 			System.out.printf("%sを購入しました。%n",shop.get(select).getName());
 		}else {
@@ -242,15 +242,5 @@ public class Shop {
 		}
 		System.out.println();
 		return money;
-	}
-	//全角半角の文字位置合わせ
-	private static String format(String target, int length){
-		int byteDiff = (getByteLength(target, Charset.forName("UTF-8"))-target.length())/2;
-		return String.format("%-"+(length-byteDiff)+"s", target);
-	}
-
-	//文字のバイト数取得
-	private static int getByteLength(String string, Charset charset) {
-		return string.getBytes(charset).length;
 	}
 }

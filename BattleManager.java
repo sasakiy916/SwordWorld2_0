@@ -209,7 +209,7 @@ public class BattleManager{
 			//武器の威力表から結果を出す
 			int power = Dice.roll(2)-2;
 			if(power != 0) {
-				calcDamage = player.w.getPower(power);
+				calcDamage = player.getWeapon().getPower(power);
 			}else {
 				System.out.println("攻撃、自動失敗");
 				return;

@@ -5,14 +5,16 @@ public abstract class Protector extends Equipment{
 		METALAROMR,
 	}
 	private String name;//名称
-	private static String[] names = {
-			"非金属鎧",
-			"金属鎧",
-	};//防護名称一覧
 	private int def;//防護点
 	private int needStr;//必要筋力
 	private int price;//価格
 	private int avoi;//回避
+	private String kinds;//種類
+	private String rank;//ランク
+	private static String[] names = {
+			"非金属鎧",
+			"金属鎧",
+	};//防護名称一覧
 	//名前のアクセサ
 	public String getName() {
 		return name;
@@ -54,6 +56,18 @@ public abstract class Protector extends Equipment{
 	}
 	public void setAvoi(int avoi) {
 		this.avoi = avoi;
+	}
+	public String getKinds() {
+		return kinds;
+	}
+	public void setKinds(String kinds) {
+		this.kinds = kinds;
+	}
+	public String getRank() {
+		return rank;
+	}
+	public void setRank(String rank) {
+		this.rank = rank;
 	}
 	//防具の情報表示
 	public String toString() {

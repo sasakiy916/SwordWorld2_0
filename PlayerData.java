@@ -16,7 +16,11 @@ public class PlayerData {
 	public static void save(Player player) throws IOException {
 		//Json記述
 		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(player) + System.getProperty("line.separator");//改行コード付き
+		String json = mapper.writeValueAsString(player);//プレイたーデータ
+		json += mapper.writeValueAsString(player.getWeapon());//武器データ
+		json += mapper.writeValueAsString(player.getWeapon());//鎧データ
+		json += mapper.writeValueAsString(player.getWeapon());//盾データ
+		json += System.getProperty("line.separator");//改行コード
 		//jsonファイルへ書き込み
 		FileWriter fw = new FileWriter("player/player.json",true);//true:追加書き込み、第二引数無し：上書き
 		fw.write(json);
@@ -60,7 +64,8 @@ public class PlayerData {
 
 			}catch(Exception e) {
 				System.out.println("選択肢以外が選択されました");
-				System.out.println();
+				e.printStackTrace();//デバッグ
+				int a = scan.nextInt();//デバッグ
 			}
 		}while(true);
 		//デバッグ用
