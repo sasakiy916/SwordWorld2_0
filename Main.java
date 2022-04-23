@@ -23,7 +23,8 @@ public class Main{
 //			System.out.println(line);
 //		}
 //		br.close();
-
+		//デバッグ
+		System.out.println(new Weapon("グレートソード","近接武器 - ソードB.csv"));
 		//タイトル
 		System.out.println("ソードワールド2.0 ～再現の章～");
 		Player p = title();
