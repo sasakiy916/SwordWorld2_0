@@ -24,7 +24,7 @@ public class Weapon extends Equipment{
 		
 	}
 	public Weapon(String weapon,String path) {
-		List<String[]> weapons = Option.load("weapon/" + path);
+		List<String[]> weapons = Option.load(path);
 		int name = 0;
 		int usage = 0;
 		int kinds = 0;

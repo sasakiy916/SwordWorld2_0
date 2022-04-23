@@ -12,19 +12,6 @@ public class Main{
 		QUIT,
 	}
 	public static void main(String[] args) throws Exception{
-//		//ファイル読み込みテスト
-//		List<String> list = new ArrayList<>();
-//		FileInputStream fis = new FileInputStream("birth/birth - 人間.csv");
-//		InputStreamReader isr = new InputStreamReader(fis,"utf-8");
-//		BufferedReader br = new BufferedReader(isr);
-//		String line = br.readLine();
-//		while((line = br.readLine()) != null) {
-//			list.add(line);
-//			System.out.println(line);
-//		}
-//		br.close();
-		//デバッグ
-		System.out.println(new Weapon("グレートソード","近接武器 - ソードB.csv"));
 		//タイトル
 		System.out.println("ソードワールド2.0 ～再現の章～");
 		Player p = title();

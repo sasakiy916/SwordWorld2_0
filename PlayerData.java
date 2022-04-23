@@ -59,13 +59,12 @@ public class PlayerData {
 				System.out.print("どのキャラを使いますか>>");
 				target = scan.nextInt()-1;
 				System.out.println(players.get(target));
-				System.out.print("このキャラを使います？(はい:0,いいえ:0以外)>>");
+				System.out.print("このキャラを使います？(はい:0,いいえ:1)>>");
 				if(scan.nextInt() == 0)break;
 
 			}catch(Exception e) {
 				System.out.println("選択肢以外が選択されました");
 				e.printStackTrace();//デバッグ
-				int a = scan.nextInt();//デバッグ
 			}
 		}while(true);
 		//デバッグ用

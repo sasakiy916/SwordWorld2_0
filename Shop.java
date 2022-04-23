@@ -3,7 +3,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Shop {
-	private enum ShopMenu{
+	enum EquipList{
+		WEAPON,
+		ARMOR,
+		SHIELD,
+	}
+	enum ShopMenu{
 		EQUIPMENT,
 		EQUIPTYPE,
 		BUYEQUIP,
@@ -26,15 +31,19 @@ public class Shop {
 		};
 		//武器の種類名を取得
 		List<String[]> equipList = Option.load("Equipment/各装備一覧.csv");
-		String[] wepons = new String[equipList.size()-1];
+		String[] weapons = new String[equipList.size()-1];
 		for(int i=0;i<equipList.size()-1;i++) {
-			wepons[i] = equipList.get(i+1)[0];
-			System.out.println(wepons[i]);
+			weapons[i] = equipList.get(i+1)[0];
 		}
-		//防具の種類名取得
-		String[] protectors = new String[Protector.getNames().length];
-		for(int i=0;i<protectors.length;i++) {
-			protectors[i] = Protector.getNames()[i];
+		//鎧の種類名取得
+		String[] armor = new String[equipList.size()-1];
+		for(int i=0;i<equipList.size()-1;i++) {
+			armor[i] = equipList.get(i+1)[1];
+		}
+		//盾の種類名取得
+		String[] shield = new String[equipList.size()-1];
+		for(int i=0;i<equipList.size()-1;i++) {
+			shield[i] = equipList.get(i+1)[2];
 		}
 		//買い物開始
 		while(buy != 1) {
@@ -55,9 +64,17 @@ public class Shop {
 					//武器もしくは防具の種類
 					case EQUIPTYPE:
 						menu = ShopMenu.EQUIPTYPE;
-						select = prepareEquipment(shop,wepons,protectors,select);
+						select = prepareEquipment(shop,weapons,armor,select);
 						System.out.println();
-						errorCheck = selectEquipType==0?wepons[select]:protectors[select];//不正値チェック用
+						//不正値チェック(選択肢外かどうか)
+						if(selectEquipType == 0) {
+							errorCheck = weapons[select];
+						}else if(selectEquipType == 1) {
+							errorCheck = armor[select];
+						}else {
+							errorCheck = shield[select];
+						}
+						errorCheck = selectEquipType==0?weapons[select]:armor[select];//不正値チェック用/原因究明
 						if(select == -1)break;//戻る
 					//どれを買うか
 					case BUYEQUIP:
@@ -121,6 +138,7 @@ public class Shop {
 			}
 
 			//買い物の継続確認
+			System.out.println(player);
 			System.out.println("------------------");
 			System.out.printf("所持金 %dG%n",money);
 			System.out.println("------------------");
@@ -139,19 +157,22 @@ public class Shop {
 			System.out.printf("%s    %d%n",Option.format(equipName,10),++select);
 		}
 		System.out.println("-----------------------------");
-		System.out.print("武器と防具どちらを見ますか?>>");
+		System.out.print("どの装備を見ますか?>>");
 		select = scan.nextInt() - 1;
 		return select;
 	}
 	//装備の種類を選ぶ
-	private static int prepareEquipment(List<Equipment> shop,String[] wepons,String[] protectors,int select) {
+	private static int prepareEquipment(List<Equipment> shop,String[] wepons,String[] armors,int select) {
 		try {
-			switch(select) {
+			EquipList equipList = EquipList.values()[select];
+			ArrayList<String[]> equips = new ArrayList<String[]>();//装備の名前リスト
+			String path = "";
+			select = 0;
+			switch(equipList) {
 			//武器
-			case 0:
-				select = 0;
+			case WEAPON:
 				System.out.println("-----------------------------");
-				System.out.printf("%s 選択肢%n",Option.format("武器名",8));
+				System.out.printf("%s 選択肢%n",Option.format("近接武器",8));
 				for(String weponName:wepons) {
 					System.out.printf("%s    %d%n",Option.format(weponName,8),++select);
 				}
@@ -159,52 +180,60 @@ public class Shop {
 				System.out.print("どの武器を見ますか?(一つ戻る:0)>>");
 				select = scan.nextInt() - 1;//選択肢入力
 				//選択肢によってお店の武器種類を変更
-				Weapon.WeponList wepon = Weapon.WeponList.values()[select];
-				switch(wepon) {
+				Weapon.WeponList weapon = Weapon.WeponList.values()[select];
+				path = "weapon/";//ファイルへのパス
+				//種類ごとのパス設定
+				switch(weapon) {
 				case AXE:
-					for(Axe.AxeList s:Axe.AxeList.values()) {
-						shop.add(new Axe(s));
-					}
+					path += "アックスB.csv";
 					break;
 				case SWORD:
-					for(Sword.SwordList s:Sword.SwordList.values()) {
-						shop.add(new Sword(s));
-					}
+					path += "ソードB.csv";
 					break;
 				default:
 					break;
 				}
 				break;
 				//防具
-			case 1:
-				select = 0;
+			case ARMOR:
 				System.out.println("-----------------------------");
 				System.out.printf("%s 選択肢%n",Option.format("防具名",8));
-				for(String protectorName:protectors) {
-					System.out.printf("%s  %d%n",Option.format(protectorName,8),++select);
+				for(String armorName:armors) {
+					System.out.printf("%s  %d%n",Option.format(armorName,8),++select);
 				}
 				System.out.println("-----------------------------");
 				System.out.print("どの防具を見ますか?(一つ戻る:0)>>");
 				select = scan.nextInt() - 1;
 				//防具の在庫用意
-				Protector.ProrectorList protector = Protector.ProrectorList.values()[select];
+				Armor.ArmorList protector = Armor.ArmorList.values()[select];
+				path = "armor/";//ファイルのパス
 				switch(protector) {
 				case METALAROMR:
-					for(MetalArmor.MetalArmorList metalArmor:MetalArmor.MetalArmorList.values()) {
-						shop.add(new MetalArmor(metalArmor));
-					}
+					path += "金属鎧B.csv";
 					break;
 				case NONMETALARMOR:
-					for(NonMetalArmor.NonMetalArmorList nonMetalArmor:NonMetalArmor.NonMetalArmorList.values()) {
-						shop.add(new NonMetalArmor(nonMetalArmor));
-					}
+					path += "非金属鎧B.csv";
 					break;
 				default:
 					break;
 				}
 				break;
-			default:
+			case SHIELD:
+				path = "shield/盾B.csv";
 				break;
+			}
+			//装備データの読み込み,Listに追加
+			equips = Option.load(path);
+			for(int i=1;i<equips.size();i++) {//一行目の見出しは無視
+				if(equips.get(i)[0] != "") {//名称の無い行は無視(用法が二つある装備は片方だけ)
+					if(path.matches("weapon/.*")) {
+						shop.add(new Weapon(equips.get(i)[0],path));
+					}else if(path.matches("armor/.*")){
+						shop.add(new Armor(equips.get(i)[0],path));
+					}else if(path.matches("shield/.*")){
+						shop.add(new Shield(equips.get(i)[0],path));
+					}
+				}
 			}
 		}catch(Exception e) {
 		}
@@ -238,6 +267,9 @@ public class Shop {
 			}
 			if(shop.get(select) instanceof Armor) {
 				player.setArmor((Armor)shop.get(select));//防具をキャラに渡す
+			}
+			if(shop.get(select) instanceof Shield) {
+				player.setShield((Shield)shop.get(select));//盾をキャラに渡す
 			}
 			System.out.printf("%sを購入しました。%n",shop.get(select).getName());
 		}else {

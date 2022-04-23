@@ -4,6 +4,12 @@ public class Axe extends Weapon {
 		HANDAXE,
 		BATTLEAXE,
 	}//コンストラクタ
+	public Axe() {
+		
+	}
+	public Axe(String name,String path) {
+		super(name,path);
+	}
 	public Axe(AxeList axe){
 		setNames(new String[] {
 				"ハンドアックス",
