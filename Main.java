@@ -76,6 +76,7 @@ public class Main{
 				//既存キャラ選択
 			case SELECTCHARACTER:
 				System.out.println("未実装");
+				Shop.buy(PlayerData.load());
 				continue;
 				//戦闘
 			case BATTLE:

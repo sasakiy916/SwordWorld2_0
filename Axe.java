@@ -9,7 +9,7 @@ public class Axe extends Weapon {
 				"ハンドアックス",
 				"バトルアックス",
 		});
-		setWepon(WeponList.AXE);
+//		setWepon(WeponList.AXE);
 		switch(axe) {
 		case BATTLEAXE:
 			setName(getNames()[axe.ordinal()]);

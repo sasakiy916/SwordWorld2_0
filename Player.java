@@ -1,4 +1,3 @@
-import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -45,10 +44,11 @@ public  abstract class Player extends Character{
 	//言語(実装予定なし)
 	//名誉系のフィールド(実装予定なし)
 	//武器
-	Weapon w = new Panch();
+	Weapon weapon = new Panch();
 	//鎧
-	Protector p = new Nude();
+	Armor armor = new Nude(); 
 	//盾
+	Shield shield = new Nohand();
 	//魔法発動体
 	//アイテム
 	private int money = 1200;//所持金
@@ -115,8 +115,8 @@ public  abstract class Player extends Character{
 	public int damageRoll(){
 		int dice = Dice.roll(2)-2;
 		if(dice > 0){
-			System.out.printf("%sの威力は%d%n",w.getName(),w.getPower(dice));
-			return w.getPower(dice) + this.getStrBonus();
+			System.out.printf("%sの威力は%d%n",getWeapon().getName(),getWeapon().getPower(dice));
+			return getWeapon().getPower(dice) + this.getStrBonus();
 		}else{
 			System.out.println("自動失敗!ダメージを与えられなかった");
 			return 0;
@@ -129,21 +129,21 @@ public  abstract class Player extends Character{
 			int select = 1;
 			//所持技能表示
 			System.out.println("取得技能一覧");
-			System.out.printf("%s|%s%n",format("技能",18),"レベル");
+			System.out.printf("%s|%s%n",Option.format("技能",18),"レベル");
 			for(String key:getJobs().keySet()) {
 				int value = getJobs().get(key);
 				if(value != 0) {
-					System.out.printf("%s|%d%n",format(key,18),value);
+					System.out.printf("%s|%d%n",Option.format(key,18),value);
 				}
 			}
 			System.out.println("------------------------");
 			System.out.printf("所持経験点:%d%n",getExp());
 			System.out.println("取得可能な技能");
-			System.out.printf("%s|%s%n",format("技能",18),"必要経験点");
+			System.out.printf("%s|%s%n",Option.format("技能",18),"必要経験点");
 			//取得可能な技能一覧表示
 			for(String key:getJobs().keySet()) {
 				int jobLevel = getJobs().get(key);
-				System.out.printf("%s|%4d:%2d%n",format(key,18),expTable(key)[jobLevel],select);
+				System.out.printf("%s|%4d:%2d%n",Option.format(key,18),expTable(key)[jobLevel],select);
 				select++;
 			}
 			//取得技能の選択
@@ -472,15 +472,29 @@ public  abstract class Player extends Character{
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	//全角半角の文字位置合わせ
-	private static String format(String target, int length){
-		int byteDiff = (getByteLength(target, Charset.forName("UTF-8"))-target.length())/2;
-		return String.format("%-"+(length-byteDiff)+"s", target);
+	public Weapon getWeapon() {
+		return weapon;
 	}
-
-	//文字のバイト数取得
-	private static int getByteLength(String string, Charset charset) {
-		return string.getBytes(charset).length;
+	public void setWeapon(Weapon weapon) {
+		this.weapon = weapon;
+	}
+	public Armor getArmor() {
+		return armor;
+	}
+	public void setArmor(Armor armor) {
+		this.armor = armor;
+	}
+	public Shield getShield() {
+		return shield;
+	}
+	public void setShield(Shield shield) {
+		this.shield = shield;
+	}
+	public static int getBank() {
+		return bank;
+	}
+	public static void setBank(int bank) {
+		Player.bank = bank;
 	}
 	
 	//Player情報の表示
@@ -489,17 +503,17 @@ public  abstract class Player extends Character{
 		//キャラのステータス表示
 		int width = 15;
 		System.out.printf("名前:%s%n",getName());
-		System.out.printf("%s",format("HP:" + getHp() + "/" + getMaxHp(),width));
-		System.out.printf("%s%n",format("MP:" + getMp() + "/" + getMaxMp(),width));
-		System.out.printf("%s",format("生命抵抗力:" + getResVit(),width));
-		System.out.printf("%s%n",format("精神抵抗力:" + getResPow(),width));
-		System.out.printf("%s",format("器用度:" + getDex(),width));
-		System.out.printf("%s%n",format("敏捷度:" + getAgi(),width));
-		System.out.printf("%s",format("筋力:" + getStr(),width));
-		System.out.printf("%s%n",format("生命力:" + getVit(),width));
-		System.out.printf("%s",format("知力:" + getWis(),width));
-		System.out.printf("%s%n",format("精神力:" + getPow(),width));
-		System.out.printf("%s%n",format("防護点:" + getDef(),width));
+		System.out.printf("%s",Option.format("HP:" + getHp() + "/" + getMaxHp(),width));
+		System.out.printf("%s%n",Option.format("MP:" + getMp() + "/" + getMaxMp(),width));
+		System.out.printf("%s",Option.format("生命抵抗力:" + getResVit(),width));
+		System.out.printf("%s%n",Option.format("精神抵抗力:" + getResPow(),width));
+		System.out.printf("%s",Option.format("器用度:" + getDex(),width));
+		System.out.printf("%s%n",Option.format("敏捷度:" + getAgi(),width));
+		System.out.printf("%s",Option.format("筋力:" + getStr(),width));
+		System.out.printf("%s%n",Option.format("生命力:" + getVit(),width));
+		System.out.printf("%s",Option.format("知力:" + getWis(),width));
+		System.out.printf("%s%n",Option.format("精神力:" + getPow(),width));
+		System.out.printf("%s%n",Option.format("防護点:" + getDef(),width));
 		System.out.println();
 		System.out.printf("種族:%s 生まれ:%s%n",getRace(),getBirth()); 
 		System.out.printf("経験点:%d%n",getExp());
@@ -507,18 +521,19 @@ public  abstract class Player extends Character{
 		System.out.println("------------------------");
 		//技能一覧
 		System.out.println("取得技能一覧");
-		System.out.printf("%s|%s%n",format("技能",18),"レベル");
+		System.out.printf("%s|%s%n",Option.format("技能",18),"レベル");
 		for(String key:getJobs().keySet()) {
 			int value = getJobs().get(key);
 			if(value != 0) {
-				System.out.printf("%s|%d%n",format(key,18),value);
+				System.out.printf("%s|%d%n",Option.format(key,18),value);
 			}
 		}
 		//装備品
 		System.out.println("------------------------");
 		System.out.println("現在の装備");
-		System.out.println("武器:"+w.getName());
-		System.out.println("防具:"+p.getName());
+		System.out.println("武器:" + getWeapon().getName());
+		System.out.println("鎧:" + getArmor().getName());
+		System.out.println("盾:"+getShield().getName());
 		System.out.println("------------------------");
 		return "";
 	}

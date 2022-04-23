@@ -12,7 +12,6 @@ public class Sword extends Weapon {
 				"ダガー",
 				"ショートソード",
 		});
-		setWepon(WeponList.SWORD);
 		switch(sword) {
 		case KNIFE:
 			setName(getNames()[sword.ordinal()]);
