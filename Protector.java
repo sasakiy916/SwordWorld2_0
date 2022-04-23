@@ -1,9 +1,6 @@
+import java.util.List;
+
 public abstract class Protector extends Equipment{
-	//防具一覧列挙
-	public enum ProrectorList{
-		NONMETALARMOR,
-		METALAROMR,
-	}
 	private String name;//名称
 	private int def;//防護点
 	private int needStr;//必要筋力
@@ -11,23 +8,51 @@ public abstract class Protector extends Equipment{
 	private int avoi;//回避
 	private String kinds;//種類
 	private String rank;//ランク
-	private static String[] names = {
-			"非金属鎧",
-			"金属鎧",
-	};//防護名称一覧
+	//コンストラクタ
+	public Protector() {
+		//処理なし
+	}
+	public Protector(String name,String path) {
+		List<String[]> protectors = Option.load(path);
+		int def = 0;//防護点
+		int needStr = 0;//必要筋力
+		int price = 0;//価格
+		int avoi = 0;//回避
+		for(int i=0;i<protectors.get(0).length;i++){
+			switch(protectors.get(0)[i]) {
+			case "防護点":
+				def = i;
+				break;
+			case "必筋":	
+				needStr = i;
+				break;
+			case "価格":	
+				price = i;
+				break;
+			case "回避":	
+				avoi = i;
+				break;
+			}
+		}
+		//装備の種類名がある行
+		int weaponKind = 0;
+		for(int i=1;i<protectors.size();i++) {
+			if(protectors.get(i)[0].matches(name)) {
+				weaponKind = i;
+			}
+		}
+		setName(name);
+		setDef(Integer.parseInt(protectors.get(weaponKind)[def]));
+		setNeedStr(Integer.parseInt(protectors.get(weaponKind)[needStr]));
+		setPrice(Integer.parseInt(protectors.get(weaponKind)[price]));
+		setAvoi(Integer.parseInt(protectors.get(weaponKind)[avoi]));
+	}
 	//名前のアクセサ
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	//防具名称一覧のアクセサ
-	public static String[] getNames() {
-		return names;
-	}
-	public void setNames(String[] names) {
-		this.names = names;
 	}
 	//防護点のアクセサ
 	public int getDef() {
