@@ -144,7 +144,7 @@ public class CharacterCreater {
 		System.out.println();
 	}
 	//能力値の決定
-	public void decideStatus() {
+	public void decideStatus() throws InterruptedException {
 		System.out.println(this.player);//デバッグ用
 		//基礎能力値設定
 		//A~F能力値ダイスロール

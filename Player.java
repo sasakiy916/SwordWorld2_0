@@ -86,14 +86,14 @@ public  abstract class Player extends Character{
 	}
 	//先制判定
 	@Override
-	public int judgePre() {
+	public int judgePre(){
 		System.out.println("先制力判定");
 		int dice = Dice.roll(2);
 		return autoJudge(dice,getJobs().get("スカウト") + getAgiBonus());
 	}
 	//命中判定
 	@Override
-	public int judgeHit() {
+	public int judgeHit(){
 		System.out.println("命中力判定");
 		//ダイス値
 		int dice = Dice.roll(2);

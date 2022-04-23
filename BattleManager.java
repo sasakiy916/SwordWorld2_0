@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Scanner;
 public class BattleManager{
 	//戦闘システム
-	public static void battle(List<Character> player,List<Character> enemy) throws InterruptedException {
+	public static void battle(List<Character> player,List<Character> enemy) throws Exception {
 		Random r = new Random();//ランダム準備
 		Scanner scan = new Scanner(System.in);//スキャナー準備
 		//プレイヤーとモンスターをMapに格納
@@ -160,7 +160,7 @@ public class BattleManager{
 	}
 	
 	//ラウンド毎の攻撃
-	private static void roundAttack(Character first,Character second) {
+	private static void roundAttack(Character first,Character second) throws Exception {
 		//命中判定
 		int hit = first.judgeHit();
 		switch(hit) {
