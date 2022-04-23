@@ -18,15 +18,18 @@ public class Shop {
 		System.out.print("装備品を購入しますか？(購入する:0,購入しない:1)>>");
 		int buy = scan.nextInt();
 		System.out.println();
-		//装備の種類名取得
-		String[] equips = new String[Equipment.getNames().length];
-		for(int i=0;i<equips.length;i++) {
-			equips[i] = Equipment.getNames()[i];
-		}
+		//装備の種類名
+		String[] equips = {
+				"武器",
+				"鎧",
+				"盾",
+		};
 		//武器の種類名を取得
-		String[] wepons = new String[Weapon.getNames().length];
-		for(int i=0;i<wepons.length;i++) {
-			wepons[i] = Weapon.getNames()[i];
+		List<String[]> equipList = Option.load("Equipment/各装備一覧.csv");
+		String[] wepons = new String[equipList.size()-1];
+		for(int i=0;i<equipList.size()-1;i++) {
+			wepons[i] = equipList.get(i+1)[0];
+			System.out.println(wepons[i]);
 		}
 		//防具の種類名取得
 		String[] protectors = new String[Protector.getNames().length];
@@ -61,7 +64,7 @@ public class Shop {
 						menu = ShopMenu.BUYEQUIP;
 						do {
 							//武器一覧表示
-							select = selectAndBuyEquip(shop,select,buy,player);
+							select = selectAndBuyEquip(shop,select);
 							if(select == -1)break;//戻る
 							shop.get(select);//不正値チェック用
 							//装備の詳細表示
@@ -208,7 +211,7 @@ public class Shop {
 		return select;
 	}
 	//購入する装備を選ぶ
-	private static int selectAndBuyEquip(List<Equipment> shop,int select,int buy, Player player) {
+	private static int selectAndBuyEquip(List<Equipment> shop,int select) {
 		select = 0;
 		System.out.println("-----------------------------");
 		System.out.printf("%s:%s 選択肢%n",Option.format(shop.get(0) instanceof Weapon?"武器名":"防具名",18),Option.format("価格",3));

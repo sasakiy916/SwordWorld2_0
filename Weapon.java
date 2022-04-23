@@ -6,15 +6,15 @@ public class Weapon extends Equipment{
 		SWORD,
 		AXE,
 	}
-	private String name;//名称
+	//private String name;//名称
 	private String usage;//用法
 	private String kinds;//武器の種類
-	private int needStr;//必筋
+	//private int needStr;//必筋
 	private int hit;//命中
 	private int power;//威力
 	private int[] powers = new int[10];//威力表
 	private int critical;//クリティカル値
-	private int price;//価格
+	//private int price;//価格
 	private static String[] names = new String[] {
 			"ソード",
 			"アックス",
@@ -24,7 +24,7 @@ public class Weapon extends Equipment{
 		
 	}
 	public Weapon(String weapon,String path) {
-		List<String[]> weapons = Option.load("weapon" + path);
+		List<String[]> weapons = Option.load("weapon/" + path);
 		int name = 0;
 		int usage = 0;
 		int kinds = 0;
@@ -62,9 +62,12 @@ public class Weapon extends Equipment{
 				break;
 			}
 		}
+		//装備の種類名がある行
 		int weaponKind = 0;
-		for(int i=0;i<weapons.size();i++) {
-			weaponKind = weapons.get(i)[0].indexOf(weapon);
+		for(int i=1;i<weapons.size();i++) {
+			if(weapons.get(i)[name].matches(weapon)) {
+				weaponKind = i;
+			}
 		}
 		setName(weapons.get(weaponKind)[name]);//名称
 		setUsage(weapons.get(weaponKind)[usage]);//用法
@@ -82,12 +85,6 @@ public class Weapon extends Equipment{
 		setPrice(Integer.parseInt(weapons.get(weaponKind)[price]));
 	}
 	//武器名のアクセサ
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
 	//武器一覧のアクセサ
 	public static String[] getNames() {
 		return names;
@@ -96,19 +93,7 @@ public class Weapon extends Equipment{
 		this.names = names;
 	}
 	//価格のアクセサ
-	public int getPrice(){
-		return this.price;
-	}
-	public void setPrice(int price){
-		this.price = price;
-	}
 	//必要な筋力のアクセサ
-	public int getNeedStr(){
-		return this.needStr;
-	}
-	public void setNeedStr(int needStr){
-		this.needStr = needStr;
-	}
 	//威力表のアクセサ
 	public int getPower(int dice){
 		return this.powers[dice-1];
