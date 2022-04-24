@@ -10,6 +10,8 @@ public class Kobold extends Monster{
 		setFixedHit(9);
 		setAvoi(1);
 		setFixedAvoi(8);
+		setMoney(30);
+		setExp(100);
 	}
 
 	@Override

@@ -37,7 +37,6 @@ public class Main{
 				Option.format("難易度選択 未実装",wordWidth),
 				Option.format("ゲーム終了",wordWidth),
 		};
-		Player p = new TestPlayer("テストくん");//新キャラ用
 		//メニュー表示
 		while(true) {
 			System.out.println("ソードワールド2.0 ～再現の章～");

@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +10,8 @@ public class BattleManager{
 	public static void battle(List<Character> player,List<Character> enemy) throws Exception {
 		Random r = new Random();//ランダム準備
 		Scanner scan = new Scanner(System.in);//スキャナー準備
+		int sumMoney = 0;//戦闘後に貰えるお金
+		int sumExp = 0;//戦闘後に貰える経験点
 		//プレイヤーとモンスターをMapに格納
 		Map<List<Character>,Integer> parties = new LinkedHashMap<List<Character>,Integer>();
 		parties.put(player, 0);
@@ -68,9 +71,11 @@ public class BattleManager{
 		//戦闘開始
 		while(true) {
 			for(List<Character> party:orderParty) {
-				if(party.isEmpty()) {
+				//どっちかのパーティが全滅してるか
+				if(orderParty.get(0).isEmpty() || orderParty.get(1).isEmpty()) {
 					break;
 				}
+				//攻撃開始
 				for(Character character:party) {
 					int target;//攻撃対象
 					Thread.sleep(1000);
@@ -97,6 +102,8 @@ public class BattleManager{
 							//モンスターの場合
 							System.out.printf("%sのHP:%d%n",enemy.get(target).getName(),enemy.get(target).getHp());
 							System.out.printf("%sを倒した！%n",enemy.get(target).getName());
+							sumMoney += ((Monster)enemy.get(target)).getMoney();
+							sumExp += ((Monster)enemy.get(target)).getExp();
 						}
 						//パーティから削除
 						targetParty.remove(target);
@@ -113,6 +120,14 @@ public class BattleManager{
 				System.out.println("モンスターの全滅");
 				displayStatus(player);
 				displayStatus(enemy);
+				System.out.printf("%dG取得した%n",sumMoney);
+				System.out.printf("%d経験点取得した%n",sumExp);
+				for(Character pl:player) {
+					Player ppl = (Player)pl;
+					ppl.setMoney(ppl.getMoney()+sumMoney);
+					ppl.setExp(ppl.getExp()+sumExp);
+					ppl.setHp(ppl.getMaxHp());
+				}
 				break;
 			}
 			//戦闘継続か終了かの確認
@@ -125,7 +140,23 @@ public class BattleManager{
 			String sc =scan.nextLine();
 			System.out.println("**********************************************");
 			if(sc.matches("q|quit")){
+				System.out.printf("%d経験点取得した%n",sumExp);
+				System.out.println("途中で逃げたためお金は拾えなかった。");
+				for(Character pl:player) {
+					Player ppl = (Player)pl;
+					ppl.setExp(ppl.getExp()+sumExp);
+					ppl.setHp(ppl.getMaxHp());
+				}
 				break;
+			}
+		}
+		//パーティ情報保存
+		String path = "party.json";
+		File partyPath = new File("player/"+path);
+		partyPath.delete();//既存ファイル削除
+		for(Character savePlayer:player) {
+			if(savePlayer instanceof Player) {
+				PlayerData.save((Player)savePlayer,path,true);
 			}
 		}
 		System.out.println("戦闘終了");
