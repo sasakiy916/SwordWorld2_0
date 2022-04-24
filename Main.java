@@ -76,7 +76,7 @@ public class Main{
 				String[] guildMenus = {
 						"酒場",
 						"ショップ",
-						"募集掲示板",
+						"冒険者を追い出す",
 						"キャラの成長",
 				};
 				//メニュー表示
@@ -181,16 +181,39 @@ public class Main{
 						break;
 						//ショップ
 					case SHOP:
-						Shop.buy(PlayerData.load());
+						for(int i=0;i<playerParty.size();i++) {
+							System.out.printf("%s %d%n",playerParty.get(i).getName(),i+1);
+						}
+						System.out.print("誰が買い物しますか?>>");
+						select = scan.nextInt()-1;
+						if(select == -1)break;
+						Shop.buy((Player)playerParty.get(select));
 						break;
 						//掲示板
+						//デバッグ中
 					case BOARD:
 						System.out.println("未完成");
+						if(PlayerData.showStayPlayer()) {
+							System.out.println("酒場には誰も居ません");
+							break;
+						}
+						System.out.print("誰を追い出しますか?(戻る:0)>>");
+						select = scan.nextInt()-1;
+						if(select == -1)break; 
+						PlayerData.selectRemove(select);
 						break;
 						//キャラの成長
 					case GROWUP:
-						System.out.println("経験点を消費して技能レベルを上げられます");
 						System.out.println("未完成");
+						System.out.println("経験点を消費して技能レベルを上げられます");
+						for(int i=0;i<playerParty.size();i++) {
+							System.out.printf("%s %d%n",playerParty.get(i).getName(),i+1);
+						}
+						System.out.print("誰の技能レベルを上げますか?(戻る:0)>>");
+						select = scan.nextInt()-1;
+						System.out.println();
+						if(select == -1)break;
+						((Player)playerParty.get(select)).addJob();
 						break;
 					}
 				}

@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +32,12 @@ public class PlayerData {
 		fw.write(json);
 		fw.close();//ファイルを閉じる
 		//デバッグ用表示
-//		System.out.printf("%sのデータを保存しました。%n",player.getName());
-//		Option.printLine(25);
-//		try {
-//			Thread.sleep(1000);
-//		}catch(Exception e) {
-//		}
+		//		System.out.printf("%sのデータを保存しました。%n",player.getName());
+		//		Option.printLine(25);
+		//		try {
+		//			Thread.sleep(1000);
+		//		}catch(Exception e) {
+		//		}
 		System.out.println();
 	}
 	//保存された冒険者を読み込む
@@ -115,5 +117,29 @@ public class PlayerData {
 		fw.close();//ファイルを閉じる
 		//削除キャラの名前表示
 		System.out.printf("%sを削除しました%n",removePlayer);
+	}
+	//保存されてるキャラ一覧
+	public static boolean showStayPlayer() {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			FileInputStream fis = new FileInputStream("player/player.json");
+			InputStreamReader isr = new InputStreamReader(fis,"utf-8");
+			BufferedReader br = new BufferedReader(isr);
+			List<Player> stayMember = new ArrayList<>();
+			String line;
+			while((line = br.readLine()) != null) {
+				stayMember.add(mapper.readValue(line,Player.class));
+			}
+			br.close();//ファイル閉じる
+			//酒場に居る冒険者一覧
+			System.out.println("酒場に居る冒険者");
+			for(int i=0;i<stayMember.size();i++) {
+				System.out.printf("%s %s%n",stayMember.get(i).getName(),i+1);
+			}
+			return true;
+		}catch(Exception e) {
+			System.out.println("待機中の冒険者は居ません");
+			return false;
+		}
 	}
 }

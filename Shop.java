@@ -16,6 +16,13 @@ public class Shop {
 	static Scanner scan = new Scanner(System.in);
 	//購入
 	public static void buy(Player player) {
+		//現在の装備
+		Option.printLine(30);
+		System.out.println("現在の装備");
+		System.out.printf("武器:%s%n",player.getWeapon().getName());
+		System.out.printf("鎧:%s%n",player.getArmor().getName());
+		System.out.printf("盾:%s%n",player.getShield().getName());
+		Option.printLine(30);
 		//所持金確認
 		int money = player.getMoney();
 		System.out.printf("所持金 %dG%n",money);
