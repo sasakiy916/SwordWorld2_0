@@ -1,4 +1,4 @@
-import java.nio.charset.Charset;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -7,18 +7,27 @@ import java.util.Random;
 import java.util.Scanner;
 public class BattleManager{
 	//戦闘システム
-	public static void battle(List<Character> player,List<Character> enemy) throws InterruptedException {
+	public static void battle(List<Character> player,List<Character> enemy) throws Exception {
 		Random r = new Random();//ランダム準備
 		Scanner scan = new Scanner(System.in);//スキャナー準備
+		int sumMoney = 0;//戦闘後に貰えるお金
+		int sumExp = 0;//戦闘後に貰える経験点
 		//プレイヤーとモンスターをMapに格納
 		Map<List<Character>,Integer> parties = new LinkedHashMap<List<Character>,Integer>();
 		parties.put(player, 0);
 		parties.put(enemy, 0);
 		System.out.println("戦闘開始！");
 		//陣営の確認
+		System.out.println("味方陣営");
+		displayStatus(player);
+		System.out.println("敵陣営");
+		displayStatus(enemy);
 		//魔物知識判定
 		//先制判定
-		System.out.println("先制判定を行います");
+		int preLine = 30;
+		Option.printLine(preLine);
+		System.out.println("<<先制判定>>");
+		Option.printLine(preLine,"+");
 		//各パーティの一番高い先制値を確認
 		//先制値の一番高いキャラの名前
 		String playerPreName = "";
@@ -42,7 +51,9 @@ public class BattleManager{
 		//プレイヤーの先制値決定(モンスター側先制値以上なら先攻)
 		int dice = Dice.roll(2);
 		System.out.printf("プレイヤー側達成値>>%s:%d%n",playerPreName,parties.get(player)+dice);
+		//先攻→後攻の順でパーティ追加
 		List<List<Character>> orderParty = new ArrayList<>();
+		Option.printLine(preLine,"+");
 		System.out.print("先攻:");
 		if(parties.get(player) + dice >= parties.get(enemy)) {
 			//プレイヤー先攻
@@ -55,43 +66,47 @@ public class BattleManager{
 			orderParty.add(enemy);
 			orderParty.add(player);
 		}
+		Option.printLine(preLine);
 		//戦力の初期配置
-		System.out.println("味方陣営");
-		displayStatus(player);
-		System.out.println("敵陣営");
-		displayStatus(enemy);
 		//戦闘開始
 		while(true) {
 			for(List<Character> party:orderParty) {
-				if(party.isEmpty()) {
+				//どっちかのパーティが全滅してるか
+				if(orderParty.get(0).isEmpty() || orderParty.get(1).isEmpty()) {
 					break;
 				}
+				//攻撃開始
 				for(Character character:party) {
-					int target;
-					System.out.printf("%sの手番%n",character.getName());
+					int target;//攻撃対象
 					Thread.sleep(1000);
+					List<Character> targetParty = new ArrayList<>();//攻撃される側
 					if(character instanceof Player) {
 						//プレイヤーのターン時
-						target = r.nextInt(enemy.size());
-						roundAttack(character,enemy.get(target));
-						//生存判定
-						if(!isAlive(enemy.get(target))) {
-							System.out.printf("%sのHP:%d%n",enemy.get(target).getName(),enemy.get(target).getHp());
-							System.out.printf("%sを倒した！%n",enemy.get(target).getName());
-							enemy.remove(target);
-							break;
-						}
+						targetParty = enemy;
 					}else {
 						//モンスターのターン時
-						target = r.nextInt(player.size());
-						roundAttack(character,player.get(target));
-						//生存判定
-						if(!isAlive(player.get(target))) {
-							System.out.printf("%sのHP:%d%n",player.get(target).getName(),player.get(target).getHp());
-							System.out.printf("%sがやられてしまった！%n",player.get(target).getName());
-							player.remove(target);
-							break;
+						targetParty = player;
+					}
+					target = r.nextInt(targetParty.size());
+					Option.printLine(25);
+					System.out.printf("攻撃宣言:%s → %s%n",character.getName(),targetParty.get(target).getName());
+					Option.printLine(25,"+");
+					roundAttack(character,targetParty.get(target));
+					//生存判定
+					if(!isAlive(targetParty.get(target))) {
+						if(targetParty.get(target) instanceof Player) {
+							//プレイヤーの場合
+							System.out.printf("%sのHP:%d%n",targetParty.get(target).getName(),targetParty.get(target).getHp());
+							System.out.printf("%sがやられてしまった！%n",targetParty.get(target).getName());
+						}else {
+							//モンスターの場合
+							System.out.printf("%sのHP:%d%n",enemy.get(target).getName(),enemy.get(target).getHp());
+							System.out.printf("%sを倒した！%n",enemy.get(target).getName());
+							sumMoney += ((Monster)enemy.get(target)).getMoney();
+							sumExp += ((Monster)enemy.get(target)).getExp();
 						}
+						//パーティから削除
+						targetParty.remove(target);
 					}
 				}
 			}
@@ -105,6 +120,14 @@ public class BattleManager{
 				System.out.println("モンスターの全滅");
 				displayStatus(player);
 				displayStatus(enemy);
+				System.out.printf("%dG取得した%n",sumMoney);
+				System.out.printf("%d経験点取得した%n",sumExp);
+				for(Character pl:player) {
+					Player ppl = (Player)pl;
+					ppl.setMoney(ppl.getMoney()+sumMoney);
+					ppl.setExp(ppl.getExp()+sumExp);
+					ppl.setHp(ppl.getMaxHp());
+				}
 				break;
 			}
 			//戦闘継続か終了かの確認
@@ -117,7 +140,23 @@ public class BattleManager{
 			String sc =scan.nextLine();
 			System.out.println("**********************************************");
 			if(sc.matches("q|quit")){
+				System.out.printf("%d経験点取得した%n",sumExp);
+				System.out.println("途中で逃げたためお金は拾えなかった。");
+				for(Character pl:player) {
+					Player ppl = (Player)pl;
+					ppl.setExp(ppl.getExp()+sumExp);
+					ppl.setHp(ppl.getMaxHp());
+				}
 				break;
+			}
+		}
+		//パーティ情報保存
+		String path = "party.json";
+		File partyPath = new File("player/"+path);
+		partyPath.delete();//既存ファイル削除
+		for(Character savePlayer:player) {
+			if(savePlayer instanceof Player) {
+				PlayerData.save((Player)savePlayer,path,true);
 			}
 		}
 		System.out.println("戦闘終了");
@@ -125,79 +164,87 @@ public class BattleManager{
 	//パーティの簡易ステータス表示
 
 	//ステータス表示
-	private static void displayStatus(List<Character> party) {
-			for(int i=0;i<party.size();i++) {
-				System.out.print("-----------");
-			}
-			System.out.print("-");
-			System.out.println();
+	public  static void displayStatus(List<Character> party) {
+		for(int i=0;i<party.size();i++) {
+			System.out.print("-----------");
+		}
+		System.out.print("-");
+		System.out.println();
+		System.out.print("|");
+		//キャラの名前
+		for(int i=0;i<party.size();i++) {
+			System.out.printf("%s",Option.format(party.get(i).getName(),10));
 			System.out.print("|");
-			//キャラの名前
-			for(int i=0;i<party.size();i++) {
-				System.out.printf("%s",format(party.get(i).getName(),10));
-				System.out.print("|");
-			}
-			System.out.println();
+		}
+		System.out.println();
+		System.out.print("|");
+		//HP
+		for(int i=0;i<party.size();i++) {
+			System.out.printf("%s:%s",Option.format("ＨＰ",3),Option.format(""+party.get(i).getHp(),5));
 			System.out.print("|");
-			//HP
-			for(int i=0;i<party.size();i++) {
-				System.out.printf("%s:%s",format("ＨＰ",3),format(""+party.get(i).getHp(),5));
-				System.out.print("|");
-			}
-			System.out.println();
+		}
+		System.out.println();
+		System.out.print("|");
+		//MP
+		for(int i=0;i<party.size();i++) {
+			System.out.printf("%s:%s",Option.format("ＭＰ",3),Option.format(""+party.get(i).getMp(),5));
 			System.out.print("|");
-			//MP
-			for(int i=0;i<party.size();i++) {
-				System.out.printf("%s:%s",format("ＭＰ",3),format(""+party.get(i).getMp(),5));
-				System.out.print("|");
-			}
-			System.out.println();
-			for(int i=0;i<party.size();i++) {
-				System.out.print("-----------");
-			}
-			System.out.print("-");
-			System.out.println();
+		}
+		System.out.println();
+		for(int i=0;i<party.size();i++) {
+			System.out.print("-----------");
+		}
+		System.out.print("-");
+		System.out.println();
 	}
-	
-	//ラウンド毎の攻撃
-	private static void roundAttack(Character first,Character second) {
+
+	//ラウンド毎の攻撃(武器攻撃)
+	private static void roundAttack(Character first,Character second) throws Exception {
 		//命中判定
+		Option.printLine(25);
+		System.out.printf("<<%sの命中判定>>%n",first.getName());
 		int hit = first.judgeHit();
 		switch(hit) {
 		//自動失敗
 		case 1:
-			System.out.println("命中判定に自動失敗しました。");
+			System.out.println("攻撃を外してしまった");
 			return;
-		//自動成功
+			//自動成功
 		case 0:
 			System.out.println("命中判定に自動成功");
-		//出目3～11
-		default:
-			System.out.printf("達成値:%d%n",hit);
-			//回避判定
-			int avoi = second.judgeAvoi();
-			System.out.printf("達成値:%d%n",avoi);
-			System.out.println(avoi);
-			switch(avoi) {
-			//自動成功
-			case 0:
-				System.out.println("回避に自動成功");
-				return;
-			//自動失敗
-			case 1:
-				System.out.println("回避に自動失敗");
-				break;
+			break;
 			//出目3～11
-			default:
-				if(hit <= avoi) {
-					System.out.println("回避に成功");
-					return;
-				}else {
-					System.out.println("回避に失敗");
-					break;
-				}
+		default:
+			System.out.printf("命中値:%d%n",hit);
+			break;
+		}
+		//回避判定
+		Option.printLine(25);
+		System.out.printf("<<%sの回避判定>>%n",second.getName());
+		int avoi = second.judgeAvoi();
+		switch(avoi) {
+		//自動成功
+		case 0:
+			System.out.println("回避に自動成功");
+			return;
+			//自動失敗
+		case 1:
+			System.out.println("回避に自動失敗");
+			break;
+			//出目3～11
+		default:
+			System.out.printf("回避値:%d%n",avoi);
+			System.out.print("命中");
+			if(hit <= avoi) {
+				System.out.println("<=回避 → 成功");
+				System.out.printf("%sは%sの攻撃を避けた!%n",second.getName(),first.getName());
+				return;
+			}else {
+				System.out.println(">回避 → 失敗");
+				break;
 			}
 		}
+		Option.printLine(25);
 		//ダメージ決定
 		Player player;
 		Monster monster;
@@ -230,6 +277,7 @@ public class BattleManager{
 		//HPを減少させる
 		second.setHp(second.getHp() - appliedDamage);
 		System.out.printf("%sが%sに%dダメージを与えた%n",first.getName(),second.getName(),appliedDamage);
+		Option.printLine(25);
 	}
 
 	//生存判定
@@ -239,34 +287,5 @@ public class BattleManager{
 			return false;
 		}
 		return true;
-	}
-	private boolean isAliveMonster(Character m){
-		if(m.getHp() <= 0){
-			m.setHp(0);
-			System.out.printf("%sのHP:%d%n",m.getName(),m.getHp());
-			return false;
-		}
-		System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
-		return true;
-	}
-	private boolean isAlivePlayer(Character p){
-		if(p.getHp() <= 0){
-			p.setHp(0);
-			System.out.printf("%sのHP:%d%n",p.getName(),p.getHp());
-			System.out.printf("%sはやられてしまった",p.getName());
-			return false;
-		}
-		System.out.printf("%sのHP:%d%n%n",p.getName(),p.getHp());
-		return true;
-	}
-	//全角半角の文字位置合わせ
-	private static String format(String target, int length){
-		int byteDiff = (getByteLength(target, Charset.forName("UTF-8"))-target.length())/2;
-		return String.format("%-"+(length-byteDiff)+"s", target);
-	}
-
-	//文字のバイト数取得
-	private static int getByteLength(String string, Charset charset) {
-		return string.getBytes(charset).length;
 	}
 }

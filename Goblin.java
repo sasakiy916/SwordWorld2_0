@@ -10,6 +10,8 @@ public class Goblin extends Monster {
 		setFixedHit(10);
 		setAvoi(3);
 		setFixedAvoi(10);
+		setMoney(100);
+		setExp(150);
 	}
 
 	@Override

@@ -5,6 +5,8 @@ public abstract class Monster extends Character{
 	private int addDamage;//追加ダメージ
 	private int fixedHit;//固定命中
 	private int fixedAvoi;//固定回避
+	private int money;//落とすお金
+	private int exp;//落とす経験点
 	
 	//先制判定
 	@Override
@@ -58,5 +60,17 @@ public abstract class Monster extends Character{
 	}
 	public void setAddDamage(int addDamage) {
 		this.addDamage = addDamage;
+	}
+	public int getMoney() {
+		return money;
+	}
+	public void setMoney(int money) {
+		this.money = money;
+	}
+	public int getExp() {
+		return exp;
+	}
+	public void setExp(int exp) {
+		this.exp = exp;
 	}
 }

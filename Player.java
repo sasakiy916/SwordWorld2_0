@@ -90,15 +90,14 @@ public  abstract class Player extends Character{
 	}
 	//先制判定
 	@Override
-	public int judgePre() {
+	public int judgePre(){
 		System.out.println("先制力判定");
 		int dice = Dice.roll(2);
 		return autoJudge(dice,getJobs().get("スカウト") + getAgiBonus());
 	}
 	//命中判定
 	@Override
-	public int judgeHit() {
-		System.out.println("命中力判定");
+	public int judgeHit(){
 		//ダイス値
 		int dice = Dice.roll(2);
 		//出目による判定
@@ -107,7 +106,6 @@ public  abstract class Player extends Character{
 	//回避判定:修正予定
 	@Override
 	public int judgeAvoi() {
-		System.out.println("回避判定");
 		int dice = Dice.roll(2);
 		return autoJudge(dice,getAvoi());
 	}
@@ -143,7 +141,15 @@ public  abstract class Player extends Character{
 			//取得可能な技能一覧表示
 			for(String key:getJobs().keySet()) {
 				int jobLevel = getJobs().get(key);
+<<<<<<< HEAD
 				System.out.printf("%s|%4d:%2d%n",Option.format(key,18),expTable(key)[jobLevel],select);
+=======
+				try {
+					System.out.printf("%s|%4d:%2d%n",Option.format(key,18),expTable(key)[jobLevel],select);
+				}catch(Exception e) {
+					System.out.printf("%s|%s:%2d%n",Option.format(key,18),"最大",select);
+				}
+>>>>>>> work
 				select++;
 			}
 			//取得技能の選択
@@ -154,13 +160,21 @@ public  abstract class Player extends Character{
 			for(String key:getJobs().keySet()) {
 				int jobLevel = getJobs().get(key);
 				if(selectJob == select) {
-					//経験点が足りるか
-					if(getExp() >= expTable(key)[jobLevel]) {
-						jobLevelUp(key);
-						System.out.printf("%sレベル%d 取得%n",key,getJobs().get(key));
-						setExp(getExp() - expTable(key)[jobLevel]);
+					//技能レベルが最大か確認
+					if(jobLevel < expTable(key).length) {
+						//経験点が足りるか
+						if(getExp() >= expTable(key)[jobLevel]) {
+							//技能レベルアップ
+							jobLevelUp(key);
+							System.out.printf("%sレベル%d 取得%n",key,getJobs().get(key));
+							setExp(getExp() - expTable(key)[jobLevel]);//経験点消費
+						}else {
+							//経験点足りない場合
+							System.out.println("経験点が足りません");
+						}
 					}else {
-						System.out.println("経験点が足りません");
+						//技能レベル最大の場合
+						System.out.printf("%sレベルは最大です",key);
 					}
 					try {
 						Thread.sleep(1000);
@@ -172,10 +186,6 @@ public  abstract class Player extends Character{
 			}
 			System.out.println();
 			System.out.printf("残り経験点 %d%n",getExp());
-//			System.out.print("更に技能を取得しますか？(する:0,しない:1)>>");
-//			select = scan.nextInt();
-//			System.out.println();
-//			if(select == 1)break;
 		}while(true);
 	}
 	//経験点テーブル(削除予定)
@@ -415,7 +425,7 @@ public  abstract class Player extends Character{
 	//防護点:修正予定
 	@Override
 	public int getDef() {
-		return super.getDef();
+		return getArmor().getDef() + getShield().getDef();
 	}
 	//回避:修正予定 シューター以外の戦士系技能レベルによって変わる
 	@Override
@@ -423,7 +433,6 @@ public  abstract class Player extends Character{
 		int maxJobLevel = 0;
 		for(String job:getJobs().keySet()) {
 			if(job.matches("ファイター|グラップラー|フェンサー") && maxJobLevel < getJobs().get(job)) {
-				System.out.println("デバッグ表記:" + getJobs().get(job) + "getAvoi");//デバッグ表示
 				maxJobLevel = getJobs().get(job);
 			}
 		}
