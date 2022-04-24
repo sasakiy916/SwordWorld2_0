@@ -171,6 +171,7 @@ public class BattleManager{
 	//ラウンド毎の攻撃(武器攻撃)
 	private static void roundAttack(Character first,Character second) throws Exception {
 		//命中判定
+		Option.printLine(25);
 		System.out.printf("<<%sの命中判定>>%n",first.getName());
 		int hit = first.judgeHit();
 		switch(hit) {
