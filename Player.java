@@ -94,7 +94,6 @@ public  abstract class Player extends Character{
 	//命中判定
 	@Override
 	public int judgeHit(){
-		System.out.println("命中力判定");
 		//ダイス値
 		int dice = Dice.roll(2);
 		//出目による判定
@@ -103,7 +102,6 @@ public  abstract class Player extends Character{
 	//回避判定:修正予定
 	@Override
 	public int judgeAvoi() {
-		System.out.println("回避判定");
 		int dice = Dice.roll(2);
 		return autoJudge(dice,getAvoi());
 	}
@@ -411,7 +409,7 @@ public  abstract class Player extends Character{
 	//防護点:修正予定
 	@Override
 	public int getDef() {
-		return super.getDef();
+		return getArmor().getDef() + getShield().getDef();
 	}
 	//回避:修正予定 シューター以外の戦士系技能レベルによって変わる
 	@Override
@@ -419,7 +417,6 @@ public  abstract class Player extends Character{
 		int maxJobLevel = 0;
 		for(String job:getJobs().keySet()) {
 			if(job.matches("ファイター|グラップラー|フェンサー") && maxJobLevel < getJobs().get(job)) {
-				System.out.println("デバッグ表記:" + getJobs().get(job) + "getAvoi");//デバッグ表示
 				maxJobLevel = getJobs().get(job);
 			}
 		}

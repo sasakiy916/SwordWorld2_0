@@ -64,7 +64,6 @@ public class PlayerData {
 
 			}catch(Exception e) {
 				System.out.println("選択肢以外が選択されました");
-				e.printStackTrace();//デバッグ
 			}
 		}while(true);
 		//デバッグ用
