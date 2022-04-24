@@ -73,33 +73,7 @@ public class BattleManager{
 					break;
 				}
 				for(Character character:party) {
-					//					int target;
-					//					System.out.printf("%sの手番%n",character.getName());
-					//					Thread.sleep(1000);
-					//					if(character instanceof Player) {
-					//						//プレイヤーのターン時
-					//						target = r.nextInt(enemy.size());
-					//						roundAttack(character,enemy.get(target));
-					//						//生存判定
-					//						if(!isAlive(enemy.get(target))) {
-					//							System.out.printf("%sのHP:%d%n",enemy.get(target).getName(),enemy.get(target).getHp());
-					//							System.out.printf("%sを倒した！%n",enemy.get(target).getName());
-					//							enemy.remove(target);
-					//							break;
-					//						}
-					//					}else {
-					//						//モンスターのターン時
-					//						target = r.nextInt(player.size());
-					//						roundAttack(character,player.get(target));
-					//						//生存判定
-					//						if(!isAlive(player.get(target))) {
-					//							System.out.printf("%sのHP:%d%n",player.get(target).getName(),player.get(target).getHp());
-					//							System.out.printf("%sがやられてしまった！%n",player.get(target).getName());
-					//							player.remove(target);
-					//							break;
-					//						}
-					//					}
-					int target;
+					int target;//攻撃対象
 					Thread.sleep(1000);
 					List<Character> targetParty = new ArrayList<>();//攻撃される側
 					if(character instanceof Player) {
@@ -194,15 +168,15 @@ public class BattleManager{
 		System.out.println();
 	}
 
-	//ラウンド毎の攻撃
+	//ラウンド毎の攻撃(武器攻撃)
 	private static void roundAttack(Character first,Character second) throws Exception {
 		//命中判定
-		System.out.println("<<命中判定>>");
+		System.out.printf("<<%sの命中判定>>%n",first.getName());
 		int hit = first.judgeHit();
 		switch(hit) {
 		//自動失敗
 		case 1:
-			System.out.println("命中判定に自動失敗しました。");
+			System.out.println("攻撃を外してしまった");
 			return;
 			//自動成功
 		case 0:
@@ -215,7 +189,7 @@ public class BattleManager{
 		}
 		//回避判定
 		Option.printLine(25);
-		System.out.println("<<回避判定>>");
+		System.out.printf("<<%sの回避判定>>%n",second.getName());
 		int avoi = second.judgeAvoi();
 		switch(avoi) {
 		//自動成功
