@@ -137,7 +137,11 @@ public  abstract class Player extends Character{
 			//取得可能な技能一覧表示
 			for(String key:getJobs().keySet()) {
 				int jobLevel = getJobs().get(key);
-				System.out.printf("%s|%4d:%2d%n",Option.format(key,18),expTable(key)[jobLevel],select);
+				try {
+					System.out.printf("%s|%4d:%2d%n",Option.format(key,18),expTable(key)[jobLevel],select);
+				}catch(Exception e) {
+					System.out.printf("%s|%s:%2d%n",Option.format(key,18),"最大",select);
+				}
 				select++;
 			}
 			//取得技能の選択
@@ -148,13 +152,21 @@ public  abstract class Player extends Character{
 			for(String key:getJobs().keySet()) {
 				int jobLevel = getJobs().get(key);
 				if(selectJob == select) {
-					//経験点が足りるか
-					if(getExp() >= expTable(key)[jobLevel]) {
-						jobLevelUp(key);
-						System.out.printf("%sレベル%d 取得%n",key,getJobs().get(key));
-						setExp(getExp() - expTable(key)[jobLevel]);
+					//技能レベルが最大か確認
+					if(jobLevel < expTable(key).length) {
+						//経験点が足りるか
+						if(getExp() >= expTable(key)[jobLevel]) {
+							//技能レベルアップ
+							jobLevelUp(key);
+							System.out.printf("%sレベル%d 取得%n",key,getJobs().get(key));
+							setExp(getExp() - expTable(key)[jobLevel]);//経験点消費
+						}else {
+							//経験点足りない場合
+							System.out.println("経験点が足りません");
+						}
 					}else {
-						System.out.println("経験点が足りません");
+						//技能レベル最大の場合
+						System.out.printf("%sレベルは最大です",key);
 					}
 					try {
 						Thread.sleep(1000);
@@ -166,10 +178,6 @@ public  abstract class Player extends Character{
 			}
 			System.out.println();
 			System.out.printf("残り経験点 %d%n",getExp());
-//			System.out.print("更に技能を取得しますか？(する:0,しない:1)>>");
-//			select = scan.nextInt();
-//			System.out.println();
-//			if(select == 1)break;
 		}while(true);
 	}
 	//経験点テーブル(削除予定)
