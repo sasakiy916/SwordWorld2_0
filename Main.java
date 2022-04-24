@@ -42,8 +42,9 @@ public class Main{
 			case NEWCHARACTER:
 				//未完成
 				CharacterCreater cc = new CharacterCreater();
-				p = cc.getPlayer();
-				PlayerData.save(p);
+//				p = cc.getPlayer();
+//				PlayerData.save(p);
+				PlayerData.save(cc.create());
 				System.out.println("未完成");
 				continue;
 				//既存キャラ選択

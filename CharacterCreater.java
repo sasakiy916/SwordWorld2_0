@@ -5,7 +5,32 @@ public class CharacterCreater {
 	Scanner scan = new Scanner(System.in);
 //	Wepon wepon = new Wepon();
 	//コンストラクタ
-	public CharacterCreater() throws Exception {
+//	public CharacterCreater() throws Exception {
+//		Scanner scan = new Scanner(System.in);
+//		decideRaceAndBirth();//種族と生まれの決定
+//		//名前入力
+//		String name;
+//		while(true) {
+//			System.out.print("冒険者の名前を決めて下さい>>");
+//			name = scan.next();
+//			System.out.printf("%sでよろしいですか?(はい:0,いいえ:1)>>",name);
+//			if(scan.nextInt() == 0) {
+//				break;
+//			}
+//		}
+//		this.player.setName(name);
+//		decideStatus();//能力値の決定
+//		decideJobLevel();//技能の習得
+//		decideLevel();//冒険者レベルの決定
+//		//decideHpAndMp();//HP,MPの決定
+//		this.player.setHp(this.player.getMaxHp());
+//		this.player.setMp(this.player.getMaxMp());
+////		decideSkill();//戦闘特技の習得
+//		Shop.buy(this.player);
+//		completeCharacter();//キャラの完成
+//	}
+	//キャラ作成
+	public Player create() throws Exception {
 		Scanner scan = new Scanner(System.in);
 		decideRaceAndBirth();//種族と生まれの決定
 		//名前入力
@@ -28,10 +53,11 @@ public class CharacterCreater {
 //		decideSkill();//戦闘特技の習得
 		Shop.buy(this.player);
 		completeCharacter();//キャラの完成
+		return this.player;
 	}
 
 	//種族と生まれの決定
-	public void decideRaceAndBirth() throws Exception {
+ 	public void decideRaceAndBirth() throws Exception {
 		//種族一覧表示
 		System.out.println("種族一覧");
 		for(Race race:Race.values()) {
