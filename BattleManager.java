@@ -1,4 +1,3 @@
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -134,7 +133,7 @@ public class BattleManager{
 	//パーティの簡易ステータス表示
 
 	//ステータス表示
-	private static void displayStatus(List<Character> party) {
+	public  static void displayStatus(List<Character> party) {
 		for(int i=0;i<party.size();i++) {
 			System.out.print("-----------");
 		}
@@ -143,21 +142,21 @@ public class BattleManager{
 		System.out.print("|");
 		//キャラの名前
 		for(int i=0;i<party.size();i++) {
-			System.out.printf("%s",format(party.get(i).getName(),10));
+			System.out.printf("%s",Option.format(party.get(i).getName(),10));
 			System.out.print("|");
 		}
 		System.out.println();
 		System.out.print("|");
 		//HP
 		for(int i=0;i<party.size();i++) {
-			System.out.printf("%s:%s",format("ＨＰ",3),format(""+party.get(i).getHp(),5));
+			System.out.printf("%s:%s",Option.format("ＨＰ",3),Option.format(""+party.get(i).getHp(),5));
 			System.out.print("|");
 		}
 		System.out.println();
 		System.out.print("|");
 		//MP
 		for(int i=0;i<party.size();i++) {
-			System.out.printf("%s:%s",format("ＭＰ",3),format(""+party.get(i).getMp(),5));
+			System.out.printf("%s:%s",Option.format("ＭＰ",3),Option.format(""+party.get(i).getMp(),5));
 			System.out.print("|");
 		}
 		System.out.println();
@@ -257,34 +256,5 @@ public class BattleManager{
 			return false;
 		}
 		return true;
-	}
-	private boolean isAliveMonster(Character m){
-		if(m.getHp() <= 0){
-			m.setHp(0);
-			System.out.printf("%sのHP:%d%n",m.getName(),m.getHp());
-			return false;
-		}
-		System.out.printf("%sのHP:%d%n%n",m.getName(),m.getHp());
-		return true;
-	}
-	private boolean isAlivePlayer(Character p){
-		if(p.getHp() <= 0){
-			p.setHp(0);
-			System.out.printf("%sのHP:%d%n",p.getName(),p.getHp());
-			System.out.printf("%sはやられてしまった",p.getName());
-			return false;
-		}
-		System.out.printf("%sのHP:%d%n%n",p.getName(),p.getHp());
-		return true;
-	}
-	//全角半角の文字位置合わせ
-	private static String format(String target, int length){
-		int byteDiff = (getByteLength(target, Charset.forName("UTF-8"))-target.length())/2;
-		return String.format("%-"+(length-byteDiff)+"s", target);
-	}
-
-	//文字のバイト数取得
-	private static int getByteLength(String string, Charset charset) {
-		return string.getBytes(charset).length;
 	}
 }

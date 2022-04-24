@@ -14,6 +14,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PlayerData {
 	//Playerクラスの情報をplayer.jsonに保存
 	public static void save(Player player) throws IOException {
+		save(player,"player.json",true);
+	}
+	//Playerクラスの情報をplayer.jsonに保存
+	public static void save(Player player, String path , boolean isWrite) throws IOException {
 		//Json記述
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(player);//プレイたーデータ
@@ -22,13 +26,18 @@ public class PlayerData {
 		json += mapper.writeValueAsString(player.getWeapon());//盾データ
 		json += System.getProperty("line.separator");//改行コード
 		//jsonファイルへ書き込み
-		FileWriter fw = new FileWriter("player/player.json",true);//true:追加書き込み、第二引数無し：上書き
+		FileWriter fw = new FileWriter("player/"+ path,isWrite);//true:追加書き込み、第二引数無し：上書き
 		fw.write(json);
 		fw.close();//ファイルを閉じる
 		//デバッグ用表示
-		System.out.printf("%sのデータを保存しました。",player.getName());
+//		System.out.printf("%sのデータを保存しました。%n",player.getName());
+//		Option.printLine(25);
+//		try {
+//			Thread.sleep(1000);
+//		}catch(Exception e) {
+//		}
+		System.out.println();
 	}
-
 	//保存された冒険者を読み込む
 	//未完成
 	public static Player load() throws IOException {

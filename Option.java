@@ -4,9 +4,26 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 public class Option {
-	//ファイル読み込み
-
 	//ファイル書き込み
+
+	//ファイル読み込み
+	//パーティ情報を読み込む用
+	public static ArrayList<String> loadString(String path){
+		ArrayList<String> list = new ArrayList<>();
+		try {
+			FileInputStream fis = new FileInputStream(path);
+			InputStreamReader isr = new InputStreamReader(fis,"utf-8");
+			BufferedReader br = new BufferedReader(isr);
+			String line;
+			while((line = br.readLine()) != null) {
+				list.add(line);
+			}
+			br.close();
+		}catch(Exception e) {
+			System.out.println("読み込めるファイルがありません");
+		}
+		return list;
+	}
 	public static ArrayList<String[]> load(String path) {
 		ArrayList<String[]> list = new ArrayList<>();
 		try {

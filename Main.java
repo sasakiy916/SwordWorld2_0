@@ -1,6 +1,12 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Main{
 	enum TitleMenu{
@@ -14,8 +20,15 @@ public class Main{
 		//タイトル
 		List<Character> playerParty = new ArrayList<>();
 		List<Character> monsterParty = new ArrayList<>();
-//		title(playerParty,monsterParty);
+		//パーティ情報の読み込み
+		ObjectMapper mapper = new ObjectMapper();
+		List<String> loadParty = Option.loadString("player/party.json");
+		for(String loadMember:loadParty) {
+			playerParty.add(mapper.readValue(loadMember,Player.class));
+		}
+		//スキャナー用意
 		Scanner scan = new Scanner(System.in);
+		//タイトルメニュー用意
 		int wordWidth = 20;//文字幅
 		String[] titleMenu = {
 				Option.format("新規キャラ作成",wordWidth),
@@ -41,27 +54,153 @@ public class Main{
 			//新規キャラ作成
 			case NEWCHARACTER:
 				//未完成
-				CharacterCreater cc = new CharacterCreater();
-//				p = cc.getPlayer();
-//				PlayerData.save(p);
-				PlayerData.save(cc.create());
-				System.out.println("未完成");
+				//保存キャラが一定数になると作成出来ない
+				if(Option.load("player/player.json").size()<5) {
+					System.out.printf("新規キャラを作成します。%n%n");
+					CharacterCreater cc = new CharacterCreater();
+					PlayerData.save(cc.create());
+				}else {
+					System.out.printf("ギルドに待機してる冒険者がいっぱいです。%n%n");
+					Thread.sleep(1000);
+				}
 				continue;
-				//既存キャラ選択
+				//冒険者ギルド
 			case SELECTCHARACTER:
-				System.out.println("未完成");
+				enum GuildMenu{
+					BAR,
+					SHOP,
+					BOARD,
+					GROWUP,
+				}
+				//メニュー用意
+				String[] guildMenus = {
+						"酒場",
+						"ショップ",
+						"募集掲示板",
+						"キャラの成長",
+				};
+				//メニュー表示
+				while(true) {
+					int widthLine = 25;
+					Option.printLine(widthLine);
+					for(int i=0;i<guildMenus.length;i++) {
+						System.out.printf("%s %s%n",guildMenus[i],i+1);
+					}
+					Option.printLine(widthLine);
+					System.out.print("番号にてご用件を伺います(ギルドから出る:0)>>");
+					select = scan.nextInt()-1;
+					if(select == -1) {
+						System.out.println();
+						break;
+					}
+					GuildMenu menu = null; 
+					try {
+						menu = GuildMenu.values()[select];
+					}catch(Exception e) {
+						System.out.println("メニュー番号からお選びください。");
+						System.out.println();
+						continue;
+					}
+					switch(menu) {
+					//未完成
+					//酒場
+					case BAR:
+						System.out.println("未完成");
+						System.out.println("パーティに誘う冒険者を探します");
+						System.out.println("現在のパーティ");
+						BattleManager.displayStatus(playerParty);
+						//デバッグ中
+						try {
+							FileInputStream fis = new FileInputStream("player/player.json");
+							InputStreamReader isr = new InputStreamReader(fis,"utf-8");
+							BufferedReader br = new BufferedReader(isr);
+							List<Player> stayMember = new ArrayList<>();
+							String line;
+							while((line = br.readLine()) != null) {
+								stayMember.add(mapper.readValue(line,Player.class));
+							}
+							br.close();//ファイル閉じる
+							//酒場に居る冒険者一覧
+							System.out.println("酒場に居る冒険者");
+							for(int i=0;i<stayMember.size();i++) {
+								System.out.printf("%s %s%n",stayMember.get(i).getName(),i+1);
+							}
+							System.out.print("誰かパーティに誘いますか？(上記番号から選ぶor戻る:0)>>");
+							int selectStay = scan.nextInt()-1;
+							if(selectStay == -1)break;
+							Player newMenber = stayMember.get(selectStay);
+							System.out.println(newMenber);
+							System.out.printf("%sをパーティに誘いますか？(誘う:0,やめる:1)>>",newMenber.getName());
+							select = scan.nextInt();
+							if(select == 1) {
+								continue;
+							}
+							//パーティが四人居たら
+							if(playerParty.size()<4) {
+								playerParty.add(newMenber);
+								stayMember.remove(selectStay);
+							}else {
+								System.out.print("パーティがいっぱいです。誰かと交代しますか(はい:0,いいえ:1)>>");
+								select = scan.nextInt();
+								if(select == 0) {
+									for(int i=0;i < playerParty.size();i++) {
+										System.out.printf("%s %d%n",playerParty.get(i).getName(),i);
+									}
+									System.out.print("誰と交代しますか?>>");
+									select = scan.nextInt();
+									Character change = playerParty.get(select);
+									playerParty.remove(select);
+									playerParty.add(newMenber);
+									stayMember.remove(selectStay);
+									stayMember.add((Player)change);
+								}else if(select == 1){
+									break;
+								}
+							}
+							//パーティ情報の保存
+							String path = "party.json";
+							File partyPath = new File("player/"+path);
+							partyPath.delete();
+							for(Character player:playerParty) {
+								if(player instanceof Player) {
+									PlayerData.save((Player)player,path,true);
+								}
+							}
+							//待機冒険者の保存
+							path = "player.json";
+							File stayPath = new File("player/"+ path);
+							stayPath.delete();
+							for(Player stayPlayer:stayMember) {
+								PlayerData.save(stayPlayer);
+							}
+						}catch(Exception e) {
+							System.out.println("酒場に待機してる冒険者はいません。");
+						}
+						Thread.sleep(1000);
+						System.out.println();
+						break;
+						//ショップ
+					case SHOP:
+						Shop.buy(PlayerData.load());
+						break;
+						//掲示板
+					case BOARD:
+						System.out.println("未完成");
+						break;
+						//キャラの成長
+					case GROWUP:
+						System.out.println("経験点を消費して技能レベルを上げられます");
+						System.out.println("未完成");
+						break;
+					}
+				}
 				Thread.sleep(1000);
-				Shop.buy(PlayerData.load());
 				break;
 				//戦闘
 			case BATTLE:
 				System.out.println("未完成");
 				Thread.sleep(1000);
-				//パーティを組む
-				playerParty.add(PlayerData.load());
-				playerParty.get(0);
-				playerParty.add(PlayerData.load());
-				playerParty.add(PlayerData.load());
+				//モンスター用意
 				monsterParty.add(new Kobold());
 				monsterParty.add(new Goblin());
 				System.out.println();
@@ -120,10 +259,6 @@ public class Main{
 			case BATTLE:
 				System.out.println("未実装");
 				//パーティを組む
-				//装備情報が保存されないのでロードしたら裸になってる
-				playerParty.add(PlayerData.load());
-				playerParty.add(PlayerData.load());
-				playerParty.add(PlayerData.load());
 				monsterParty.add(new Kobold());
 				monsterParty.add(new Goblin());
 				System.out.println();
