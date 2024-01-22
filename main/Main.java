@@ -20,6 +20,7 @@ public class Main{
 		//タイトル
 		List<Character> playerParty = new ArrayList<>();
 		List<Character> monsterParty = new ArrayList<>();
+		Charcter c = new Human();
 		//パーティ情報の読み込み
 		ObjectMapper mapper = new ObjectMapper();
 		List<String> loadParty = Option.loadString("player/party.json");
@@ -276,7 +277,11 @@ public class Main{
 			case SELECTCHARACTER:
 				System.out.println("未実装");
 				Shop.buy(PlayerData.load());
+<<<<<<< HEAD
+				continue;
+=======
 				break;
+>>>>>>> work
 				//戦闘
 			case BATTLE:
 				System.out.println("未実装");

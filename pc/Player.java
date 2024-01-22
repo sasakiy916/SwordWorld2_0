@@ -4,11 +4,15 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+<<<<<<< HEAD
+
+=======
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS)
 @JsonIgnoreProperties(ignoreUnknown=true)
+>>>>>>> work
 public  abstract class Player extends Character{
 	private String gender;//性別
 	private String race;//種族
@@ -137,11 +141,15 @@ public  abstract class Player extends Character{
 			//取得可能な技能一覧表示
 			for(String key:getJobs().keySet()) {
 				int jobLevel = getJobs().get(key);
+<<<<<<< HEAD
+				System.out.printf("%s|%4d:%2d%n",Option.format(key,18),expTable(key)[jobLevel],select);
+=======
 				try {
 					System.out.printf("%s|%4d:%2d%n",Option.format(key,18),expTable(key)[jobLevel],select);
 				}catch(Exception e) {
 					System.out.printf("%s|%s:%2d%n",Option.format(key,18),"最大",select);
 				}
+>>>>>>> work
 				select++;
 			}
 			//取得技能の選択

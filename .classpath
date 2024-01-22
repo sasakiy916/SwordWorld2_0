@@ -9,5 +9,8 @@
 	<classpathentry kind="lib" path="C:/Users/arukreid/git/SwordWorld2_0/lib/jackson-annotations-2.13.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/arukreid/git/SwordWorld2_0/lib/jackson-core-2.13.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/arukreid/git/SwordWorld2_0/lib/jackson-databind-2.13.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.13.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.13.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.13.2.2.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
