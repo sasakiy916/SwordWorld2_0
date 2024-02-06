@@ -87,10 +87,11 @@ public class Weapon extends Equipment{
 	//武器名のアクセサ
 	//武器一覧のアクセサ
 	public static String[] getNames() {
-		return names;
+		return Weapon.names;
 	}
+
 	public void setNames(String[] names) {
-		this.names = names;
+		Weapon.names = names;
 	}
 	//価格のアクセサ
 	//必要な筋力のアクセサ
