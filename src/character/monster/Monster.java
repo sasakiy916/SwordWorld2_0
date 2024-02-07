@@ -1,4 +1,6 @@
-package main;
+package character.monster;
+
+import character.player.Character;
 
 public abstract class Monster extends Character{
 	private int avoi;//回避力

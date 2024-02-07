@@ -1,4 +1,4 @@
-package main;
+package skill;
 
 public enum PassiveSkills {
 	WEPONMASTERY,

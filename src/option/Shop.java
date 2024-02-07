@@ -1,8 +1,15 @@
-package main;
+package option;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import character.player.Player;
+import equipment.Armor;
+import equipment.Equipment;
+import equipment.Protector;
+import equipment.Shield;
+import equipment.Weapon;
 
 public class Shop {
 	enum EquipList{
@@ -118,8 +125,7 @@ public class Shop {
 						}while(buy == 1);
 					}
 				}catch(Exception e) {
-					System.out.println("当店には取り扱いの無い商品です。");
-					System.out.println();
+					System.out.println("当店には取り扱いの無い商品です。\n");
 					break;
 				}
 				//一つ前の選択肢に戻る

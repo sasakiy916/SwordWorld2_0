@@ -1,4 +1,4 @@
-package main;
+package character.player;
 
 
 public enum Race {

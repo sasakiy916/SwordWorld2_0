@@ -1,4 +1,4 @@
-package main;
+package option;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +14,8 @@ import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import character.player.Player;
+
 
 public class PlayerData {
 	//Playerクラスの情報をplayer.jsonに保存
@@ -25,22 +27,14 @@ public class PlayerData {
 		//Json記述
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(player);//プレイたーデータ
-		json += mapper.writeValueAsString(player.getWeapon());//武器データ
-		json += mapper.writeValueAsString(player.getWeapon());//鎧データ
-		json += mapper.writeValueAsString(player.getWeapon());//盾データ
+//		json += mapper.writeValueAsString(player.getWeapon());//武器データ
+//		json += mapper.writeValueAsString(player.getWeapon());//鎧データ
+//		json += mapper.writeValueAsString(player.getWeapon());//盾データ
 		json += System.getProperty("line.separator");//改行コード
 		//jsonファイルへ書き込み
 		FileWriter fw = new FileWriter("player/"+ path,isWrite);//true:追加書き込み、第二引数無し：上書き
 		fw.write(json);
 		fw.close();//ファイルを閉じる
-		//デバッグ用表示
-		//		System.out.printf("%sのデータを保存しました。%n",player.getName());
-		//		Option.printLine(25);
-		//		try {
-		//			Thread.sleep(1000);
-		//		}catch(Exception e) {
-		//		}
-		System.out.println();
 	}
 	//保存された冒険者を読み込む
 	//未完成

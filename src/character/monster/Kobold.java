@@ -1,4 +1,4 @@
-package main;
+package character.monster;
 
 public class Kobold extends Monster{
 	public Kobold(){

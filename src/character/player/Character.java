@@ -1,7 +1,7 @@
-package main;
+package character.player;
 
 
- abstract class Character{
+ public abstract class Character{
 	//ステータス
 	private String name = "名無し";//名前
 	private int level = 1;//レベル

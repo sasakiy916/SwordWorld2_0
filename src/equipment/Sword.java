@@ -1,4 +1,4 @@
-package main;
+package equipment;
 
 public class Sword extends Weapon {
 	//コンストラクタ

@@ -1,4 +1,6 @@
-package main;
+package skill;
+
+import equipment.Weapon;
 
 public class PassiveSkill extends Skill {
 

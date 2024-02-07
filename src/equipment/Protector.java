@@ -1,6 +1,8 @@
-package main;
+package equipment;
 
 import java.util.List;
+
+import option.Option;
 
 public abstract class Protector extends Equipment{
 	private String name;//名称

@@ -1,4 +1,4 @@
-package main;
+package character.player;
 
 public class TestPlayer extends Player {
 	public TestPlayer() {

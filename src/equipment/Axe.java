@@ -1,4 +1,4 @@
-package main;
+package equipment;
 
 public class Axe extends Weapon {
 	//斧一覧列挙

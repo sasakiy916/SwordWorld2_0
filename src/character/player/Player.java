@@ -1,4 +1,4 @@
-package main;
+package character.player;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -8,6 +8,16 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import equipment.Armor;
+import equipment.Nohand;
+import equipment.Nude;
+import equipment.Panch;
+import equipment.Shield;
+import equipment.Weapon;
+import main.Dice;
+import option.Option;
+import skill.Skill;
 
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS)
 @JsonIgnoreProperties(ignoreUnknown=true)

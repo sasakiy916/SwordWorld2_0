@@ -1,4 +1,4 @@
-package main;
+package equipment;
 
 
 public class Shield extends Protector {

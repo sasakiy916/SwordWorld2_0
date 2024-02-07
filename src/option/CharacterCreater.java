@@ -1,7 +1,15 @@
-package main;
+package option;
 
 import java.util.List;
 import java.util.Scanner;
+
+import character.player.Elf;
+import character.player.Human;
+import character.player.Player;
+import character.player.Race;
+import main.Dice;
+import skill.PassiveSkill;
+import skill.Skill;
 public class CharacterCreater {
 	private Player player;//プレイヤーのインスタンス
 	Scanner scan = new Scanner(System.in);

@@ -1,4 +1,4 @@
-package main;
+package equipment;
 
 public class Nude extends Armor {
 	public Nude() {

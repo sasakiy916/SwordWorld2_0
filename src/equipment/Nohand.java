@@ -1,5 +1,4 @@
-package main;
-
+package equipment;
 
 public class Nohand extends Shield {
 	public Nohand() {

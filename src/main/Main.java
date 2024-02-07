@@ -10,6 +10,17 @@ import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import character.monster.Goblin;
+import character.monster.Kobold;
+import character.player.Character;
+import character.player.Player;
+import character.player.TestPlayer;
+import option.BattleManager;
+import option.CharacterCreater;
+import option.Option;
+import option.PlayerData;
+import option.Shop;
+
 public class Main{
 	enum TitleMenu{
 		NEWCHARACTER,
@@ -42,12 +53,12 @@ public class Main{
 		//メニュー表示
 		while(true) {
 			System.out.println("ソードワールド2.0 ～再現の章～");
-			System.out.println("---------------------------------");
+			Option.printLine(33);
 			System.out.printf("%s:%s%n",Option.format("メニュー",wordWidth),"選択肢");
 			for(int i=0;i<titleMenu.length;i++) {
 				System.out.printf("%s:%d%n",titleMenu[i],i);
 			}
-			System.out.println("---------------------------------");
+			Option.printLine(33);
 			System.out.print("メニュー選択>>");
 			int select = scan.nextInt();
 			TitleMenu title = TitleMenu.values()[select];

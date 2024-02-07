@@ -1,6 +1,8 @@
-package main;
+package equipment;
 
 import java.util.List;
+
+import option.Option;
 
 public class Weapon extends Equipment{
 	//武器種類の一覧列挙型

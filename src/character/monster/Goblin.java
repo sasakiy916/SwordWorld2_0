@@ -1,4 +1,4 @@
-package main;
+package character.monster;
 
 public class Goblin extends Monster {
 	public Goblin(){

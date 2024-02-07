@@ -1,4 +1,4 @@
-package main;
+package equipment;
 
 public class Panch extends Weapon {
 	public Panch() {

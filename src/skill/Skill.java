@@ -1,4 +1,4 @@
-package main;
+package skill;
 
 public abstract class Skill {
 	private String name;

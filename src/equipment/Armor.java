@@ -1,5 +1,4 @@
-package main;
-
+package equipment;
 
 public class Armor extends Protector {
 	//防具一覧列挙
