@@ -22,6 +22,7 @@ import option.PlayerData;
 import option.Shop;
 
 public class Main{
+	private static Scanner scan = new Scanner(System.in);
 	enum TitleMenu{
 		NEWCHARACTER,
 		SELECTCHARACTER,
@@ -29,7 +30,9 @@ public class Main{
 		DIFFICULTY,
 		QUIT,
 	}
+	
 	public static void main(String[] args) throws Exception{
+		PlayerData.load();
 		//タイトル
 		List<Character> playerParty = new ArrayList<>();
 		List<Character> monsterParty = new ArrayList<>();
@@ -39,8 +42,6 @@ public class Main{
 		for(String loadMember:loadParty) {
 			playerParty.add(mapper.readValue(loadMember,Player.class));
 		}
-		//スキャナー用意
-		Scanner scan = new Scanner(System.in);
 		//タイトルメニュー用意
 		int wordWidth = 20;//文字幅
 		String[] titleMenu = {
@@ -255,7 +256,6 @@ public class Main{
 		}
 	}
 	static void title(List<Character> playerParty,List<Character> monsterParty) throws Exception {
-		Scanner scan = new Scanner(System.in);
 		String[] titleMenu = new String[5];
 		int wordWidth = 20;//文字幅
 		titleMenu[0] = Option.format("新規キャラ作成",wordWidth);
