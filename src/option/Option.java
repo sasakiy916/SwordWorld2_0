@@ -39,7 +39,7 @@ public class Option {
 
 	// メニュー一覧を表示
 	public static void showSelectMenu(String[] menu) {
-		showSelectMenu(menu,30);
+		showSelectMenu(menu, 30);
 	}
 
 	public static void showSelectMenu(String[] menu, int lineLength) {
@@ -49,6 +49,15 @@ public class Option {
 			System.out.printf("%s %s%n", Format.format(menu[i], length), i + 1);
 		}
 		Option.printLine(lineLength);
+	}
+
+	// 選択肢外チェック
+	public static boolean isWithinRange(int target, int start, int last) {
+		return start <= target && target <= last;
+	}
+
+	public static boolean isWithinRange(int target, int last) {
+		return isWithinRange(target, 0, last);
 	}
 
 	//ライン表示

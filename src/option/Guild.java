@@ -1,11 +1,10 @@
 package option;
 
+import java.util.Scanner;
+
 public class Guild {
 	enum GuildMenu {
-		BAR, 
-		SHOP,
-		BOARD,
-		GROWUP,
+		BAR, SHOP, BOARD, GROWUP,
 	}
 
 	//メニュー用意
@@ -21,15 +20,27 @@ public class Guild {
 
 	}
 
-	public void menu() {
-		int widthLine = 25;
-		while(true) {
-			Option.printLine(widthLine);
-			for(int i=0;i<guildMenus.length;i++) {
-				System.out.printf("%s %s%n",guildMenus[i],i+1);
+	public int menu() {
+		int select = 0;
+		Scanner scan = new Scanner(System.in);
+		while (true) {
+			Option.showSelectMenu(guildMenus);
+			System.out.print("番号にてご用件を伺います(ギルドから出る:0)>>");
+			select = scan.nextInt() - 1;
+			if (select == -1) {
+				System.out.println();
+				break;
 			}
-			Option.printLine(widthLine);
+			GuildMenu menu = null;
+			try {
+				menu = GuildMenu.values()[select];
+			} catch (Exception e) {
+				System.out.println("メニュー番号からお選びください。");
+				System.out.println();
+				continue;
+			}
 		}
+		return select;
 	}
 
 	public static Guild getInstance() {
