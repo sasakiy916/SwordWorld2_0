@@ -46,7 +46,7 @@ public class Shop {
 				"盾",
 		};
 		//武器の種類名を取得
-		List<String[]> equipList = Option.load("Equipment/各装備一覧.csv");
+		List<String[]> equipList = Option.loadFromCSV("Equipment/各装備一覧.csv");
 		String[] weapons = new String[equipList.size()-1];
 		for(int i=0;i<equipList.size()-1;i++) {
 			weapons[i] = equipList.get(i+1)[0];
@@ -238,7 +238,7 @@ public class Shop {
 				break;
 			}
 			//装備データの読み込み,Listに追加
-			equips = Option.load(path);
+			equips = Option.loadFromCSV(path);
 			for(int i=1;i<equips.size();i++) {//一行目の見出しは無視
 				if(equips.get(i)[0] != "") {//名称の無い行は無視(用法が二つある装備は片方だけ)
 					if(path.matches("weapon/.*")) {

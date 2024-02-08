@@ -91,7 +91,7 @@ public class CharacterCreater {
 		}
 		//生まれの一覧表示
 		//ファイル読み込み
-		List<String[]> births = Option.load(birthData);
+		List<String[]> births = Option.loadFromCSV(birthData);
 		//各項目の列番号取得
 		int birth = 0;
 		int tec = 0;

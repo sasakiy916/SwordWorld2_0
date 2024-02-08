@@ -17,7 +17,7 @@ public abstract class Protector extends Equipment{
 		//処理なし
 	}
 	public Protector(String name,String path) {
-		List<String[]> protectors = Option.load(path);
+		List<String[]> protectors = Option.loadFromCSV(path);
 		int def = 0;//防護点
 		int needStr = 0;//必要筋力
 		int price = 0;//価格

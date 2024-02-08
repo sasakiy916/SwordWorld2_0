@@ -14,7 +14,6 @@ import character.monster.Goblin;
 import character.monster.Kobold;
 import character.player.Character;
 import character.player.Player;
-import character.player.TestPlayer;
 import option.BattleManager;
 import option.CharacterCreater;
 import option.Option;
@@ -22,7 +21,6 @@ import option.PlayerData;
 import option.Shop;
 
 public class Main{
-	private static Scanner scan = new Scanner(System.in);
 	enum TitleMenu{
 		NEWCHARACTER,
 		SELECTCHARACTER,
@@ -30,15 +28,17 @@ public class Main{
 		DIFFICULTY,
 		QUIT,
 	}
+	private static Scanner scan = new Scanner(System.in);
 	
 	public static void main(String[] args) throws Exception{
 		PlayerData.load();
 		//タイトル
 		List<Character> playerParty = new ArrayList<>();
 		List<Character> monsterParty = new ArrayList<>();
+		String path = "player/party.json";
 		//パーティ情報の読み込み
 		ObjectMapper mapper = new ObjectMapper();
-		List<String> loadParty = Option.loadString("player/party.json");
+		List<String> loadParty = Option.loadString(path);
 		for(String loadMember:loadParty) {
 			playerParty.add(mapper.readValue(loadMember,Player.class));
 		}
@@ -68,7 +68,7 @@ public class Main{
 			case NEWCHARACTER:
 				//未完成
 				//保存キャラが一定数になると作成出来ない
-				if(Option.load("player/player.json").size()<5) {
+				if(Option.loadFromCSV("player/player.json").size()<5) {
 					System.out.printf("新規キャラを作成します。%n%n");
 					CharacterCreater cc = new CharacterCreater();
 					PlayerData.save(cc.create());
@@ -94,12 +94,7 @@ public class Main{
 				};
 				//メニュー表示
 				while(true) {
-					int widthLine = 25;
-					Option.printLine(widthLine);
-					for(int i=0;i<guildMenus.length;i++) {
-						System.out.printf("%s %s%n",guildMenus[i],i+1);
-					}
-					Option.printLine(widthLine);
+					Option.showSelectMenu(guildMenus,25);
 					System.out.print("番号にてご用件を伺います(ギルドから出る:0)>>");
 					select = scan.nextInt()-1;
 					if(select == -1) {
@@ -171,8 +166,7 @@ public class Main{
 								}
 							}
 							//パーティ情報の保存
-							String path = "party.json";
-							File partyPath = new File("player/"+path);
+							File partyPath = new File(path);
 							partyPath.delete();
 							for(Character player:playerParty) {
 								if(player instanceof Player) {
@@ -206,7 +200,7 @@ public class Main{
 						//デバッグ中
 					case BOARD:
 						System.out.println("未完成");
-						if(PlayerData.showStayPlayer()) {
+						if(!PlayerData.showStayPlayer()) {
 							System.out.println("酒場には誰も居ません");
 							break;
 						}
@@ -250,61 +244,6 @@ public class Main{
 				continue;
 			default:
 				System.out.printf("%n冒険お疲れさまでした<(_ _)>%n");
-				return;
-
-			}
-		}
-	}
-	static void title(List<Character> playerParty,List<Character> monsterParty) throws Exception {
-		String[] titleMenu = new String[5];
-		int wordWidth = 20;//文字幅
-		titleMenu[0] = Option.format("新規キャラ作成",wordWidth);
-		titleMenu[1] = Option.format("既存キャラ選択 未実装",wordWidth);
-		titleMenu[2] = Option.format("討伐クエスト",wordWidth);
-		titleMenu[3] = Option.format("難易度選択 未実装",wordWidth);
-		titleMenu[4] = Option.format("ゲーム終了",wordWidth);
-		Player p = new TestPlayer("テストくん");//新キャラ用
-		//メニュー表示
-		while(true) {
-			System.out.println("---------------------------------");
-			System.out.printf("%s:%s%n",Option.format("メニュー",wordWidth),"選択肢");
-			for(int i=0;i<titleMenu.length;i++) {
-				System.out.printf("%s:%d%n",titleMenu[i],i);
-			}
-			System.out.println("---------------------------------");
-			System.out.printf("※見た目だけの未完成タイトル%n");
-			System.out.print("メニュー選択>>");
-			int select = scan.nextInt();
-			TitleMenu title = TitleMenu.values()[select];
-			switch(title) {
-			//新規キャラ作成
-			case NEWCHARACTER:
-				//未完成
-				CharacterCreater cc = new CharacterCreater();
-				p = cc.getPlayer();
-				PlayerData.save(p);
-				System.out.println("未完成");
-				continue;
-				//既存キャラ選択
-			case SELECTCHARACTER:
-				System.out.println("未実装");
-				Shop.buy(PlayerData.load());
-				break;
-				//戦闘
-			case BATTLE:
-				System.out.println("未実装");
-				//パーティを組む
-				monsterParty.add(new Kobold());
-				monsterParty.add(new Goblin());
-				System.out.println();
-				//戦闘
-				BattleManager.battle(playerParty, monsterParty);
-				continue;
-				//難易度選択
-			case DIFFICULTY:
-				System.out.println("未実装");
-				continue;
-			default:
 				return;
 
 			}

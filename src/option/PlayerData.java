@@ -87,14 +87,15 @@ public class PlayerData {
 		File path = new File("player/player.json");
 		String json = null;
 		//データを一行ずつ読み込みリストに格納
-		List<String> players = new ArrayList<>();
-		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-			while ((json = br.readLine()) != null) {
-				players.add(json);
-			}
-		} catch (IOException e) {
-			;
-		}
+//		List<String> players = new ArrayList<>();
+		List<String> players = Option.loadString(path);
+//		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+//			while ((json = br.readLine()) != null) {
+//				players.add(json);
+//			}
+//		} catch (IOException e) {
+//			;
+//		}
 		//指定キャラ削除
 		String removePlayer = mapper.readValue(players.get(select), Player.class).getName();//削除するキャラの名前取得
 		players.remove(select);//指定キャラ削除
