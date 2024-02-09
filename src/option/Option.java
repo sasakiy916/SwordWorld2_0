@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import state.NewCharacterState;
+import state.TitleMenuState;
+
 public class Option {
 	//ファイル読み込み
 	//パーティ情報を読み込む用
@@ -50,8 +53,13 @@ public class Option {
 		}
 		Option.printLine(lineLength);
 	}
+	
+	public static void init() {
+		TitleMenuState.getInstance();
+		NewCharacterState.getInstance();
+	}
 
-	// 選択肢外チェック
+	// 選択肢の範囲内チェック
 	public static boolean isWithinRange(int target, int start, int last) {
 		return start <= target && target <= last;
 	}

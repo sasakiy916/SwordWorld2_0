@@ -1,23 +1,32 @@
 package state;
 
 public abstract class MenuState {
-	protected MenuState[] menuList;
-	protected String name;
-	public abstract void setState(Menu state);
+	protected MenuState[] menuStates;
+	protected TitleMenuEnum titleMenu;
+	
+	protected MenuState(TitleMenuEnum e) {
+		this.titleMenu = e;
+	}
+
+	public abstract void setState();
 	public abstract void execute();
 	
-	public MenuState[] getMenuList() {
-		return this.menuList;
+	public MenuState[] getMenuStates() {
+		if(this.menuStates == null) {
+			setState();
+		}
+		return this.menuStates;
 	}
 	
 	public String getName() {
-		return this.name;
+		return this.titleMenu.getText();
 	}
 	
 	public String[] getMenuNames() {
-		String[] menuNames = new String[menuList.length];
+		MenuState[] menuStates = getMenuStates();
+		String[] menuNames = new String[menuStates.length];
 		int index = 0;
-		for(MenuState menu:getMenuList()) {
+		for(MenuState menu:getMenuStates()) {
 			menuNames[index++] = menu.getName();
 		}
 		return menuNames;

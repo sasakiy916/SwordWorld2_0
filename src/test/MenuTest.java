@@ -1,11 +1,13 @@
 package test;
 
-import state.Menu;
+import option.Option;
+import state.SelectWindow;
 
 public class MenuTest {
 
 	public static void main(String[] args) {
-		Menu menu = Menu.getInstance();
+		Option.init();
+		SelectWindow menu = SelectWindow.getInstance();
 		menu.changeMenu();
 	}
 

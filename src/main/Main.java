@@ -19,11 +19,9 @@ import option.CharacterCreater;
 import option.Option;
 import option.PlayerData;
 import option.Shop;
+import state.TitleMenuEnum;
 
 public class Main {
-	enum TitleMenu {
-		NEWCHARACTER, SELECTCHARACTER, BATTLE, DIFFICULTY, QUIT,
-	}
 
 	enum GuildMenu {
 		BAR, SHOP, BOARD, GROWUP,
@@ -63,7 +61,7 @@ public class Main {
 			Option.printLine(33);
 			System.out.print("メニュー選択>>");
 			int select = scan.nextInt();
-			TitleMenu title = TitleMenu.values()[select];
+			TitleMenuEnum title = TitleMenuEnum.values()[select];
 			switch (title) {
 			//新規キャラ作成
 			case NEWCHARACTER:

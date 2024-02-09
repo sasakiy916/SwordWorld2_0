@@ -1,29 +1,29 @@
 package state;
 
 public class TitleMenuState extends MenuState{
-	private static TitleMenuState instance = new TitleMenuState();
+	private final static TitleMenuState instance = new TitleMenuState();
 
 	private TitleMenuState() {
-		super();
-		MenuState[] menuList = {
-				this,
-		};
-		this.name = "タイトル";
-		this.menuList = menuList;
+		super(TitleMenuEnum.TITLE);
 	}
 
-	@Override
-	public void setState(Menu state) {
-//		state.changeMenu(this);
-	}
-	
 	public static TitleMenuState getInstance() {
+		System.out.println("GET:"+instance);
 		return instance;
 	}
 
 	@Override
 	public void execute() {
-		System.out.println("タイトル");
+		System.out.println("タイトル\n");
+		SelectWindow.getInstance().changeMenu();
 	}
 	
+	@Override
+	public void setState() {
+		MenuState[] menuList = {
+				this,
+				NewCharacterState.getInstance(),
+		};
+		this.menuStates = menuList;
+	}
 }

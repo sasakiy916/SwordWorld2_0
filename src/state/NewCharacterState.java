@@ -1,23 +1,28 @@
 package state;
 
-public class NewCharacterState extends MenuState{
-	private NewCharacterState instance = new NewCharacterState();
+public class NewCharacterState extends MenuState {
+	private final static NewCharacterState instance = new NewCharacterState();
+
+	private NewCharacterState() {
+		super(TitleMenuEnum.NEWCHARACTER);
+	}
+
+	public static NewCharacterState getInstance() {
+		return instance;
+	}
 
 	@Override
 	public void execute() {
-		// TODO 自動生成されたメソッド・スタブ
-		
+		System.out.println("キャラ作成\n");
+		SelectWindow.getInstance().changeMenu();
 	}
 
-	private NewCharacterState() {
-		super();
-	}
-
-	public NewCharacterState getInstance() {
-		return instance;
-	}
 	@Override
-	public void setState(Menu state) {
-		// TODO 自動生成されたメソッド・スタブ
+	public void setState() {
+		MenuState[] menuList = {
+				this,
+				TitleMenuState.getInstance(),
+		};
+		this.menuStates = menuList;
 	}
 }
