@@ -8,9 +8,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-import state.NewCharacterState;
-import state.TitleMenuState;
-
 public class Option {
 	//ファイル読み込み
 	//パーティ情報を読み込む用
@@ -54,9 +51,12 @@ public class Option {
 		Option.printLine(lineLength);
 	}
 	
-	public static void init() {
-		TitleMenuState.getInstance();
-		NewCharacterState.getInstance();
+	public static void sleep(int miliTime) {
+		try {
+			Thread.sleep(miliTime);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// 選択肢の範囲内チェック

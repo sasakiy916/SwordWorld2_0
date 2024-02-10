@@ -1,4 +1,4 @@
-package option;
+package manager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,6 +12,8 @@ import character.monster.Monster;
 import character.player.Character;
 import character.player.Player;
 import main.Dice;
+import option.Option;
+import option.PlayerData;
 public class BattleManager{
 	//戦闘システム
 	public static void battle(List<Character> player,List<Character> enemy) throws Exception {

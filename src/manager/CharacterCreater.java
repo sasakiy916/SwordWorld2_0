@@ -1,4 +1,4 @@
-package option;
+package manager;
 
 import java.util.List;
 import java.util.Scanner;
@@ -8,6 +8,8 @@ import character.player.Human;
 import character.player.Player;
 import character.player.Race;
 import main.Dice;
+import option.Option;
+import option.Shop;
 import skill.PassiveSkill;
 import skill.Skill;
 public class CharacterCreater {

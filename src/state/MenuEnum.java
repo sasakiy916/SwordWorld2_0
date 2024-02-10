@@ -1,6 +1,6 @@
 package state;
 
-public enum TitleMenuEnum {
+public enum MenuEnum implements StateEnum{
 	TITLE("タイトル"),
 	NEWCHARACTER("新規キャラ作成"), 
 	SELECTCHARACTER("冒険者ギルド"),
@@ -10,8 +10,8 @@ public enum TitleMenuEnum {
 	;
 
 	private final String text;
-	
-	TitleMenuEnum(final String name) {
+
+	MenuEnum(final String name) {
 		this.text = name;
 	}
 	

@@ -6,12 +6,11 @@ import option.Option;
 
 public class SelectWindow {
 	private final static SelectWindow instance = new SelectWindow();
-	private MenuState currentMenu = TitleMenuState.getInstance();
-//	private MenuState preMenu;
+	private MenuState currentMenu = TitleState.getInstance();
 	
 	private SelectWindow() {
 		super();
-		System.out.println("Menu生成");
+		currentMenu.setState();
 	}
 	
 	public static SelectWindow getInstance() {
@@ -22,6 +21,12 @@ public class SelectWindow {
 		this.currentMenu = currentMenu;
 	}
 	
+	// ゲーム開始
+	public void start() {
+		this.currentMenu.execute();
+	}
+
+	// メニュー選択
 	public void changeMenu() {
 		Option.showSelectMenu(this.currentMenu.getMenuNames());
 		Scanner scan = new Scanner(System.in);
@@ -32,7 +37,7 @@ public class SelectWindow {
 		}else if(select == -1){
 			;
 		}else {
-			System.out.println("存在しないメニューです");
+			System.out.println("存在しないメニューです\n");
 		}
 		this.currentMenu.execute();
 	}
