@@ -4,6 +4,7 @@ import java.util.List;
 
 import character.monster.Goblin;
 import character.monster.Kobold;
+import character.monster.Monster;
 import character.player.Character;
 import manager.BattleManager;
 import manager.PartyManager;
@@ -33,6 +34,7 @@ public class BattleState extends MenuState {
 		//モンスター用意
 		monsterParty.add(new Kobold());
 		monsterParty.add(new Goblin());
+		monsterParty.add(new Monster("ドラゴン"));
 		System.out.println();
 		//戦闘
 		try {
