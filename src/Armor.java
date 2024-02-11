@@ -1,4 +1,3 @@
-
 public class Armor extends Protector {
 	//防具一覧列挙
 	public enum ArmorList{

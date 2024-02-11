@@ -1,3 +1,4 @@
+
 import java.util.List;
 
 public abstract class Protector extends Equipment{

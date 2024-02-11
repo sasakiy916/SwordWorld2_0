@@ -1,4 +1,5 @@
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ public class BattleManager{
 			int pre = parties.get(party);
 			for(Character character:party) {
 				if(pre < character.getPre()) {
+					pre = character.getPre();
 					parties.put(party,character.getPre());
 					if(character instanceof Player) {
 						playerPreName = character.getName();
@@ -145,7 +147,7 @@ public class BattleManager{
 				for(Character pl:player) {
 					Player ppl = (Player)pl;
 					ppl.setExp(ppl.getExp()+sumExp);
-					ppl.setHp(ppl.getMaxHp());
+//					ppl.setHp(ppl.getMaxHp());
 				}
 				break;
 			}
@@ -164,35 +166,47 @@ public class BattleManager{
 	//パーティの簡易ステータス表示
 
 	//ステータス表示
+	//修正中
 	public  static void displayStatus(List<Character> party) {
+		//上のライン表示
+		int[] lengths = new int[party.size()];//キャラ毎のラインの長さ
 		for(int i=0;i<party.size();i++) {
-			System.out.print("-----------");
+			String name = party.get(i).getName();//キャラの名前
+			int byteDiff = (Option.getByteLength(name, Charset.forName("UTF-8"))-name.length())/2;//全角文字数
+			int nameLength = (byteDiff*2) + name.length()-byteDiff;//全角半角合計の幅
+			if(nameLength > 10) {
+				lengths[i] = nameLength;
+			}else {
+				lengths[i] = 10;
+			}
+			Option.printLine(lengths[i]+1,false);//ライン表示
 		}
 		System.out.print("-");
 		System.out.println();
+		//キャラの名前表示
 		System.out.print("|");
-		//キャラの名前
 		for(int i=0;i<party.size();i++) {
-			System.out.printf("%s",Option.format(party.get(i).getName(),10));
+			System.out.printf("%s",Option.format(party.get(i).getName(),lengths[i]));
 			System.out.print("|");
 		}
 		System.out.println();
+		//HP表示
 		System.out.print("|");
-		//HP
 		for(int i=0;i<party.size();i++) {
-			System.out.printf("%s:%s",Option.format("ＨＰ",3),Option.format(""+party.get(i).getHp(),5));
+			System.out.printf("%s",Option.format("ＨＰ:"+party.get(i).getHp()+"/"+party.get(i).getMaxHp(),lengths[i]));
 			System.out.print("|");
 		}
 		System.out.println();
+		//MP表示
 		System.out.print("|");
-		//MP
 		for(int i=0;i<party.size();i++) {
-			System.out.printf("%s:%s",Option.format("ＭＰ",3),Option.format(""+party.get(i).getMp(),5));
+			System.out.printf("%s",Option.format("ＭＰ:"+ party.get(i).getMp()+"/"+party.get(i).getMaxMp(),lengths[i]));
 			System.out.print("|");
 		}
 		System.out.println();
+		//下のライン表示
 		for(int i=0;i<party.size();i++) {
-			System.out.print("-----------");
+			Option.printLine(lengths[i]+1,false);
 		}
 		System.out.print("-");
 		System.out.println();
@@ -222,6 +236,10 @@ public class BattleManager{
 		Option.printLine(25);
 		System.out.printf("<<%sの回避判定>>%n",second.getName());
 		int avoi = second.judgeAvoi();
+		if(hit==0 && avoi==0) {//命中自動成功かつ回避自動成功時
+			System.out.println("回避に自動成功");
+			return;
+		}
 		switch(avoi) {
 		//自動成功
 		case 0:

@@ -1,3 +1,4 @@
+
 public class Human extends Player{
 	//コンストラクタ
 	public Human(){

@@ -1,3 +1,4 @@
+
 public abstract class Skill {
 	private String name;
 	private String description;
