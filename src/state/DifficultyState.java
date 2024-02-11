@@ -1,22 +1,15 @@
 package state;
 
 public class DifficultyState extends MenuState {
-	private static final DifficultyState instance = new DifficultyState();
 
-	private DifficultyState() {
-		super(MenuEnum.DIFFICULTY);
-	}
-
-	public static DifficultyState getInstance() {
-		return instance;
+	protected DifficultyState() {
+		;
 	}
 
 	@Override
 	public void setState() {
 		this.menuStates = new MenuState[] {
-				this,
-				TitleState.getInstance(),
-				NewCharacterState.getInstance(),
+				MenuState.getInstance(MenuEnum.TITLE)
 		};
 	}
 

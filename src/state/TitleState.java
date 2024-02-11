@@ -1,15 +1,6 @@
 package state;
 
 public class TitleState extends MenuState {
-	private final static TitleState instance = new TitleState();
-
-	private TitleState() {
-		super(MenuEnum.TITLE);
-	}
-
-	public static TitleState getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void execute() {
@@ -20,15 +11,16 @@ public class TitleState extends MenuState {
 	@Override
 	public void setState() {
 		this.menuStates = new MenuState[] {
-				NewCharacterState.getInstance(),
-				GuildState.getInstance(),
-				BattleState.getInstance(),
-				DifficultyState.getInstance(),
-				MenuState.getInstance(MenuEnum.BATTLE),
-				QuitState.getInstance(),
+//				NewCharacterState.getInstance(),
+//				GuildState.getInstance(),
+//				BattleState.getInstance(),
+//				DifficultyState.getInstance(),
+//				QuitState.getInstance(),
 				MenuState.getInstance(MenuEnum.NEWCHARACTER),
+				MenuState.getInstance(MenuEnum.SELECTCHARACTER),
 				MenuState.getInstance(MenuEnum.BATTLE),
-				MenuState.getInstance(MenuEnum.BATTLE),
+				MenuState.getInstance(MenuEnum.DIFFICULTY),
+				MenuState.getInstance(MenuEnum.QUIT),
 		};
 	}
 }

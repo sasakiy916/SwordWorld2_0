@@ -1,14 +1,8 @@
 package state;
 
 public class QuitState extends MenuState {
-	private static final QuitState instance = new QuitState();
-
-	private QuitState() {
-		super(MenuEnum.QUIT);
-	}
-
-	public static QuitState getInstance() {
-		return instance;
+	protected QuitState() {
+		
 	}
 
 	@Override

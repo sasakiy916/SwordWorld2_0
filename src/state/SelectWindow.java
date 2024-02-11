@@ -6,17 +6,20 @@ import option.Option;
 
 public class SelectWindow {
 	private final static SelectWindow instance = new SelectWindow();
-	private MenuState currentMenu = TitleState.getInstance();
+	private MenuState currentMenu = MenuState.getInstance(MenuEnum.TITLE);
 	
+	// コンストラクタ
 	private SelectWindow() {
 		super();
 		currentMenu.setState();
 	}
 	
+	// インスタンス取得
 	public static SelectWindow getInstance() {
 		return instance;
 	}
 
+	// 現在のメニュー設定
 	private void setCurrentMenu(MenuState currentMenu) {
 		this.currentMenu = currentMenu;
 	}

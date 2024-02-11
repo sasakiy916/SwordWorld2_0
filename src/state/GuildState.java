@@ -23,21 +23,15 @@ public class GuildState extends MenuState {
 	enum GuildMenu {
 		BAR, SHOP, BOARD, GROWUP,
 	}
-	private static final GuildState instance = new GuildState();
-	
-	private GuildState() {
-		super(MenuEnum.SELECTCHARACTER);
+
+	protected GuildState() {
+		;
 	}
 
-	public static GuildState getInstance() {
-		return instance;
-	}
 	@Override
 	public void setState() {
 		this.menuStates = new MenuState[] {
-				TitleState.getInstance(),
-				this,
-				NewCharacterState.getInstance(),
+				MenuState.getInstance(MenuEnum.TITLE),
 		};
 	}
 
@@ -45,7 +39,7 @@ public class GuildState extends MenuState {
 	public void execute() {
 		System.out.println("ギルド");
 		Scanner scan = new Scanner(System.in);
-		//タイトル
+
 		PartyManager manager = PartyManager.getInstance();
 
 		List<Character> playerParty = manager.getPlayerParty();

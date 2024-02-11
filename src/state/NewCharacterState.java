@@ -5,14 +5,9 @@ import option.Option;
 import option.PlayerData;
 
 public class NewCharacterState extends MenuState {
-	private final static NewCharacterState instance = new NewCharacterState();
-
-	private NewCharacterState() {
-		super(MenuEnum.NEWCHARACTER);
-	}
-
-	public static NewCharacterState getInstance() {
-		return instance;
+	
+	protected NewCharacterState() {
+		;
 	}
 
 	@Override
@@ -38,7 +33,7 @@ public class NewCharacterState extends MenuState {
 	public void setState() {
 		this.menuStates = new MenuState[] {
 				this,
-				TitleState.getInstance(),
+				MenuState.getInstance(MenuEnum.TITLE),
 		};
 	}
 }

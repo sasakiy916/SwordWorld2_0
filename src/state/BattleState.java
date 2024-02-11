@@ -10,26 +10,15 @@ import manager.PartyManager;
 import option.Option;
 
 public class BattleState extends MenuState {
-	private static final BattleState instance = new BattleState();
-
-	private BattleState() {
-		super(MenuEnum.BATTLE);
-	}
-	
-	public static BattleState getInstance() {
-		return instance;
-	}
-	public static BattleState getAAA() {
-		return instance;
+	protected BattleState() {
+		
 	}
 
 	@Override
 	public void setState() {
 		this.menuStates = new MenuState[] {
 				this,
-				NewCharacterState.getInstance(),
-				GuildState.getInstance(),
-				DifficultyState.getInstance(),
+				MenuState.getInstance(MenuEnum.TITLE)
 		};
 	}
 
