@@ -38,6 +38,18 @@ public class PartyManager {
 	public List<Character> getPlayerParty(){
 		return this.playerParty;
 	}
+	
+	public List<Player> getPlayerPartyAsPlayer(){
+		List<Player> list = new ArrayList<>();
+		for(Character c : this.playerParty) {
+			if(c instanceof Player) {
+				list.add((Player)c);
+			}else {
+				return null;
+			}
+		}
+		return list;
+	}
 
 	public List<Character> getMonsterParty(){
 		return this.monsterParty;

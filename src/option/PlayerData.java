@@ -1,8 +1,6 @@
 package option;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,21 +34,24 @@ public class PlayerData {
 			System.out.println("保存に失敗しました");
 		}
 	}
+	
+	// 待機メンバーの保存（上書き）
+	public static void saveMember(List<Player> stayMember, String fileName) {
+		File path = new File("player/player.json");
+		path.delete();
+		for(Player p:stayMember) {
+			save(p);
+		}
+	}
+
+	public static void saveMember(List<Player> stayMember) {
+		saveMember(stayMember,"player/player.json");
+	}
 
 	//保存された冒険者を読み込む
 	public static Player load() {
 		Scanner scan = new Scanner(System.in);
-		List<Player> players = new ArrayList<>();
-		ObjectMapper mapper = new ObjectMapper();
-		//jsonファイル読み込み
-		try (BufferedReader br = new BufferedReader(new FileReader("player/player.json"))) {
-			String json = null;
-			while ((json = br.readLine()) != null) {
-				players.add(mapper.readValue(json, Player.class));
-			}
-		} catch (IOException e) {
-			System.out.println("ファイルの読み込みに失敗しました");
-		}
+		List<Player> players = getStayMember();
 
 		//読み込んだ内容からPlayerクラス作成
 		do {
@@ -80,33 +81,12 @@ public class PlayerData {
 	}
 
 	//指定キャラ削除
-	public static void selectRemove(int select) throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		//jsonファイルのパス取得
-		File path = new File("player/player.json");
-		//データを一行ずつ読み込みリストに格納
-		List<String> players = Option.loadString(path);
-		//指定キャラ削除
-		String removePlayer = mapper.readValue(players.get(select), Player.class).getName();//削除するキャラの名前取得
-		players.remove(select);//指定キャラ削除
-		//指定行を削除した後、新しい内容を上書き
-		//既存ファイル削除
-		path.delete();
-		//指定パスが存在するか確認
-		if (!path.exists()) {
-			System.out.println("ファイルはありません");
-		} else {
-			System.out.println("残ってる");
-		}
-		//新しい内容を書き込み
-		FileWriter fw = new FileWriter(path, true);
-		//書き込み処理
-		for (String s : players) {
-			//改行コード付きでjsonファイルに書き込む
-			String json = s + System.getProperty("line.separator");
-			fw.write(json);
-		}
-		fw.close();//ファイルを閉じる
+	public static void selectRemove(int select){
+		// 待機メンバー取得
+		List<Player> stayMember = getStayMember();
+		// 待機メンバーから１人削除する
+		String removePlayer = stayMember.remove(select).getName();
+		saveMember(stayMember);
 		// 削除キャラの名前表示
 		System.out.printf("%sを削除しました%n", removePlayer);
 	}
@@ -126,7 +106,7 @@ public class PlayerData {
 	}
 
 	// 待機メンバー取得
-	private static List<Player> getStayMember() {
+	public static List<Player> getStayMember() {
 		List<Player> stayMember = null;
 
 		// ファイルからデータ読み込み

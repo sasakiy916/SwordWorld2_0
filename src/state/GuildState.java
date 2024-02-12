@@ -1,15 +1,8 @@
 package state;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import character.player.Character;
 import character.player.Player;
@@ -43,7 +36,8 @@ public class GuildState extends MenuState {
 		PartyManager manager = PartyManager.getInstance();
 
 		List<Character> playerParty = manager.getPlayerParty();
-		String path = "player/party.json";
+//		String path = "player/party.json";
+		String path = "party.json";
 		//メニュー用意
 		String[] guildMenus = {
 				"酒場",
@@ -80,16 +74,8 @@ public class GuildState extends MenuState {
 				BattleManager.displayStatus(playerParty);
 				//デバッグ中
 				try {
-					FileInputStream fis = new FileInputStream("player/player.json");
-					InputStreamReader isr = new InputStreamReader(fis, "utf-8");
-					BufferedReader br = new BufferedReader(isr);
-					List<Player> stayMember = new ArrayList<>();
-					ObjectMapper mapper = new ObjectMapper();
-					String line;
-					while ((line = br.readLine()) != null) {
-						stayMember.add(mapper.readValue(line, Player.class));
-					}
-					br.close();//ファイル閉じる
+					List<Player> stayMember = PlayerData.getStayMember();
+
 					//酒場に居る冒険者一覧
 					System.out.println("酒場に居る冒険者");
 					for (int i = 0; i < stayMember.size(); i++) {
@@ -129,7 +115,7 @@ public class GuildState extends MenuState {
 						}
 					}
 					//パーティ情報の保存
-					File partyPath = new File(path);
+					File partyPath = new File("player/"+path);
 					partyPath.delete();
 					for (Character player : playerParty) {
 						if (player instanceof Player) {
@@ -137,12 +123,7 @@ public class GuildState extends MenuState {
 						}
 					}
 					//待機冒険者の保存
-					path = "player.json";
-					File stayPath = new File("player/" + path);
-					stayPath.delete();
-					for (Player stayPlayer : stayMember) {
-						PlayerData.save(stayPlayer);
-					}
+					PlayerData.saveMember(stayMember);
 				} catch (Exception e) {
 					System.out.println("酒場に待機してる冒険者はいません。");
 				}
@@ -172,12 +153,7 @@ public class GuildState extends MenuState {
 				select = scan.nextInt() - 1;
 				if (select == -1)
 					break;
-				try {
-					PlayerData.selectRemove(select);
-				} catch (IOException e) {
-					// TODO 自動生成された catch ブロック
-					e.printStackTrace();
-				}
+				PlayerData.selectRemove(select);
 				break;
 			//キャラの成長
 			case GROWUP:
