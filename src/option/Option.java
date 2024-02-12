@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Option {
 	//ファイル読み込み
@@ -50,7 +51,15 @@ public class Option {
 		}
 		Option.printLine(lineLength);
 	}
+	// 選択肢表示→入力番号を返す
+	public static int selectMenu(String[] menuNames,String menuName) {
+		Scanner scan = new Scanner(System.in);
+		showSelectMenu(menuNames);
+		System.out.print("どの" + menuName + "にしますか？>>");
+		return scan.nextInt() - 1;	
+	}
 	
+	// 指定ミリ秒数、一時停止
 	public static void sleep(int miliTime) {
 		try {
 			Thread.sleep(miliTime);

@@ -2,8 +2,6 @@ package state;
 
 import java.util.List;
 
-import character.monster.Goblin;
-import character.monster.Kobold;
 import character.monster.Monster;
 import character.player.Character;
 import manager.BattleManager;
@@ -32,10 +30,31 @@ public class BattleState extends MenuState {
 		List<Character> monsterParty = manager.getMonsterParty();
 		Option.sleep(1000);
 		//モンスター用意
-		monsterParty.add(new Kobold());
-		monsterParty.add(new Goblin());
-		monsterParty.add(new Monster("ドラゴン"));
-		System.out.println();
+		String[] difficulty = { "駆け出し", "ベテラン", "伝説" };
+		while (true) {
+			int selectDifficulty = Option.selectMenu(difficulty, "難易度");
+			switch (selectDifficulty) {
+			case 0:
+				monsterParty.add(new Monster("コボルド", "A"));
+				monsterParty.add(new Monster("ゴブリン"));
+				monsterParty.add(new Monster("コボルド", "B"));
+				break;
+			case 1:
+				monsterParty.add(new Monster("ゴブリン", "A"));
+				monsterParty.add(new Monster("ゴブリン", "B"));
+				monsterParty.add(new Monster("レッドキャップ"));
+				break;
+			case 2:
+				monsterParty.add(new Monster("ドラゴン", "A"));
+				monsterParty.add(new Monster("ドラゴン", "B"));
+				monsterParty.add(new Monster("レッサーオーガ"));
+				break;
+			default:
+				System.out.println("選択肢から選択してください");
+				continue;
+			}
+			break;
+		}
 		//戦闘
 		try {
 			BattleManager.battle(playerParty, monsterParty);
