@@ -21,7 +21,7 @@ import option.Shop;
 
 public class GuildState extends MenuState {
 	enum GuildMenu {
-		BAR, SHOP, BOARD, GROWUP,
+		BAR, SHOP, BOARD, GROWUP, HOTEL
 	}
 
 	protected GuildState() {
@@ -50,6 +50,7 @@ public class GuildState extends MenuState {
 				"ショップ",
 				"冒険者を追い出す",
 				"キャラの成長",
+				"宿屋"
 		};
 		//メニュー表示
 		while (true) {
@@ -191,6 +192,19 @@ public class GuildState extends MenuState {
 				if (select == -1)
 					break;
 				((Player) playerParty.get(select)).addJob();
+				break;
+			case HOTEL:
+				System.out.println("出血大サービスだ！タダで泊めてやるよ！");
+				for (Character c : playerParty) {
+					if (c instanceof Player) {
+						Player p = (Player) c;
+						p.setHp(p.getMaxHp());
+						System.out.printf("%sは眠った%n", p.getName());
+					}
+				}
+				BattleManager.displayStatus(playerParty);
+				break;
+			default:
 				break;
 			}
 		}
