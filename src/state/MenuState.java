@@ -9,7 +9,7 @@ public abstract class MenuState {
 	protected StateEnum titleMenu;
 
 	protected MenuState() {
-		
+		;
 	}
 
 	// インスタンス取得

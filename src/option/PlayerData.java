@@ -2,15 +2,14 @@ package option;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import character.player.Player;
@@ -85,17 +84,8 @@ public class PlayerData {
 		ObjectMapper mapper = new ObjectMapper();
 		//jsonファイルのパス取得
 		File path = new File("player/player.json");
-		String json = null;
 		//データを一行ずつ読み込みリストに格納
-//		List<String> players = new ArrayList<>();
 		List<String> players = Option.loadString(path);
-//		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-//			while ((json = br.readLine()) != null) {
-//				players.add(json);
-//			}
-//		} catch (IOException e) {
-//			;
-//		}
 		//指定キャラ削除
 		String removePlayer = mapper.readValue(players.get(select), Player.class).getName();//削除するキャラの名前取得
 		players.remove(select);//指定キャラ削除
@@ -113,7 +103,7 @@ public class PlayerData {
 		//書き込み処理
 		for (String s : players) {
 			//改行コード付きでjsonファイルに書き込む
-			json = s + System.getProperty("line.separator");
+			String json = s + System.getProperty("line.separator");
 			fw.write(json);
 		}
 		fw.close();//ファイルを閉じる
@@ -123,26 +113,42 @@ public class PlayerData {
 
 	//保存されてるキャラ一覧
 	public static boolean showStayPlayer() {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			FileInputStream fis = new FileInputStream("player/player.json");
-			InputStreamReader isr = new InputStreamReader(fis, "utf-8");
-			BufferedReader br = new BufferedReader(isr);
-			List<Player> stayMember = new ArrayList<>();
-			String line;
-			while ((line = br.readLine()) != null) {
-				stayMember.add(mapper.readValue(line, Player.class));
-			}
-			br.close();//ファイル閉じる
-			//酒場に居る冒険者一覧
-			System.out.println("酒場に居る冒険者");
-			for (int i = 0; i < stayMember.size(); i++) {
-				System.out.printf("%s %s%n", stayMember.get(i).getName(), i + 1);
-			}
-			return true;
-		} catch (Exception e) {
-			System.out.println("待機中の冒険者は居ません");
-			return false;
+		List<Player> stayMember = getStayMember();
+		// 冒険者が居なければfalse
+		if(stayMember == null)return false;
+
+		//酒場に居る冒険者一覧
+		System.out.println("酒場に居る冒険者");
+		for (int i = 0; i < stayMember.size(); i++) {
+			System.out.printf("%s %s%n", stayMember.get(i).getName(), i + 1);
 		}
+		return true;
+	}
+
+	// 待機メンバー取得
+	private static List<Player> getStayMember() {
+		List<Player> stayMember = null;
+
+		// ファイルからデータ読み込み
+		String path = "player/player.json";
+		List<String> list = Option.loadString(path);
+		if (list.size() <= 0) {
+			System.out.println("待機中の冒険者は居ません");
+			return stayMember;
+		}
+
+		// json文字列から待機メンバーをインスタンス化
+		ObjectMapper mapper = new ObjectMapper();
+		stayMember = new ArrayList<>();
+		for (String json : list) {
+			try {
+				Player player = mapper.readValue(json, Player.class);
+				stayMember.add(player);
+			} catch (JsonProcessingException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+		return stayMember;
 	}
 }

@@ -10,7 +10,7 @@ import option.Option;
 
 public class BattleState extends MenuState {
 	protected BattleState() {
-		
+		;
 	}
 
 	@Override
@@ -24,7 +24,6 @@ public class BattleState extends MenuState {
 	@Override
 	public void execute() {
 		System.out.println("討伐クエスト");
-		System.out.println("未完成");
 		PartyManager manager = PartyManager.getInstance();
 		List<Character> playerParty = manager.getPlayerParty();
 		List<Character> monsterParty = manager.getMonsterParty();

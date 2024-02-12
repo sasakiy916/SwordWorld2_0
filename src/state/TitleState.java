@@ -11,11 +11,6 @@ public class TitleState extends MenuState {
 	@Override
 	public void setState() {
 		this.menuStates = new MenuState[] {
-//				NewCharacterState.getInstance(),
-//				GuildState.getInstance(),
-//				BattleState.getInstance(),
-//				DifficultyState.getInstance(),
-//				QuitState.getInstance(),
 				MenuState.getInstance(MenuEnum.NEWCHARACTER),
 				MenuState.getInstance(MenuEnum.SELECTCHARACTER),
 				MenuState.getInstance(MenuEnum.BATTLE),
