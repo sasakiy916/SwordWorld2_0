@@ -180,7 +180,7 @@ public class Shop {
 	private static int prepareEquipment(List<Equipment> shop,String[] wepons,String[] armors,int select) {
 		try {
 			EquipList equipList = EquipList.values()[select];
-			ArrayList<String[]> equips = new ArrayList<String[]>();//装備の名前リスト
+			List<String[]> equips = new ArrayList<String[]>();//装備の名前リスト
 			String path = "";
 			select = 0;
 			switch(equipList) {

@@ -5,7 +5,7 @@ import option.Option;
 import option.PlayerData;
 
 public class NewCharacterState extends MenuState {
-	
+
 	protected NewCharacterState() {
 		;
 	}
@@ -16,12 +16,7 @@ public class NewCharacterState extends MenuState {
 		if (Option.loadFromCSV("player/player.json").size() < 5) {
 			System.out.printf("新規キャラを作成します。%n%n");
 			CharacterCreater cc = new CharacterCreater();
-			try {
-				PlayerData.save(cc.create());
-			} catch (Exception e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
-			}
+			PlayerData.save(cc.create());
 		} else {
 			System.out.printf("ギルドに待機してる冒険者がいっぱいです。%n%n");
 			Option.sleep(1000);

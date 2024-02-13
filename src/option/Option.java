@@ -7,16 +7,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Option {
-	//ファイル読み込み
-	//パーティ情報を読み込む用
-	public static ArrayList<String> loadString(String path) {
+	//ファイル読み込み、行ごとにString型にしてList返す
+	public static List<String> loadString(String path) {
 		return loadString(new File(path));
 	}
 
-	public static ArrayList<String> loadString(File path) {
+	public static List<String> loadString(File path) {
 		ArrayList<String> list = new ArrayList<>();
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"))) {
 			String line = null;
@@ -29,8 +31,9 @@ public class Option {
 		return list;
 	}
 
-	public static ArrayList<String[]> loadFromCSV(String path) {
-		ArrayList<String[]> list = new ArrayList<>();
+	// csvファイルを読み込み、配列を返す
+	public static List<String[]> loadFromCSV(String path) {
+		List<String[]> list = new ArrayList<>();
 		for (String line : loadString(path)) {
 			String[] params = line.split(",", -1);
 			list.add(params);
@@ -38,7 +41,38 @@ public class Option {
 		return list;
 	}
 
+	public static Map<String, String[]> loadFromCSVWithTitleCol(String path) {
+		Map<String, String[]> map = new HashMap<>();
+		List<String[]> list = loadFromCSV(path);
+
+		// タイトル取得
+		String[] titles = list.get(0);
+		for (String s : titles) {
+			map.put(s, new String[list.size() - 1]);
+		}
+
+		// タイトルごとのデータ一覧取得
+		for (int col = 0; col < titles.length; col++) {
+			String[] datas = map.get(titles[col]); // 取得する列のタイトル
+			// 列の行ごとのデータ取得
+			for (int row = 1; row < list.size(); row++) {
+				datas[row - 1] = list.get(row)[col];
+			}
+		}
+		return map;
+	}
+
 	// メニュー一覧を表示
+	public static void showSelectMenu(List<String> menu) {
+		String[] menuArray = new String[menu.size()];
+		showSelectMenu(menu.toArray(menuArray));
+	}
+
+	public static void showSelectMenu(List<String> menu,int lineLength) {
+		String[] menuArray = new String[menu.size()];
+		showSelectMenu(menu.toArray(menuArray),lineLength);
+	}
+
 	public static void showSelectMenu(String[] menu) {
 		showSelectMenu(menu, 30);
 	}
@@ -51,14 +85,15 @@ public class Option {
 		}
 		Option.printLine(lineLength);
 	}
+
 	// 選択肢表示→入力番号を返す
-	public static int selectMenu(String[] menuNames,String menuName) {
+	public static int selectMenu(String[] menuNames, String menuName) {
 		Scanner scan = new Scanner(System.in);
 		showSelectMenu(menuNames);
 		System.out.print("どの" + menuName + "にしますか？>>");
-		return scan.nextInt() - 1;	
+		return scan.nextInt() - 1;
 	}
-	
+
 	// 指定ミリ秒数、一時停止
 	public static void sleep(int miliTime) {
 		try {
