@@ -44,4 +44,8 @@ public class SelectWindow {
 		}
 		this.currentMenu.execute();
 	}
+	public void changeMenu(MenuEnum state) {
+		setCurrentMenu(MenuState.getInstance(state));
+		this.currentMenu.execute();
+	}
 }

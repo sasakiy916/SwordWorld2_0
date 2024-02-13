@@ -21,7 +21,7 @@ public class NewCharacterState extends MenuState {
 			System.out.printf("ギルドに待機してる冒険者がいっぱいです。%n%n");
 			Option.sleep(1000);
 		}
-		SelectWindow.getInstance().changeMenu();
+		SelectWindow.getInstance().changeMenu(MenuEnum.TITLE);
 	}
 
 	@Override

@@ -105,6 +105,7 @@ public class CharacterCreater {
 			}
 		}
 
+		// 技能習得
 		if (initJobList.size() > 0) {
 			String multiCase = birthsMap.get("複数ある場合")[selectBirth];
 			if (multiCase.matches("or")) {
