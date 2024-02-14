@@ -1,4 +1,3 @@
-
  abstract class Character{
 	//ステータス
 	private String name = "名無し";//名前
@@ -63,4 +62,8 @@
 	public abstract int getHit();
 	//追加ダメージ
 	public abstract int getAddDamage();
+	//最大体力
+	public abstract int getMaxHp();
+	//最大MP
+	public abstract int getMaxMp();
 }

@@ -1,3 +1,4 @@
+
 public class PassiveSkill extends Skill {
 
 	public PassiveSkill() {

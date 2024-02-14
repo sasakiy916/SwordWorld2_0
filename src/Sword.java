@@ -1,3 +1,4 @@
+
 public class Sword extends Weapon {
 	//コンストラクタ
 	public Sword() {

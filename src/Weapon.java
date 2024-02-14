@@ -1,3 +1,4 @@
+
 import java.util.List;
 
 public class Weapon extends Equipment{
@@ -5,6 +6,12 @@ public class Weapon extends Equipment{
 	public enum WeponList {
 		SWORD,
 		AXE,
+		SPEAR,
+		STUFF,
+		FRAIL,
+		MACE,
+		WARHAMMER
+		
 	}
 	//private String name;//名称
 	private String usage;//用法
@@ -18,6 +25,11 @@ public class Weapon extends Equipment{
 	private static String[] names = new String[] {
 			"ソード",
 			"アックス",
+			"スピア",
+			"スタッフ",
+			"フレイル",
+			"メイス",
+			"ウォーハンマー",
 	};
 	//コンストラクタ
 	public Weapon() {

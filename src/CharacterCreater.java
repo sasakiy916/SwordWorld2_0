@@ -3,32 +3,6 @@ import java.util.Scanner;
 public class CharacterCreater {
 	private Player player;//プレイヤーのインスタンス
 	Scanner scan = new Scanner(System.in);
-//	Wepon wepon = new Wepon();
-	//コンストラクタ
-//	public CharacterCreater() throws Exception {
-//		Scanner scan = new Scanner(System.in);
-//		decideRaceAndBirth();//種族と生まれの決定
-//		//名前入力
-//		String name;
-//		while(true) {
-//			System.out.print("冒険者の名前を決めて下さい>>");
-//			name = scan.next();
-//			System.out.printf("%sでよろしいですか?(はい:0,いいえ:1)>>",name);
-//			if(scan.nextInt() == 0) {
-//				break;
-//			}
-//		}
-//		this.player.setName(name);
-//		decideStatus();//能力値の決定
-//		decideJobLevel();//技能の習得
-//		decideLevel();//冒険者レベルの決定
-//		//decideHpAndMp();//HP,MPの決定
-//		this.player.setHp(this.player.getMaxHp());
-//		this.player.setMp(this.player.getMaxMp());
-////		decideSkill();//戦闘特技の習得
-//		Shop.buy(this.player);
-//		completeCharacter();//キャラの完成
-//	}
 	//キャラ作成
 	public Player create() throws Exception {
 		Scanner scan = new Scanner(System.in);
@@ -77,6 +51,24 @@ public class CharacterCreater {
 		case ELF:
 			setPlayer(new Elf());
 			birthData += "birth - エルフ.csv";
+			break;
+		case DWARF:
+			setPlayer(new Dwarf());
+			birthData += "birth - ドワーフ.csv";
+			break;
+		case NIGHTMARE:
+			setPlayer(new Nightmare());
+			birthData += "birth - ナイトメア.csv";
+			break;
+		case RUNEFALK:
+			setPlayer(new RuneFalk());
+			birthData += "birth - ルーンフォーク.csv";
+			break;
+		case TABIT:
+			setPlayer(new Tabit());
+			birthData += "birth - タビット.csv";
+			break;
+		default:
 			break;
 		}
 		//生まれの一覧表示

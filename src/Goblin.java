@@ -1,3 +1,4 @@
+
 public class Goblin extends Monster {
 	public Goblin(){
 		setName("ゴブリン");
